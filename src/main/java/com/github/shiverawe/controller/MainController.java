@@ -28,7 +28,12 @@ public class MainController {
 
   @RequestMapping(value = "/get", method = RequestMethod.GET)
   public Iterable<Receipt> get(String fn, String i, String fp, @DateTimeFormat Date t, String s) {
-    return myReceiptRepository.findByCredentials(fn, i, fp, t, s);
+    return myReceiptRepository.findByCredentials(
+      fn, fn != null,
+      i, i != null,
+      fp, fp != null,
+      t, t != null,
+      s == null ? null : Double.parseDouble(s), s != null);
   }
 
   @RequestMapping(value = "/create", method = RequestMethod.POST)

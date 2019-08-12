@@ -1,6 +1,5 @@
 package com.github.shiverawe.repository;
 
-import com.github.shiverawe.ReceiptFilter;
 import com.github.shiverawe.entity.Receipt;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
@@ -10,23 +9,19 @@ import javax.annotation.Nullable;
 import java.util.Date;
 import java.util.List;
 
-public interface ReceiptRepository extends CrudRepository<Receipt, Long>, ReceiptRepositoryCustom {
+public interface ReceiptRepository extends CrudRepository<Receipt, Long> {
 
-  @Query(value = "SELECT * FROM receipt " +
-    "WHERE (:fn IS NULL OR fd=:fn) " +
-    "AND (:fd IS NULL OR fd=:fd) " +
-    "AND (:fp IS NULL OR fp=:fp) " +
-    "AND (:date IS NULL OR date=:date) " +
-    "AND (:sum IS NULL OR sum=:sum)", nativeQuery = true)
-  Iterable<Receipt> findByCredentials(
-    @Nullable @Param("fn") String fn,
-    @Nullable @Param("fd") String fd,
-    @Nullable @Param("fp") String fp,
-    @Nullable @Param("date") Date date,
-    @Nullable @Param("sum") String sum);
+  @Query(value = "SELECT r FROM Receipt r " +
+    "WHERE (NOT TRUE=:fnUsed OR r.fn=:fn) " +
+    "AND (NOT TRUE=:fdUsed OR r.fd=:fd) " +
+    "AND (NOT TRUE=:fpUsed OR r.fp=:fp) " +
+    "AND (NOT TRUE=:dateUsed OR r.date=:date) " +
+    "AND (NOT TRUE=:summaryUsed OR r.sum=:summary)")
+  List<Receipt> findByCredentials(
+    @Nullable @Param("fn") String fn, @Param("fnUsed") Boolean fnUsed,
+    @Nullable @Param("fd") String fd, @Param("fdUsed") Boolean fdUsed,
+    @Nullable @Param("fp") String fp, @Param("fpUsed") Boolean fpUsed,
+    @Nullable @Param("date") Date date, @Param("dateUsed") Boolean dateUsed,
+    @Nullable @Param("summary") Double sum, @Param("summaryUsed") Boolean sumUsed);
 
-}
-
-interface ReceiptRepositoryCustom {
-  List<Receipt> findByFilter(ReceiptFilter filter);
 }
