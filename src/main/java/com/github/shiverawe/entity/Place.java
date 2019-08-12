@@ -1,12 +1,12 @@
 package com.github.shiverawe.entity;
 
-import lombok.EqualsAndHashCode;
+import lombok.Data;
 
 import javax.persistence.*;
 
 @Entity
 @Table(name = "place")
-@EqualsAndHashCode
+@Data
 public class Place {
   @Id
   @GeneratedValue(strategy = GenerationType.SEQUENCE)
@@ -17,5 +17,4 @@ public class Place {
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name ="place_id")
   private Receipt receipts;
-
 }
