@@ -2,8 +2,8 @@ package com.github.shiverawe.controller;
 
 import com.github.shiverawe.entity.Receipt;
 import com.github.shiverawe.repository.ReceiptRepository;
+import com.github.shiverawe.util.DateUtil;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.HttpServerErrorException;
 
 import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -27,12 +26,12 @@ public class MainController {
   }
 
   @RequestMapping(value = "/get", method = RequestMethod.GET)
-  public Iterable<Receipt> get(String fn, String i, String fp, @DateTimeFormat Date t, String s) {
+  public Iterable<Receipt> get(String fn, String i, String fp, String t, String s) {
     return myReceiptRepository.findByCredentials(
       fn, fn != null,
       i, i != null,
       fp, fp != null,
-      t, t != null,
+      t == null ? null : DateUtil.parseReceiptDate(t), t != null,
       s == null ? null : Double.parseDouble(s), s != null);
   }
 

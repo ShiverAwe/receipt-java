@@ -48,8 +48,8 @@ public class ReceiptRepositorySlowTest {
         null, false,
         null, false);
       assertEquals(2, actual.size());
-      assertEquals(123.45, actual.get(0).getSum().doubleValue(), 1e-5);
-      assertEquals(774.71, actual.get(1).getSum().doubleValue(), 1e-5);
+      assertEquals(123.45, actual.get(0).getSum(), 1e-5);
+      assertEquals(774.71, actual.get(1).getSum(), 1e-5);
     }
   }
 
