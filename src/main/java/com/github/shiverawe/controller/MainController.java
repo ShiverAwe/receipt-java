@@ -1,8 +1,9 @@
 package com.github.shiverawe.controller;
 
-import com.github.shiverawe.entity.Receipt;
-import com.github.shiverawe.repository.ReceiptRepository;
-import com.github.shiverawe.util.DateUtil;
+import com.github.shiverawe.dto.ReceiptDto;
+import com.github.shiverawe.service.ReceiptService;
+import com.github.shiverawe.service.report.ReportMetaFilter;
+import com.github.shiverawe.service.report.ReportReceiptFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -18,21 +19,22 @@ import java.util.List;
 @RestController
 public class MainController {
 
-  private final ReceiptRepository myReceiptRepository;
+  private final ReceiptService receiptService;
 
   @Autowired
-  public MainController(ReceiptRepository receiptRepository) {
-    this.myReceiptRepository = receiptRepository;
+  public MainController(ReceiptService receiptService) {
+    this.receiptService = receiptService;
   }
 
   @RequestMapping(value = "/get", method = RequestMethod.GET)
-  public Iterable<Receipt> get(String fn, String i, String fp, String t, String s) {
-    return myReceiptRepository.findByCredentials(
-      fn, fn != null,
-      i, i != null,
-      fp, fp != null,
-      t == null ? null : DateUtil.parseReceiptDate(t), t != null,
-      s == null ? null : Double.parseDouble(s), s != null);
+  public ReceiptDto get(String fn, String i, String fp, String t, Double s) {
+    ReportMetaFilter metaFilter = new ReportMetaFilter();
+    metaFilter.setSumEquals(s);
+    metaFilter.setDateEquals(t);
+    metaFilter.setFn(fn);
+    metaFilter.setFd(i);
+    metaFilter.setFp(fp);
+    return receiptService.report(metaFilter).get(0);
   }
 
   @RequestMapping(value = "/create", method = RequestMethod.POST)
@@ -41,8 +43,8 @@ public class MainController {
   }
 
   @RequestMapping(value = "/report", method = RequestMethod.PUT)
-  public void report(@RequestBody String query) {
-    throw HttpServerErrorException.create(HttpStatus.NOT_IMPLEMENTED, "Not implemented", HttpHeaders.EMPTY, null, null);
+  public List<ReceiptDto> report(ReportReceiptFilter query) {
+    return receiptService.report(query.getMeta());
   }
 
   @RequestMapping(value = "/signup", method = RequestMethod.POST)

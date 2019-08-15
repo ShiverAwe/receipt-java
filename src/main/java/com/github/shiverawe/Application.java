@@ -1,6 +1,5 @@
 package com.github.shiverawe;
 
-import com.github.shiverawe.entity.Merchant;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
