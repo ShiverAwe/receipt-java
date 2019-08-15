@@ -34,7 +34,9 @@ public class MainController {
     metaFilter.setFn(fn);
     metaFilter.setFd(i);
     metaFilter.setFp(fp);
-    return receiptService.report(metaFilter).get(0);
+    ReportReceiptFilter receiptFilter = new ReportReceiptFilter();
+    receiptFilter.setMeta(metaFilter);
+    return receiptService.report(receiptFilter).get(0);
   }
 
   @RequestMapping(value = "/create", method = RequestMethod.POST)
@@ -43,8 +45,8 @@ public class MainController {
   }
 
   @RequestMapping(value = "/report", method = RequestMethod.PUT)
-  public List<ReceiptDto> report(ReportReceiptFilter query) {
-    return receiptService.report(query.getMeta());
+  public List<ReceiptDto> report(@RequestBody ReportReceiptFilter query) {
+    return receiptService.report(query);
   }
 
   @RequestMapping(value = "/signup", method = RequestMethod.POST)
