@@ -28,7 +28,11 @@ public class ReceiptService {
       metaFilter.getFd(), metaFilter.getFd() != null,
       metaFilter.getFp(), metaFilter.getFp() != null,
       metaFilter.getDateEquals(), metaFilter.getDateEquals() != null,
-      metaFilter.getSumEquals(), metaFilter.getSumEquals() != null);
+      metaFilter.getDateFrom(), metaFilter.getDateFrom() != null,
+      metaFilter.getDateTo(), metaFilter.getDateTo() != null,
+      metaFilter.getSumEquals(), metaFilter.getSumEquals() != null,
+      metaFilter.getSumMin(), metaFilter.getSumMin() != null,
+      metaFilter.getSumMax(), metaFilter.getSumMax() != null);
     return receipts.stream().map(ReceiptDto::of).collect(Collectors.toList());
   }
 

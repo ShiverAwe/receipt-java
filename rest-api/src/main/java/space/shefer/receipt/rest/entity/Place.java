@@ -1,12 +1,17 @@
 package space.shefer.receipt.rest.entity;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "place")
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class Place {
   @Id
   @GeneratedValue(strategy = GenerationType.SEQUENCE)
@@ -14,7 +19,7 @@ public class Place {
   private Long id;
   @Column(name = "text")
   private String text; // TODO Why test, not name?
-  @ManyToOne(fetch = FetchType.LAZY)
+  @OneToMany(fetch = FetchType.LAZY)
   @JoinColumn(name ="place_id")
-  private Receipt receipts;
+  private List<Receipt> receipts;
 }
