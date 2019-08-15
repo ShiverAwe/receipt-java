@@ -49,16 +49,6 @@ public class MainController {
     return receiptService.report(query);
   }
 
-  @RequestMapping(value = "/signup", method = RequestMethod.POST)
-  public String signup() {
-    throw HttpServerErrorException.create(HttpStatus.NOT_IMPLEMENTED, "Not implemented", HttpHeaders.EMPTY, null, null);
-  }
-
-  @RequestMapping(value = "/token", method = RequestMethod.GET)
-  public String getAuthToken() {
-    throw HttpServerErrorException.create(HttpStatus.NOT_IMPLEMENTED, "Not implemented", HttpHeaders.EMPTY, null, null);
-  }
-
   /**
    * This method allows to search in cheques data by words.
    * `q` is the request param.
