@@ -23,14 +23,14 @@ Returns Id of created receipt
 PUT /receipts
 {
   "ids": [68, 99], // [optional] List of ids of receipts to be fetched
-  "dateFrom": "20190131T0059", //  date in format YYYYMMDD'T'HHmm
-  "dateTo": "20190501T2359", //  date in format YYYYMMDD'T'HHmm
-  "sumMin": "10.0", //  souble
-  "sumMax": "200.0", //  souble
-  "fn": "23948523549", //  string
-  "fd": "230952", //  string
-  "fp": "2345045", //  string
-  "place": "Пятерочка" //  string
+  "dateFrom": "20190131T0059", // [optional] date in format YYYYMMDD'T'HHmm
+  "dateTo": "20190501T2359", // [optional] date in format YYYYMMDD'T'HHmm
+  "sumMin": "10.0", // [optional] double
+  "sumMax": "200.0", // [optional] double
+  "fn": "23948523549", // [optional] string
+  "fd": "230952", // [optional] string
+  "fp": "2345045", // [optional] string
+  "place": "Пятерочка" // [optional] string
 }
 ```
 ```json
@@ -45,6 +45,39 @@ PUT /receipts
     "provider": "TAXCOM",
     "status": "LOADED",
     "place": "ООО \"О'КЕЙ\""
+  }
+]
+```
+
+### Get items for receipts
+```
+PUT /items
+{
+  "receiptIds": [68, 99], // [optional] List of ids of receipts which items only required
+  "minPrice": "10.0", // [optional] double
+  "maxPrice": "200.0", // [optional] double
+  "textEquals": "Молоко" // [optional] string
+}
+```
+```json
+[
+  {
+    "receiptId": 68,
+    "text": "Сыр копченый Косичка  Кубански",
+    "price": 150.0,
+    "amount": 0.159
+  },
+  {
+    "receiptId": 68,
+    "text": "Веселый Молочник",
+    "price": 120.0,
+    "amount": 0.159
+  },
+  {
+    "receiptId": 99,
+    "text": "Сыр копченый Косичка  Кубански",
+    "price": 150.0,
+    "amount": 0.159
   }
 ]
 ```
