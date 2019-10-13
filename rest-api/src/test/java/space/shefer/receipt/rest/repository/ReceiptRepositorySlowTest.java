@@ -10,11 +10,9 @@ import space.shefer.receipt.rest.entity.Receipt;
 import space.shefer.receipt.rest.service.report.ReportMetaFilter;
 import space.shefer.receipt.rest.util.DateUtil;
 
+import java.time.LocalDateTime;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
 
 import static java.util.Collections.emptyList;
 import static org.junit.Assert.assertEquals;
@@ -29,7 +27,7 @@ public class ReceiptRepositorySlowTest {
 
   @Test
   public void testFindByCredentials_givenSomeReceipts_whenNoFilter_thenAllDataReturned() {
-    Date date = DateUtil.parseReceiptDate("20190813T1355");
+    LocalDateTime date = DateUtil.parseReceiptDate("20190813T1355");
     List<Receipt> receiptsInitial = Arrays.asList(
       new Receipt(null, date, "83479", "96253", "76193", 123.45, "TAXCOM", "LOADED", null, emptyList()),
       new Receipt(null, date, "34780", "89255", "82661", 121.44, "TAXCOM", "LOADED", null, emptyList()),
@@ -52,13 +50,13 @@ public class ReceiptRepositorySlowTest {
 
   @Test
   public void testGetReceipts() {
-    Date dateOk = DateUtil.parseReceiptDate("20190813T105527");
-    Date dateWrongYear = DateUtil.parseReceiptDate("20180813T105527");
-    Date dateWrongMonth = DateUtil.parseReceiptDate("20190713T105527");
-    Date dateWrongDate = DateUtil.parseReceiptDate("20190811T105527");
-    Date dateWrongHour = DateUtil.parseReceiptDate("20190813T115527");
-    Date dateWrongMinute = DateUtil.parseReceiptDate("20190813T105627");
-    Date dateWrongSecond = DateUtil.parseReceiptDate("20190813T105529");
+    LocalDateTime dateOk = DateUtil.parseReceiptDate("20190813T105527");
+    LocalDateTime dateWrongYear = DateUtil.parseReceiptDate("20180813T105527");
+    LocalDateTime dateWrongMonth = DateUtil.parseReceiptDate("20190713T105527");
+    LocalDateTime dateWrongDate = DateUtil.parseReceiptDate("20190811T105527");
+    LocalDateTime dateWrongHour = DateUtil.parseReceiptDate("20190813T115527");
+    LocalDateTime dateWrongMinute = DateUtil.parseReceiptDate("20190813T105627");
+    LocalDateTime dateWrongSecond = DateUtil.parseReceiptDate("20190813T105529");
     double sumOk = 44.4;
     // OK
     repository.save(new Receipt(null, dateOk, "11111", "22222", "33333", sumOk, "TAXCOM", "LOADED", null, emptyList()));

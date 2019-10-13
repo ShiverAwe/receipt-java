@@ -1,13 +1,13 @@
 package space.shefer.receipt.rest.dto;
 
-import space.shefer.receipt.rest.entity.Receipt;
 import lombok.Data;
+import space.shefer.receipt.rest.entity.Receipt;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 @Data
 public class ReceiptMetaDto {
-  private Date date;
+  private LocalDateTime date;
   private String fn;
   private String fd;
   private String fp;

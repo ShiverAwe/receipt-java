@@ -2,26 +2,27 @@ package space.shefer.receipt.rest.util;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 
 public final class DateUtil {
 
   public static final String RECEIPT_DATETIME_PATTERN = "yyyyMMdd'T'HHmm";
 
-  public static Date parseGMTDate(String date) {
+  public static LocalDateTime parseGMTDate(String date) {
     return simpleDateFormat(date, "dd-MM-yyyy");
   }
 
-  public static Date simpleDateFormat(String date, String format) {
+  public static LocalDateTime simpleDateFormat(String date, String format) {
     try {
-      return new SimpleDateFormat(format).parse(date);
+      return LocalDateTime.ofInstant(new SimpleDateFormat(format).parse(date).toInstant(), ZoneId.systemDefault());
     }
     catch (ParseException e) {
       throw new RuntimeException(e.getMessage(), e);
     }
   }
 
-  public static Date parseReceiptDate(String date) {
+  public static LocalDateTime parseReceiptDate(String date) {
     if (date == null) {
       return null;
     }

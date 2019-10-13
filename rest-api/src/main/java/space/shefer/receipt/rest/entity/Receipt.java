@@ -6,7 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
@@ -21,7 +21,7 @@ public class Receipt {
   @Column(name = "id")
   private Long id;
   @Column(name = "date")
-  private Date date;
+  private LocalDateTime date;
   @Column(name = "fn")
   private String fn;
   @Column(name = "fd")
