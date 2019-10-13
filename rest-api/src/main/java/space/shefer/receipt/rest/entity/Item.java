@@ -1,12 +1,16 @@
 package space.shefer.receipt.rest.entity;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
 @Entity
 @Table(name = "item")
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class Item {
   @Id
   @GeneratedValue(strategy = GenerationType.SEQUENCE)

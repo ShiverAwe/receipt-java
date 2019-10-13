@@ -7,6 +7,7 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import space.shefer.receipt.rest.entity.Receipt;
+import space.shefer.receipt.rest.service.report.ReportMetaFilter;
 import space.shefer.receipt.rest.util.DateUtil;
 
 import java.util.Arrays;
@@ -36,19 +37,10 @@ public class ReceiptRepositorySlowTest {
       new Receipt(null, date, "82640", "34579", "99999", 103.55, "TAXCOM", "LOADED", null, emptyList())
     );
     repository.saveAll(receiptsInitial);
-    List<Receipt> receiptsAll = StreamSupport.stream(repository.findAll().spliterator(), false).collect(Collectors.toList());
+    List<Receipt> receiptsAll = repository.findAll();
     assertEquals(4, receiptsAll.size());
 
-    List<Receipt> receiptsFound = repository.findByCredentials(
-      null, false,
-      null, false,
-      null, false,
-      null, false,
-      null, false,
-      null, false,
-      null, false,
-      null, false,
-      null, false);
+    List<Receipt> receiptsFound = repository.getReceipts(new ReportMetaFilter());
 
     assertEquals(receiptsInitial.size(), receiptsAll.size());
     assertEquals(receiptsInitial.size(), receiptsFound.size());
@@ -56,11 +48,10 @@ public class ReceiptRepositorySlowTest {
       assertSimilar(receiptsInitial.get(i), receiptsAll.get(i));
       assertSimilar(receiptsInitial.get(i), receiptsFound.get(i));
     }
-
   }
 
   @Test
-  public void testFindByCredentials() {
+  public void testGetReceipts() {
     Date dateOk = DateUtil.parseReceiptDate("20190813T105527");
     Date dateWrongYear = DateUtil.parseReceiptDate("20180813T105527");
     Date dateWrongMonth = DateUtil.parseReceiptDate("20190713T105527");
@@ -94,16 +85,17 @@ public class ReceiptRepositorySlowTest {
     // WRONG SUM
     repository.save(new Receipt(null, dateOk, "11111", "22222", "33333", 65.3, "TAXCOM", "LOADED", null, emptyList()));
     {
-      List<Receipt> actual = repository.findByCredentials(
-        "11111", true,
-        "22222", true,
-        "33333", true,
-        dateOk, true,
-        dateOk, true,
-        dateOk, true,
-        sumOk, true,
-        sumOk, true,
-        sumOk, true);
+      List<Receipt> actual = repository.getReceipts(
+        ReportMetaFilter.builder()
+          .fn("11111")
+          .fd("22222")
+          .fp("33333")
+          .dateFrom(dateOk)
+          .dateTo(dateOk)
+          .sumMin(sumOk)
+          .sumMax(sumOk)
+          .build()
+      );
       assertEquals(2, actual.size());
       for (Receipt receipt : actual) {
         assertSimilar(new Receipt(null, dateOk, "11111", "22222", "33333", sumOk, "TAXCOM", "LOADED", null, emptyList()), receipt);

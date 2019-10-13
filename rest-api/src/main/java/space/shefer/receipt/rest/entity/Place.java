@@ -18,7 +18,7 @@ public class Place {
   @Column(name = "id")
   private Long id;
   @Column(name = "text")
-  private String text; // TODO Why test, not name?
+  private String text; // TODO Why text, not name?
   @OneToMany(fetch = FetchType.LAZY)
   @JoinColumn(name ="place_id")
   private List<Receipt> receipts;

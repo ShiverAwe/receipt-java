@@ -1,6 +1,7 @@
 package space.shefer.receipt.rest.entity;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -13,6 +14,7 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 public class Receipt {
   @Id
   @GeneratedValue(strategy = GenerationType.SEQUENCE)
@@ -32,7 +34,7 @@ public class Receipt {
   private String provider;
   @Column(name = "status")
   private String status;
-  @ManyToOne
+  @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "place_id")
   private Place place;
   @OneToMany(fetch = FetchType.LAZY)

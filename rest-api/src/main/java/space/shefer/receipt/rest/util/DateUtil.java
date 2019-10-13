@@ -6,6 +6,8 @@ import java.util.Date;
 
 public final class DateUtil {
 
+  public static final String RECEIPT_DATETIME_PATTERN = "yyyyMMdd'T'HHmm";
+
   public static Date parseGMTDate(String date) {
     return simpleDateFormat(date, "dd-MM-yyyy");
   }

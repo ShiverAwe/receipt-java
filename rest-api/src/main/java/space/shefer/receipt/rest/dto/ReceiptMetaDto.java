@@ -16,7 +16,7 @@ public class ReceiptMetaDto {
   private String status;
   private String place;
 
-  public static ReceiptMetaDto of(Receipt receipt){
+  public static ReceiptMetaDto of(Receipt receipt) {
     ReceiptMetaDto result = new ReceiptMetaDto();
     result.setFn(receipt.getFn());
     result.setFd(receipt.getFd());
@@ -24,7 +24,9 @@ public class ReceiptMetaDto {
     result.setDate(receipt.getDate());
     result.setSum(receipt.getSum());
     result.setProvider(receipt.getProvider());
-    result.setPlace(receipt.getPlace().getText());
+    if (receipt.getPlace() != null) {
+      result.setPlace(receipt.getPlace().getText());
+    }
     result.setStatus(receipt.getStatus());
     return result;
   }

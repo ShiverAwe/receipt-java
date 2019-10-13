@@ -1,47 +1,37 @@
 package space.shefer.receipt.rest.service.report;
 
-import space.shefer.receipt.rest.util.DateUtil;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonValue;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+import space.shefer.receipt.rest.util.DateUtil;
 
 import javax.annotation.Nullable;
 import java.util.Date;
 
 @Data
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class ReportMetaFilter {
   @Nullable
-  private String dateEquals;
+  @JsonFormat(pattern = DateUtil.RECEIPT_DATETIME_PATTERN)
+  private Date dateFrom = null;
   @Nullable
-  private String dateFrom;
+  @JsonFormat(pattern = DateUtil.RECEIPT_DATETIME_PATTERN)
+  private Date dateTo = null;
   @Nullable
-  private String dateTo;
+  private Double sumMin = null;
   @Nullable
-  private Double sumEquals;
+  private Double sumMax = null;
   @Nullable
-  private Double sumMin;
+  private String fn = null;
   @Nullable
-  private Double sumMax;
+  private String fd = null;
   @Nullable
-  private String fn;
+  private String fp = null;
   @Nullable
-  private String fd;
-  @Nullable
-  private String fp;
-  @Nullable
-  private String place;
-
-  @Nullable
-  public Date getDateEquals() {
-    return DateUtil.parseReceiptDate(dateEquals);
-  }
-
-  @Nullable
-  public Date getDateFrom() {
-    return DateUtil.parseReceiptDate(dateFrom);
-  }
-
-  @Nullable
-  public Date getDateTo() {
-    return DateUtil.parseReceiptDate(dateTo);
-  }
-
+  private String place = null;
 }
