@@ -3,10 +3,13 @@ package space.shefer.receipt.rest.dto;
 import lombok.Data;
 import space.shefer.receipt.rest.entity.Receipt;
 
+import javax.annotation.Nullable;
 import java.time.LocalDateTime;
 
 @Data
 public class ReceiptMetaDto {
+  @Nullable
+  private Long id;
   private LocalDateTime date;
   private String fn;
   private String fd;
@@ -18,6 +21,7 @@ public class ReceiptMetaDto {
 
   public static ReceiptMetaDto of(Receipt receipt) {
     ReceiptMetaDto result = new ReceiptMetaDto();
+    result.setId(receipt.getId());
     result.setFn(receipt.getFn());
     result.setFd(receipt.getFd());
     result.setFp(receipt.getFp());
