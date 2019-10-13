@@ -26,6 +26,9 @@ public class ReceiptRepositoryImpl implements ReceiptRepositoryCustom {
     CriteriaQuery<Receipt> cr = cb.createQuery(Receipt.class);
     Root<Receipt> root = cr.from(Receipt.class);
     List<Predicate> predicates = new ArrayList<>();
+    if (filter.getIds() != null) {
+      predicates.add(root.get("id").in(filter.getIds()));
+    }
     if (filter.getDateFrom() != null) {
       predicates.add(cb.greaterThanOrEqualTo(root.get("date"), filter.getDateFrom()));
     }
