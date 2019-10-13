@@ -1,11 +1,13 @@
 package space.shefer.receipt.rest.repository;
 
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.transaction.annotation.Transactional;
 import space.shefer.receipt.rest.entity.Receipt;
 import space.shefer.receipt.rest.service.report.ReportMetaFilter;
 import space.shefer.receipt.rest.util.DateUtil;
@@ -14,21 +16,24 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 import static java.util.Collections.emptyList;
-import static java.util.Collections.max;
 import static org.junit.Assert.assertEquals;
 import static org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace.NONE;
 
 @RunWith(SpringRunner.class)
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = NONE)
+@Transactional
 public class ReceiptRepositorySlowTest {
+
   @Autowired
   ReceiptRepository repository;
 
   @Test
-  public void testFindByCredentials_givenSomeReceipts_whenNoFilter_thenAllDataReturned() {
+  public void getReceipts_noFilter() {
     LocalDateTime date = DateUtil.parseReceiptDate("20190813T1355");
     List<Receipt> receiptsInitial = Arrays.asList(
       new Receipt(null, date, "83479", "96253", "76193", 123.45, "TAXCOM", "LOADED", null, emptyList()),
@@ -51,7 +56,7 @@ public class ReceiptRepositorySlowTest {
   }
 
   @Test
-  public void testGetReceipts() {
+  public void getReceipt_fullFilter() {
     LocalDateTime dateOk = DateUtil.parseReceiptDate("20190813T105527");
     LocalDateTime dateWrongYear = DateUtil.parseReceiptDate("20180813T105527");
     LocalDateTime dateWrongMonth = DateUtil.parseReceiptDate("20190713T105527");
@@ -60,37 +65,77 @@ public class ReceiptRepositorySlowTest {
     LocalDateTime dateWrongMinute = DateUtil.parseReceiptDate("20190813T105627");
     LocalDateTime dateWrongSecond = DateUtil.parseReceiptDate("20190813T105529");
     double sumOk = 44.4;
-    List<Long> ids = new ArrayList<>();
-    // OK
-    repository.save(new Receipt(nextId(ids), dateOk, "11111", "22222", "33333", sumOk, "TAXCOM", "LOADED", null, emptyList()));
-    // OK
-    repository.save(new Receipt(nextId(ids), dateOk, "11111", "22222", "33333", sumOk, "TAXCOM", "LOADED", null, emptyList()));
-    // WRONG ID
-    repository.save(new Receipt(99999L, dateOk, "11111", "22222", "33333", sumOk, "TAXCOM", "LOADED", null, emptyList()));
-    // WRONG DATE: WRONG YEAR
-    repository.save(new Receipt(nextId(ids), dateWrongYear, "11111", "22222", "33333", sumOk, "TAXCOM", "LOADED", null, emptyList()));
-    // WRONG DATE: WRONG MONTH
-    repository.save(new Receipt(nextId(ids), dateWrongMonth, "11111", "22222", "33333", sumOk, "TAXCOM", "LOADED", null, emptyList()));
-    // WRONG DATE: WRONG DATE
-    repository.save(new Receipt(nextId(ids), dateWrongDate, "11111", "22222", "33333", sumOk, "TAXCOM", "LOADED", null, emptyList()));
-    // WRONG DATE: WRONG HOUR
-    repository.save(new Receipt(nextId(ids), dateWrongHour, "11111", "22222", "33333", sumOk, "TAXCOM", "LOADED", null, emptyList()));
-    // WRONG DATE: WRONG MINUTE
-    repository.save(new Receipt(nextId(ids), dateWrongMinute, "11111", "22222", "33333", sumOk, "TAXCOM", "LOADED", null, emptyList()));
-    // WRONG DATE: WRONG SECOND
-    repository.save(new Receipt(nextId(ids), dateWrongSecond, "11111", "22222", "33333", sumOk, "TAXCOM", "LOADED", null, emptyList()));
-    // WRONG FN
-    repository.save(new Receipt(nextId(ids), dateOk, "83759", "22222", "33333", sumOk, "TAXCOM", "LOADED", null, emptyList()));
-    // WRONG FD
-    repository.save(new Receipt(nextId(ids), dateOk, "11111", "02349", "33333", sumOk, "TAXCOM", "LOADED", null, emptyList()));
-    // WRONG FP
-    repository.save(new Receipt(nextId(ids), dateOk, "11111", "22222", "73458", sumOk, "TAXCOM", "LOADED", null, emptyList()));
-    // WRONG SUM
-    repository.save(new Receipt(nextId(ids), dateOk, "11111", "22222", "33333", 65.3, "TAXCOM", "LOADED", null, emptyList()));
+    Long bannedId;
+    List<Receipt> expectedReceipts = new ArrayList<>();
+
+    {// WRONG ID
+      Receipt receipt =
+        repository.save(new Receipt(null,
+          dateOk, "11111", "22222", "33333", sumOk, "TAXCOM", "LOADED", null, emptyList()));
+      bannedId = receipt.getId();
+    }
+    {// OK
+      Receipt receipt =
+        repository.save(new Receipt(null,
+          dateOk, "11111", "22222", "33333", sumOk, "TAXCOM", "LOADED", null, emptyList()));
+      expectedReceipts.add(receipt);
+    }
+    {// OK
+      Receipt receipt =
+        repository.save(new Receipt(null,
+          dateOk, "11111", "22222", "33333", sumOk, "TAXCOM", "LOADED", null, emptyList()));
+      expectedReceipts.add(receipt);
+    }
+    {// WRONG DATE: WRONG YEAR
+      repository.save(new Receipt(null,
+        dateWrongYear, "11111", "22222", "33333", sumOk, "TAXCOM", "LOADED", null, emptyList()));
+    }
+    {// WRONG DATE: WRONG MONTH
+      repository.save(new Receipt(null,
+        dateWrongMonth, "11111", "22222", "33333", sumOk, "TAXCOM", "LOADED", null, emptyList()));
+    }
+    {// WRONG DATE: WRONG DATE
+      repository.save(new Receipt(null,
+        dateWrongDate, "11111", "22222", "33333", sumOk, "TAXCOM", "LOADED", null, emptyList()));
+    }
+    {// WRONG DATE: WRONG HOUR
+      repository.save(new Receipt(null,
+        dateWrongHour, "11111", "22222", "33333", sumOk, "TAXCOM", "LOADED", null, emptyList()));
+    }
+    {// WRONG DATE: WRONG MINUTE
+      repository.save(new Receipt(null,
+        dateWrongMinute, "11111", "22222", "33333", sumOk, "TAXCOM", "LOADED", null, emptyList()));
+    }
+    {// WRONG DATE: WRONG SECOND
+      repository.save(new Receipt(null,
+        dateWrongSecond, "11111", "22222", "33333", sumOk, "TAXCOM", "LOADED", null, emptyList()));
+    }
+    {// WRONG FN
+      repository.save(new Receipt(null,
+        dateOk, "83759", "22222", "33333", sumOk, "TAXCOM", "LOADED", null, emptyList()));
+    }
+    {// WRONG FD
+      repository.save(new Receipt(null,
+        dateOk, "11111", "02349", "33333", sumOk, "TAXCOM", "LOADED", null, emptyList()));
+    }
+    {// WRONG FP
+      repository.save(new Receipt(null,
+        dateOk, "11111", "22222", "73458", sumOk, "TAXCOM", "LOADED", null, emptyList()));
+    }
+    {// WRONG SUM
+      repository.save(new Receipt(null,
+        dateOk, "11111", "22222", "33333", 65.3, "TAXCOM", "LOADED", null, emptyList()));
+    }
+
+    repository.flush();
+    Long finalBannedId = bannedId;
+    List<Long> allowedIds = repository.findAll().stream().map(Receipt::getId)
+      .filter(it -> !Objects.equals(it, finalBannedId)).collect(Collectors.toList());
+
     {
       List<Receipt> actual = repository.getReceipts(
         ReportMetaFilter.builder()
-          .ids(ids)
+          .ids(allowedIds)
           .fn("11111")
           .fd("22222")
           .fp("33333")
@@ -100,20 +145,9 @@ public class ReceiptRepositorySlowTest {
           .sumMax(sumOk)
           .build()
       );
-      assertEquals(2, actual.size());
-      assertEquals(new Receipt(ids.get(0), dateOk, "11111", "22222", "33333", sumOk, "TAXCOM", "LOADED", null, emptyList()), actual.get(0));
-      assertEquals(new Receipt(ids.get(1), dateOk, "11111", "22222", "33333", sumOk, "TAXCOM", "LOADED", null, emptyList()), actual.get(1));
-    }
-  }
 
-  Long nextId(List<Long> ids) {
-    if (ids.isEmpty()) {
-      ids.add(1L);
-      return 1L;
+      assertEquals(expectedReceipts, actual);
     }
-    long max = max(ids) + 1;
-    ids.add(max);
-    return max;
   }
 
   public void assertSimilar(Receipt r1, Receipt r2) {
