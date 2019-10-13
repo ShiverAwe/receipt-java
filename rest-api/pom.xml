@@ -5,11 +5,13 @@
     <parent>
         <artifactId>parent</artifactId>
         <groupId>space.shefer.receipt</groupId>
-        <version>0.1</version>
+        <version>${project.version}</version>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
     <artifactId>rest-api</artifactId>
+    <version>${project.version}</version>
+
     <properties>
         <start-class>space.shefer.receipt.rest.RestApplication</start-class>
         <maven.compiler.source>1.8</maven.compiler.source>
