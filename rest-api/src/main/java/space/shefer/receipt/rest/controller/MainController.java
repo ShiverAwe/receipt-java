@@ -29,6 +29,12 @@ public class MainController {
     this.itemService = itemService;
   }
 
+  @RequestMapping(value = "/create", method = RequestMethod.POST)
+  public Long create(@RequestBody ReceiptMetaDto query) {
+    query.setId(null); // id should not be set by user
+    return receiptService.create(query);
+  }
+
   @RequestMapping(value = "/receipts", method = RequestMethod.PUT)
   public List<ReceiptMetaDto> receipts(@RequestBody ReportMetaFilter query) {
     return receiptService.getReceipts(query);

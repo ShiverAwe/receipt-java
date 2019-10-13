@@ -34,4 +34,16 @@ public class ReceiptMetaDto {
     result.setStatus(receipt.getStatus());
     return result;
   }
+
+  public Receipt setTo(Receipt receipt){
+    receipt.setDate(getDate());
+    receipt.setFn(getFn());
+    receipt.setFd(getFd());
+    receipt.setFp(getFp());
+    receipt.setSum(getSum());
+    receipt.setStatus(getStatus());
+    receipt.setProvider(getProvider());
+    // TODO add place
+    return receipt;
+  }
 }

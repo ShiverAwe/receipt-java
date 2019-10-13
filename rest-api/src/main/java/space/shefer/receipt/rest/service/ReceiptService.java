@@ -25,4 +25,12 @@ public class ReceiptService {
     return receipts.stream().map(ReceiptMetaDto::of).collect(Collectors.toList());
   }
 
+  public Long create(ReceiptMetaDto receipt) {
+    if (receipt.getId() != null) {
+      throw new IllegalArgumentException("Id should be null");
+    }
+    Receipt savedReceipt = receiptRepository.save(receipt.setTo(new Receipt()));
+    return savedReceipt.getId();
+  }
+
 }
