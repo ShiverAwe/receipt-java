@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.annotation.Nullable;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -19,6 +20,7 @@ public class Receipt {
   @Id
   @GeneratedValue(strategy = GenerationType.SEQUENCE)
   @Column(name = "id")
+  @Nullable
   private Long id;
   @Column(name = "date")
   private LocalDateTime date;
@@ -30,10 +32,12 @@ public class Receipt {
   private String fp;
   @Column(name = "sum")
   private Double sum;
+  @Nullable
   @Column(name = "provider")
   private String provider;
   @Column(name = "status")
   private String status;
+  @Nullable
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "place_id")
   private Place place;

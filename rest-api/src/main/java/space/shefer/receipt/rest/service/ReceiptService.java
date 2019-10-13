@@ -2,6 +2,7 @@ package space.shefer.receipt.rest.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import space.shefer.receipt.rest.dto.ReceiptCreateDto;
 import space.shefer.receipt.rest.dto.ReceiptMetaDto;
 import space.shefer.receipt.rest.entity.Receipt;
 import space.shefer.receipt.rest.repository.ReceiptRepository;
@@ -25,10 +26,7 @@ public class ReceiptService {
     return receipts.stream().map(ReceiptMetaDto::of).collect(Collectors.toList());
   }
 
-  public Long create(ReceiptMetaDto receipt) {
-    if (receipt.getId() != null) {
-      throw new IllegalArgumentException("Id should be null");
-    }
+  public Long create(ReceiptCreateDto receipt) {
     Receipt savedReceipt = receiptRepository.save(receipt.setTo(new Receipt()));
     return savedReceipt.getId();
   }

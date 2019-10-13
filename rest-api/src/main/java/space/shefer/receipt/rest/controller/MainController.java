@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.HttpServerErrorException;
+import space.shefer.receipt.rest.dto.ReceiptCreateDto;
 import space.shefer.receipt.rest.dto.ReceiptItemDto;
 import space.shefer.receipt.rest.dto.ReceiptMetaDto;
 import space.shefer.receipt.rest.service.ItemService;
@@ -30,8 +31,7 @@ public class MainController {
   }
 
   @RequestMapping(value = "/create", method = RequestMethod.POST)
-  public Long create(@RequestBody ReceiptMetaDto query) {
-    query.setId(null); // id should not be set by user
+  public Long create(@RequestBody ReceiptCreateDto query) {
     return receiptService.create(query);
   }
 
