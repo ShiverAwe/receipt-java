@@ -35,3 +35,7 @@ build/
 /mvnw
 /mvnw.cmd
 /${project.build.directory}/
+
+
+### Production properties ###
+application-production.properties
