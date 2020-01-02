@@ -30,7 +30,11 @@ PUT /receipts
   "fn": "23948523549", // [optional] string
   "fd": "230952", // [optional] string
   "fp": "2345045", // [optional] string
-  "place": "Пятерочка" // [optional] string
+  "place": "Пятерочка", // [optional] string
+  "limit": 123, // [optional] integer
+  "offset": 12, // [optional] integer
+  "sort": "DATE", // [optional] "DATE" (date) or null (id)
+  "asc": true, // [optional] boolean
 }
 ```
 ```json
