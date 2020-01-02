@@ -23,7 +23,7 @@ logs:
 # Find PID of application for kill
 pid:
 	@ps aux \
-		| grep -m 1 rest-api \
+		| grep rest-api \
 		| grep jar \
 		| grep java \
 		| grep -v grep \
