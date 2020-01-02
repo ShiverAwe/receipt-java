@@ -36,4 +36,12 @@ public class ReportMetaFilter {
   private String fp = null;
   @Nullable
   private String place = null;
+  @Nullable
+  private ReportMetaSort sort = null;
+  @Nullable
+  private Boolean asc = null;
+  @Nullable
+  private Integer limit = null;
+  @Nullable
+  private Integer offset = null;
 }
