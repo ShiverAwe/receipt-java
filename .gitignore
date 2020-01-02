@@ -39,3 +39,6 @@ build/
 
 ### Production properties ###
 application-production.properties
+
+# Temporary files
+nohup.out
