@@ -10,7 +10,7 @@ import java.util.Date;
 @Data
 public class Merchant {
   @Id
-  @GeneratedValue(strategy = GenerationType.SEQUENCE)
+  @GeneratedValue
   @Column(name = "id")
   private Long id;
   @Column(name = "inn")
