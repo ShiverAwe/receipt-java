@@ -17,32 +17,43 @@ import java.util.List;
 @NoArgsConstructor
 @Builder
 public class Receipt {
+
   @Id
-  @SequenceGenerator(name="receipt_id_seq",sequenceName="receipt_id_seq", allocationSize=1)
-  @GeneratedValue(strategy=GenerationType.SEQUENCE, generator="receipt_id_seq")
-  @Column(name = "id")
+  @SequenceGenerator(name = "receipt_id_seq", sequenceName = "receipt_id_seq", allocationSize = 1)
+  @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "receipt_id_seq")
+  @Column(name = "id", nullable = false)
   @Nullable
   private Long id;
-  @Column(name = "date")
+
+  @Column(name = "date", nullable = false)
   private LocalDateTime date;
-  @Column(name = "fn")
+
+  @Column(name = "fn", nullable = false)
   private String fn;
-  @Column(name = "fd")
+
+  @Column(name = "fd", nullable = false)
   private String fd;
-  @Column(name = "fp")
+
+  @Column(name = "fp", nullable = false)
   private String fp;
-  @Column(name = "sum")
+
+  @Column(name = "sum", nullable = false)
   private Double sum;
+
   @Nullable
   @Column(name = "provider")
   private String provider;
-  @Column(name = "status")
+
+  @Column(name = "status", nullable = false)
   private String status;
+
   @Nullable
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "place_id")
   private Place place;
+
   @OneToMany(fetch = FetchType.LAZY)
   @JoinColumn(name = "receipt_id")
   private List<Item> items;
+
 }
