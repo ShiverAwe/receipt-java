@@ -14,7 +14,7 @@ import java.util.List;
 @NoArgsConstructor
 public class Place {
   @Id
-  @GeneratedValue
+  @GeneratedValue(strategy = GenerationType.AUTO)
   @Column(name = "id")
   private Long id;
   @Column(name = "text")

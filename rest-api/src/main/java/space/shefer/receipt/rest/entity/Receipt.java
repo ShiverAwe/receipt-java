@@ -18,7 +18,7 @@ import java.util.List;
 @Builder
 public class Receipt {
   @Id
-  @GeneratedValue
+  @GeneratedValue(strategy = GenerationType.AUTO)
   @Column(name = "id")
   @Nullable
   private Long id;
