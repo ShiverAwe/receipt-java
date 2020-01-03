@@ -10,7 +10,8 @@ import java.util.Date;
 @Data
 public class Merchant {
   @Id
-  @GeneratedValue(strategy = GenerationType.AUTO)
+  @SequenceGenerator(name="merchant_id_seq",sequenceName="merchant_id_seq", allocationSize=1)
+  @GeneratedValue(strategy=GenerationType.SEQUENCE, generator="merchant_id_seq")
   @Column(name = "id")
   private Long id;
   @Column(name = "inn")

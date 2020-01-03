@@ -18,7 +18,8 @@ import java.util.List;
 @Builder
 public class Receipt {
   @Id
-  @GeneratedValue(strategy = GenerationType.AUTO)
+  @SequenceGenerator(name="receipt_id_seq",sequenceName="receipt_id_seq", allocationSize=1)
+  @GeneratedValue(strategy=GenerationType.SEQUENCE, generator="receipt_id_seq")
   @Column(name = "id")
   @Nullable
   private Long id;

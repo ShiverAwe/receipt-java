@@ -14,7 +14,8 @@ import java.util.List;
 @NoArgsConstructor
 public class Place {
   @Id
-  @GeneratedValue(strategy = GenerationType.AUTO)
+  @SequenceGenerator(name="place_id_seq",sequenceName="place_id_seq", allocationSize=1)
+  @GeneratedValue(strategy=GenerationType.SEQUENCE, generator="place_id_seq")
   @Column(name = "id")
   private Long id;
   @Column(name = "text")

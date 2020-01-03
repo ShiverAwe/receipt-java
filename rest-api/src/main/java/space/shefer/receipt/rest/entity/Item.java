@@ -13,7 +13,8 @@ import javax.persistence.*;
 @NoArgsConstructor
 public class Item {
   @Id
-  @GeneratedValue(strategy = GenerationType.AUTO)
+  @SequenceGenerator(name="item_id_seq",sequenceName="item_id_seq", allocationSize=1)
+  @GeneratedValue(strategy=GenerationType.SEQUENCE, generator="item_id_seq")
   @Column(name = "id")
   private Long id;
   @Column(name = "text")
