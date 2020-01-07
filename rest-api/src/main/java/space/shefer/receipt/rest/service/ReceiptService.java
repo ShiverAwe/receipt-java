@@ -27,7 +27,9 @@ public class ReceiptService {
   }
 
   public Long create(ReceiptCreateDto receipt) {
-    Receipt savedReceipt = receiptRepository.save(receipt.setTo(new Receipt()));
+    Receipt entity = receipt.setTo(new Receipt());
+    entity.setStatus("UNDEFINED");
+    Receipt savedReceipt = receiptRepository.save(entity);
     return savedReceipt.getId();
   }
 
