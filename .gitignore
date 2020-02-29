@@ -47,3 +47,7 @@ gradle
 .gradle
 gradlew
 gradlew.bat
+
+
+## Lombok plugin
+lombok.config
