@@ -1,4 +1,4 @@
-package space.shefer.receipt.rest.webclient;
+package space.shefer.receipt.fns.webclient;
 
 import org.apache.tomcat.util.codec.binary.Base64;
 import org.springframework.beans.factory.annotation.Value;
