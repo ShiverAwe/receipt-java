@@ -7,18 +7,4 @@ interface MessageHandler {
 
     fun handle(bot: TelegramLongPollingBot, update: Update)
 
-    companion object {
-        private val instances: List<MessageHandler> = listOf(
-                ReceiptJsonFileGetMessageHandler()
-        )
-
-        fun handle(bot: TelegramLongPollingBot, update: Update) {
-            instances.forEach {
-                runCatching {
-                    it.handle(bot, update)
-                }
-            }
-        }
-    }
-
 }
