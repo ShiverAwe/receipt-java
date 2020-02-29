@@ -3,13 +3,12 @@ package space.shefer.receipt.rest.repository;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 import space.shefer.receipt.rest.entity.Receipt;
 import space.shefer.receipt.rest.service.report.ReportMetaFilter;
 import space.shefer.receipt.rest.util.DateUtil;
+import space.shefer.receipt.tests.util.SpringJpaTest;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -20,12 +19,10 @@ import java.util.stream.Collectors;
 
 import static java.util.Collections.emptyList;
 import static org.junit.Assert.assertEquals;
-import static org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace.NONE;
 import static space.shefer.receipt.rest.service.report.ReceiptStatus.LOADED;
 
 @RunWith(SpringRunner.class)
-@DataJpaTest
-@AutoConfigureTestDatabase(replace = NONE)
+@SpringJpaTest
 @Transactional
 public class ReceiptRepositorySlowTest {
 
