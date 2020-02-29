@@ -31,3 +31,4 @@ pid: ## Find PID of running application for kill
 		| grep -v grep \
 		|| echo "Application is not running"
 
+.PHONY: all $(MAKECMDGOALS)
