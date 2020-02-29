@@ -13,12 +13,14 @@ import space.shefer.receipt.tests.util.SpringJpaTest;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.EnumSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
 import static java.util.Collections.emptyList;
 import static org.junit.Assert.assertEquals;
+import static space.shefer.receipt.rest.service.report.ReceiptStatus.IDLE;
 import static space.shefer.receipt.rest.service.report.ReceiptStatus.LOADED;
 
 @RunWith(SpringRunner.class)
@@ -123,6 +125,10 @@ public class ReceiptRepositorySlowTest {
       repository.save(new Receipt(null,
         dateOk, "11111", "22222", "33333", 65.3, "TAXCOM", LOADED, null, emptyList()));
     }
+    {// WRONG STATUS
+      repository.save(new Receipt(null,
+        dateOk, "11111", "22222", "33333", sumOk, "TAXCOM", IDLE, null, emptyList()));
+    }
 
     repository.flush();
     Long finalBannedId = bannedId;
@@ -140,6 +146,7 @@ public class ReceiptRepositorySlowTest {
           .dateTo(dateOk)
           .sumMin(sumOk)
           .sumMax(sumOk)
+          .statuses(EnumSet.of(LOADED))
           .build()
       );
 

@@ -9,6 +9,7 @@ import space.shefer.receipt.rest.util.DateUtil;
 
 import javax.annotation.Nullable;
 import java.time.LocalDateTime;
+import java.util.EnumSet;
 import java.util.List;
 
 @Data
@@ -44,4 +45,7 @@ public class ReportMetaFilter {
   private Integer limit = null;
   @Nullable
   private Integer offset = null;
+
+  @Nullable
+  private EnumSet<ReceiptStatus> statuses = null;
 }

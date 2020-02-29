@@ -50,6 +50,9 @@ public class ReceiptRepositoryImpl implements ReceiptRepositoryCustom {
     if (filter.getPlace() != null) {
       predicates.add(cb.equal(root.get("place").get("text"), filter.getPlace()));
     }
+    if (filter.getStatuses() != null && !filter.getStatuses().isEmpty()) {
+      predicates.add(root.get("status").in(filter.getStatuses()));
+    }
 
     cr
       .select(root)
