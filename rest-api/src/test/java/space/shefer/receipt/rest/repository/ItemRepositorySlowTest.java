@@ -8,9 +8,10 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import space.shefer.receipt.rest.entity.Item;
 import space.shefer.receipt.rest.entity.Receipt;
+import space.shefer.receipt.rest.service.report.ReceiptStatus;
 import space.shefer.receipt.rest.service.report.ReportItemFilter;
 
-import java.util.Arrays;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import static java.util.Arrays.asList;
@@ -84,7 +85,15 @@ public class ItemRepositorySlowTest {
   }
 
   private Receipt createDummyReceipt() {
-    return receiptRepository.save(Receipt.builder().fd("dummy").fp("dummy").build());
+    return receiptRepository.save(Receipt
+      .builder()
+      .status(ReceiptStatus.IDLE)
+      .sum(0.0)
+      .fn("dummy")
+      .fd("dummy")
+      .fp("dummy")
+      .date(LocalDateTime.now())
+      .build());
   }
 
   private void assertSimilar(Item i1, Item i2) {

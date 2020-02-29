@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import space.shefer.receipt.rest.service.report.ReceiptStatus;
 
 import javax.annotation.Nullable;
 import javax.persistence.*;
@@ -44,8 +45,9 @@ public class Receipt {
   @Column(name = "provider")
   private String provider;
 
+  @Enumerated(EnumType.STRING)
   @Column(name = "status", nullable = false)
-  private String status;
+  private ReceiptStatus status;
 
   @Nullable
   @ManyToOne(fetch = FetchType.LAZY)

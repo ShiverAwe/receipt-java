@@ -2,6 +2,7 @@ package space.shefer.receipt.rest.dto;
 
 import lombok.Data;
 import space.shefer.receipt.rest.entity.Receipt;
+import space.shefer.receipt.rest.service.report.ReceiptStatus;
 
 import javax.annotation.Nullable;
 import java.time.LocalDateTime;
@@ -16,7 +17,7 @@ public class ReceiptMetaDto {
   private String fp;
   private Double sum;
   private String provider;
-  private String status;
+  private ReceiptStatus status;
   private String place;
 
   public static ReceiptMetaDto of(Receipt receipt) {

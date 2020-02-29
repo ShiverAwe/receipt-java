@@ -6,6 +6,7 @@ import space.shefer.receipt.rest.dto.ReceiptCreateDto;
 import space.shefer.receipt.rest.dto.ReceiptMetaDto;
 import space.shefer.receipt.rest.entity.Receipt;
 import space.shefer.receipt.rest.repository.ReceiptRepository;
+import space.shefer.receipt.rest.service.report.ReceiptStatus;
 import space.shefer.receipt.rest.service.report.ReportMetaFilter;
 
 import java.util.List;
@@ -28,7 +29,7 @@ public class ReceiptService {
 
   public Long create(ReceiptCreateDto receipt) {
     Receipt entity = receipt.setTo(new Receipt());
-    entity.setStatus("UNDEFINED");
+    entity.setStatus(ReceiptStatus.IDLE);
     Receipt savedReceipt = receiptRepository.save(entity);
     return savedReceipt.getId();
   }
