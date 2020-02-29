@@ -25,7 +25,7 @@ plugins {
 }
 
 allprojects {
-    group 'com.github.vladimirshefer'
+    group 'shefer.space.receipt'
 }
 
 subprojects {
