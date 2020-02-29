@@ -1,6 +1,5 @@
 package space.shefer.receipt.fns.webclient;
 
-import org.apache.tomcat.util.codec.binary.Base64;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -11,6 +10,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
 import java.net.URI;
+import java.util.Base64;
 
 @Component
 public class FnsReceiptWebClient {
@@ -43,7 +43,7 @@ public class FnsReceiptWebClient {
   private String getAuthHeader(String login, String password) {
     String plainCredentials = login + ":" + password;
     byte[] plainCredentialsBytes = plainCredentials.getBytes();
-    byte[] base64CredentialsBytes = Base64.encodeBase64(plainCredentialsBytes);
+    byte[] base64CredentialsBytes = Base64.getEncoder().encode(plainCredentialsBytes);
     String base64Credentials = new String(base64CredentialsBytes);
     return "Basic " + base64Credentials;
   }
