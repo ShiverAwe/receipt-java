@@ -19,16 +19,16 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-public class MainControllerTest {
+public class ReportControllerTest {
 
   private MockMvc mockMvc;
-  private MainController controller;
+  private ReportController controller;
   private ReceiptService service;
 
   @Before
   public void setUp() {
     service = mock(ReceiptService.class);
-    controller = spy(new MainController(service, mock(ItemService.class)));
+    controller = spy(new ReportController(service, mock(ItemService.class)));
     mockMvc = MockMvcBuilders.standaloneSetup(controller).build();
   }
 
@@ -50,22 +50,6 @@ public class MainControllerTest {
     assertEquals("832555", metaFilter.getFd());
     assertEquals("535594", metaFilter.getFp());
     assertEquals("someplace", metaFilter.getPlace());
-  }
-
-  @Test
-  public void create() throws Exception {
-    String body = ResourceUtil.getResourceAsString("/controller/controllerRequest_create.json", getClass());
-    mockMvc.perform(post("/create").content(body)
-      .contentType(MediaType.APPLICATION_JSON))
-      .andExpect(status().isOk());
-    ArgumentCaptor<ReceiptCreateDto> filterCaptor= ArgumentCaptor.forClass(ReceiptCreateDto.class);
-    verify(service, times(1)).create(filterCaptor.capture());
-    ReceiptCreateDto metaFilter =  filterCaptor.getValue();
-    assertEquals(DateUtil.parseReceiptDate("20190801T1032"), metaFilter.getDate());
-    assertEquals(123629, metaFilter.getSum(), 1e-5);
-    assertEquals("936933", metaFilter.getFn());
-    assertEquals("832555", metaFilter.getFd());
-    assertEquals("535594", metaFilter.getFp());
   }
 
 }

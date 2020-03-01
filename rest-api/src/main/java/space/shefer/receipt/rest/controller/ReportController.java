@@ -19,20 +19,15 @@ import space.shefer.receipt.rest.service.report.ReportMetaFilter;
 import java.util.List;
 
 @RestController
-public class MainController {
+public class ReportController {
 
   private final ReceiptService receiptService;
   private final ItemService itemService;
 
   @Autowired
-  public MainController(ReceiptService receiptService, ItemService itemService) {
+  public ReportController(ReceiptService receiptService, ItemService itemService) {
     this.receiptService = receiptService;
     this.itemService = itemService;
-  }
-
-  @RequestMapping(value = "/create", method = RequestMethod.POST)
-  public Long create(@RequestBody ReceiptCreateDto query) {
-    return receiptService.create(query);
   }
 
   @RequestMapping(value = "/receipts", method = RequestMethod.PUT)
@@ -50,9 +45,5 @@ public class MainController {
     throw HttpServerErrorException.create(HttpStatus.NOT_IMPLEMENTED, "Not implemented", HttpHeaders.EMPTY, null, null);
   }
 
-  @RequestMapping(value = "/ping")
-  public String ping() {
-    return "pong";
-  }
 
 }
