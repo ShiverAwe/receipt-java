@@ -11,7 +11,7 @@ test: ## Run tests
 	./gradlew test
 
 build: ## Build the executable jar for this project. Tests won't be run.
-	./gradlew build -DskipTests
+	./gradlew build -x test
 
 deploy: build ## Deploy the application in production mode (on port 8080)
 	nohup java -jar \
