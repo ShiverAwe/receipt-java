@@ -4,15 +4,6 @@ plugins {
 
 apply plugin: 'kotlin-spring'
 apply plugin: 'eclipse'
-apply plugin: 'io.spring.dependency-management'
-
-dependencyManagement {
-    imports {
-        mavenBom("org.springframework.boot:spring-boot-dependencies:${springBootVersion}") {
-            bomProperty("kotlin.version", "${kotlinVersion}")
-        }
-    }
-}
 
 dependencies {
     compile('org.springframework.boot:spring-boot-starter-web')
