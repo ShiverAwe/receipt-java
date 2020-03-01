@@ -2,8 +2,6 @@ plugins {
     id "io.freefair.lombok" version "5.0.0-rc4"
 }
 
-apply plugin: 'kotlin-spring'
-apply plugin: 'kotlin-jpa'
 apply plugin: 'eclipse'
 apply plugin: 'org.springframework.boot'
 apply plugin: 'io.spring.dependency-management'
