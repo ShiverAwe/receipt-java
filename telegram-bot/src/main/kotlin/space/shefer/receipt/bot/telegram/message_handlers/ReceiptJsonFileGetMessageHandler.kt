@@ -1,5 +1,7 @@
 package space.shefer.receipt.bot.telegram.message_handlers
 
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Component
 import org.telegram.telegrambots.bots.TelegramLongPollingBot
 import org.telegram.telegrambots.meta.api.methods.GetFile
@@ -10,15 +12,16 @@ import java.nio.file.Files
 
 @Component
 class ReceiptJsonFileGetMessageHandler : MessageHandler {
+    private val logger: Logger = LoggerFactory.getLogger(this.javaClass)
 
     override fun handle(bot: TelegramLongPollingBot, update: Update) {
         val document: Document = update.message?.document ?: run {
-            println("No file present")
+            logger.info("No file present")
             return
         }
 
         if (!document.fileName.endsWith(".json")) {
-            println("File name was ${document.fileName}")
+            logger.info("File name was ${document.fileName}")
             return
         }
 
@@ -30,9 +33,9 @@ class ReceiptJsonFileGetMessageHandler : MessageHandler {
 
         val downloadFile = bot.downloadFile(filePath)
 
-        val string = String(Files.readAllBytes(downloadFile.toPath()))
+        val receiptJsonBody = String(Files.readAllBytes(downloadFile.toPath()))
 
-        println(string)
+        logger.trace(receiptJsonBody)
 
         val chatId = update.message!!.chatId!!
         val sendMessage = SendMessage(chatId, "Thanks for your receipt!")
