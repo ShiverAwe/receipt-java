@@ -8,13 +8,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.HttpServerErrorException;
-import space.shefer.receipt.rest.dto.ReceiptCreateDto;
 import space.shefer.receipt.rest.dto.ReceiptItemDto;
 import space.shefer.receipt.rest.dto.ReceiptMetaDto;
 import space.shefer.receipt.rest.service.ItemService;
 import space.shefer.receipt.rest.service.ReceiptService;
-import space.shefer.receipt.rest.service.report.ReportItemFilter;
-import space.shefer.receipt.rest.service.report.ReportMetaFilter;
+import space.shefer.receipt.rest.dto.ReportItemFilter;
+import space.shefer.receipt.rest.dto.ReportMetaFilter;
 
 import java.util.List;
 

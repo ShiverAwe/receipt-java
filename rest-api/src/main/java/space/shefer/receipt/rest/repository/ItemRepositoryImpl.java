@@ -1,8 +1,8 @@
 package space.shefer.receipt.rest.repository;
 
 import org.springframework.stereotype.Repository;
+import space.shefer.receipt.rest.dto.ReportItemFilter;
 import space.shefer.receipt.rest.entity.Item;
-import space.shefer.receipt.rest.service.report.ReportItemFilter;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;

@@ -1,11 +1,11 @@
-package space.shefer.receipt.rest.service.report;
+package space.shefer.receipt.rest.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import space.shefer.receipt.rest.util.DateUtil;
+import space.shefer.receipt.rest.dto.util.DateUtil;
 
 import javax.annotation.Nullable;
 import java.time.LocalDateTime;

@@ -2,8 +2,7 @@ package space.shefer.receipt.rest.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
-import space.shefer.receipt.rest.entity.Receipt;
-import space.shefer.receipt.rest.util.DateUtil;
+import space.shefer.receipt.rest.dto.util.DateUtil;
 
 import java.time.LocalDateTime;
 
@@ -17,12 +16,4 @@ public class ReceiptCreateDto {
   private String fp;
   private Double sum;
 
-  public Receipt setTo(Receipt receipt){
-    receipt.setDate(getDate());
-    receipt.setFn(getFn());
-    receipt.setFd(getFd());
-    receipt.setFp(getFp());
-    receipt.setSum(getSum());
-    return receipt;
-  }
 }

@@ -1,8 +1,8 @@
 package space.shefer.receipt.rest.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import space.shefer.receipt.rest.dto.ReportItemFilter;
 import space.shefer.receipt.rest.entity.Item;
-import space.shefer.receipt.rest.service.report.ReportItemFilter;
 
 import java.util.List;
 

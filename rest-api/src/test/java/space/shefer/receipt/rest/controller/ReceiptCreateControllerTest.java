@@ -7,9 +7,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import space.shefer.receipt.rest.dto.ReceiptCreateDto;
-import space.shefer.receipt.rest.service.ItemService;
 import space.shefer.receipt.rest.service.ReceiptService;
-import space.shefer.receipt.rest.service.report.ReportMetaFilter;
 import space.shefer.receipt.rest.util.DateUtil;
 import space.shefer.receipt.tests.util.ResourceUtil;
 
@@ -19,7 +17,6 @@ import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 public class ReceiptCreateControllerTest {

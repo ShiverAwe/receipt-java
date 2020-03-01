@@ -4,7 +4,9 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import space.shefer.receipt.rest.service.report.ReceiptStatus;
+import space.shefer.receipt.rest.dto.ReceiptCreateDto;
+import space.shefer.receipt.rest.dto.ReceiptMetaDto;
+import space.shefer.receipt.rest.dto.ReceiptStatus;
 
 import javax.annotation.Nullable;
 import javax.persistence.*;
@@ -57,5 +59,41 @@ public class Receipt {
   @OneToMany(fetch = FetchType.LAZY)
   @JoinColumn(name = "receipt_id")
   private List<Item> items;
+
+
+  public static ReceiptMetaDto toDto(Receipt receipt) {
+    ReceiptMetaDto result = new ReceiptMetaDto();
+    result.setId(receipt.getId());
+    result.setFn(receipt.getFn());
+    result.setFd(receipt.getFd());
+    result.setFp(receipt.getFp());
+    result.setDate(receipt.getDate());
+    result.setSum(receipt.getSum());
+    result.setProvider(receipt.getProvider());
+    if (receipt.getPlace() != null) {
+      result.setPlace(receipt.getPlace().getText());
+    }
+    result.setStatus(receipt.getStatus());
+    return result;
+  }
+
+  public void setFrom(ReceiptMetaDto receipt){
+    setDate(receipt.getDate());
+    setFn(receipt.getFn());
+    setFd(receipt.getFd());
+    setFp(receipt.getFp());
+    setSum(receipt.getSum());
+    setStatus(receipt.getStatus());
+    setProvider(receipt.getProvider());
+    // TODO add place
+  }
+
+  public void setFrom(ReceiptCreateDto receipt){
+    setDate(receipt.getDate());
+    setFn(receipt.getFn());
+    setFd(receipt.getFd());
+    setFp(receipt.getFp());
+    setSum(receipt.getSum());
+  }
 
 }

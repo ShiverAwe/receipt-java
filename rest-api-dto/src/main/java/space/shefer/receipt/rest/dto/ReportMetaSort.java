@@ -1,4 +1,4 @@
-package space.shefer.receipt.rest.service.report;
+package space.shefer.receipt.rest.dto;
 
 import lombok.Getter;
 

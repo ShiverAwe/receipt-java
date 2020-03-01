@@ -4,10 +4,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import space.shefer.receipt.rest.dto.ReceiptCreateDto;
 import space.shefer.receipt.rest.dto.ReceiptMetaDto;
+import space.shefer.receipt.rest.dto.ReceiptStatus;
+import space.shefer.receipt.rest.dto.ReportMetaFilter;
 import space.shefer.receipt.rest.entity.Receipt;
 import space.shefer.receipt.rest.repository.ReceiptRepository;
-import space.shefer.receipt.rest.service.report.ReceiptStatus;
-import space.shefer.receipt.rest.service.report.ReportMetaFilter;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -24,11 +24,12 @@ public class ReceiptService {
 
   public List<ReceiptMetaDto> getReceipts(ReportMetaFilter metaFilter) {
     List<Receipt> receipts = receiptRepository.getReceipts(metaFilter);
-    return receipts.stream().map(ReceiptMetaDto::of).collect(Collectors.toList());
+    return receipts.stream().map(Receipt::toDto).collect(Collectors.toList());
   }
 
   public Long create(ReceiptCreateDto receipt) {
-    Receipt entity = receipt.setTo(new Receipt());
+    Receipt entity = new Receipt();
+    entity.setFrom(receipt);
     entity.setStatus(ReceiptStatus.IDLE);
     Receipt savedReceipt = receiptRepository.save(entity);
     return savedReceipt.getId();

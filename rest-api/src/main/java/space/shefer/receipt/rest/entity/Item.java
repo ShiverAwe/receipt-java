@@ -3,6 +3,7 @@ package space.shefer.receipt.rest.entity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import space.shefer.receipt.rest.dto.ReceiptItemDto;
 
 import javax.persistence.*;
 
@@ -32,4 +33,12 @@ public class Item {
   @JoinColumn(name = "receipt_id")
   private Receipt receipt;
 
+  public static ReceiptItemDto toDto(Item item) {
+    ReceiptItemDto result = new ReceiptItemDto();
+    result.setReceiptId(item.getReceipt().getId());
+    result.setAmount(item.getAmount());
+    result.setPrice(item.getPrice());
+    result.setText(item.getText());
+    return result;
+  }
 }

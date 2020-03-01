@@ -5,10 +5,10 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
+import space.shefer.receipt.rest.dto.ReceiptStatus;
+import space.shefer.receipt.rest.dto.ReportItemFilter;
 import space.shefer.receipt.rest.entity.Item;
 import space.shefer.receipt.rest.entity.Receipt;
-import space.shefer.receipt.rest.service.report.ReceiptStatus;
-import space.shefer.receipt.rest.service.report.ReportItemFilter;
 import space.shefer.receipt.tests.util.SpringJpaTest;
 
 import java.time.LocalDateTime;
