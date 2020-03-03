@@ -17,7 +17,6 @@ import static org.junit.Assert.assertNull;
 import static org.mockito.Mockito.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.spy;
-import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -49,7 +48,7 @@ public class ReceiptServiceTest {
         Receipt.builder().id(2L).place(place).build()
       ));
     service.getReceipts(metaFilter);
-    verify(receiptRepository, times(1)).getReceipts(metaFilter);
+    verify(receiptRepository).getReceipts(metaFilter);
   }
 
   @Test
@@ -63,7 +62,7 @@ public class ReceiptServiceTest {
     when(receiptRepository.save(any())).thenReturn(Receipt.builder().id(400L).build());
     service.create(receipt);
     ArgumentCaptor<Receipt> receiptCaptor = ArgumentCaptor.forClass(Receipt.class);
-    verify(receiptRepository, times(1)).save(receiptCaptor.capture());
+    verify(receiptRepository).save(receiptCaptor.capture());
     Receipt actual = receiptCaptor.getValue();
     assertEquals(DateUtil.parseReceiptDate("20190725T2313"), actual.getDate());
     assertEquals("1111", actual.getFn());
