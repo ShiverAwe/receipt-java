@@ -34,7 +34,7 @@ public class ReceiptCreateControllerTest {
 
   @Test
   public void create() throws Exception {
-    String body = ResourceUtil.getResourceAsString("/controller/controllerRequest_create.json", getClass());
+    String body = ResourceUtil.getResourceAsString("/controller/ReceiptCreateControllerTest_create.json", getClass());
     mockMvc.perform(post("/create").content(body)
       .contentType(MediaType.APPLICATION_JSON))
       .andExpect(status().isOk());

@@ -36,7 +36,7 @@ public class ReportControllerTest {
   @SuppressWarnings("ConstantConditions")
   @Test
   public void testReceipts() throws Exception {
-    String body = ResourceUtil.getResourceAsString("/controller/controllerRequest_getReceipts.json", getClass());
+    String body = ResourceUtil.getResourceAsString("/controller/ReportControllerTest_testReceipts.json", getClass());
     mockMvc.perform(put("/receipts").content(body)
       .contentType(MediaType.APPLICATION_JSON))
       .andExpect(status().isOk());
