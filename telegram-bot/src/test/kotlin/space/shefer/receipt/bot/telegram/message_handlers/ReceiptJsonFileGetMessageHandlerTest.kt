@@ -1,21 +1,22 @@
 package space.shefer.receipt.bot.telegram.message_handlers
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import org.junit.Ignore
 import org.junit.Test
 import org.mockito.ArgumentMatchers
-import org.mockito.Mockito
 import org.mockito.Mockito.*
 import org.telegram.telegrambots.bots.TelegramLongPollingBot
+import org.telegram.telegrambots.meta.api.methods.GetFile
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage
 import org.telegram.telegrambots.meta.api.objects.Update
+import space.shefer.receipt.bot.receipt.ReceiptWebClient
 import space.shefer.receipt.tests.util.ResourceUtil
+import org.telegram.telegrambots.meta.api.objects.File as TelegramFile
 
-@Ignore
 class ReceiptJsonFileGetMessageHandlerTest {
 
-    private val handler = ReceiptJsonFileGetMessageHandler()
-    private val bot: TelegramLongPollingBot = Mockito.mock(TelegramLongPollingBot::class.java)
+    private val receiptWebClient: ReceiptWebClient = mock(ReceiptWebClient::class.java)
+    private val handler = ReceiptJsonFileGetMessageHandler(receiptWebClient)
+    private val bot: TelegramLongPollingBot = mock(TelegramLongPollingBot::class.java)
 
     @Test
     fun name() {
@@ -24,13 +25,22 @@ class ReceiptJsonFileGetMessageHandlerTest {
                 Update::class.java
         )
 
-        doAnswer {
-            TODO()
-        }.`when`(bot)
-                .execute(ArgumentMatchers.any<SendMessage>())
+        val telegramFile = TelegramFile()
+
+        doAnswer { telegramFile }.`when`(bot).execute(ArgumentMatchers.argThat<GetFile> {
+            it.fileId == "fileId1"
+        })
+
+        val receiptJsonFilePath = "/bot/update/receipt_sent.receipt.json"
+        val receiptJson = ResourceUtil.getResourceAsString(receiptJsonFilePath, javaClass)
+        val jsonFile = ResourceUtil.getResourceAsFile(receiptJsonFilePath, javaClass)
+
+        doAnswer { jsonFile }.`when`(bot).downloadFile(telegramFile)
 
         handler.handle(bot, update)
 
-        verify(bot).execute(argThat<SendMessage> { it.text != null })
+        verify(receiptWebClient).sendReceiptJson("347937466", receiptJson)
+        verify(bot).execute(argThat<SendMessage> { it.text == "Thanks for your receipt!" })
     }
+
 }
