@@ -11,6 +11,7 @@ import space.shefer.receipt.rest.dto.ReceiptStatus;
 import javax.annotation.Nullable;
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -58,7 +59,7 @@ public class Receipt {
 
   @OneToMany(fetch = FetchType.LAZY)
   @JoinColumn(name = "receipt_id")
-  private List<Item> items;
+  private List<Item> items = new ArrayList<>();
 
 
   public static ReceiptMetaDto toDto(Receipt receipt) {

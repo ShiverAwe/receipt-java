@@ -25,7 +25,7 @@ public class FnsReceiptService {
   private final ReceiptRepository receiptRepository;
   private final ItemRepository itemRepository;
 
-  public void create(FnsReceiptDto receiptDto) {
+  public Receipt create(FnsReceiptDto receiptDto) {
     Receipt receipt = new Receipt();
     receipt.setFn(receiptDto.getFiscalDriveNumber());
     receipt.setFd(String.valueOf(receiptDto.getFiscalDocumentNumber()));
@@ -42,9 +42,11 @@ public class FnsReceiptService {
       item.setAmount(itemDto.getQuantity());
       item.setText(itemDto.getName());
       item.setReceipt(savedReceipt);
-      itemRepository.save(item);
+      Item savedItem = itemRepository.save(item);
+      savedReceipt.getItems().add(savedItem);
     }
 
+    return receiptRepository.save(savedReceipt);
   }
 
 }
