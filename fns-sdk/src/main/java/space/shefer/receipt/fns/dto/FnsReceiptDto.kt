@@ -4,43 +4,49 @@ import com.fasterxml.jackson.databind.DeserializationFeature
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.kotlin.KotlinModule
 
-data class FnsReceiptDto(
-        val cashTotalSum: Int, // 0
-        val dateTime: Int, // 1559062560
-        val discount: Double?, // null
-        val discountSum: Double?, // null
-        val ecashTotalSum: Int, // 66430
-        /**
-         * Фискальный Документ. ФД.
-         */
-        val fiscalDocumentNumber: Int, // 28649
-        /**
-         * Фискальный Номер. ФН.
-         */
-        val fiscalDriveNumber: String, // 9280440300037581
-        /**
-         * Фискальный признак. ФП.
-         */
-        val fiscalSign: Long, // 2869721424
-        val items: List<FnsItemDto>, // Список товаров
-        val kktNumber: String?, // null
-        val kktRegId: String, // 0000270725037066
-        val nds0: Int?, // null
-        val nds10: Int?, // 4706
-        val nds18: Int?, // 2445
-        val ndsCalculated10: Int?, // null
-        val ndsCalculated18: Int?, // null
-        val ndsNo: Int?, // null
-        val operationType: Int, // 1
-        val `operator`: String, // Пикина 97283.
-        val requestNumber: Int, // 172
-        val retailPlaceAddress: String?, // 197341, Санкт-Петербург, б-р. Серебристый, д. 19, к. 1
-        val shiftNumber: Int, // 57
-        val taxationType: Int, // 1
-        val totalSum: Int, // 66430
-        val user: String?, // ООО "ТД Интерторг"
-        val userInn: String? // 7842005813
-) {
+class FnsReceiptDto {
+    var cashTotalSum: Int = 0 // 0
+    /**
+     * Дата и время создания чека в Unix Timestamp
+     */
+    var dateTime: Int = 0 // 1559062560
+    var discount: Double? = null // null
+    var discountSum: Double? = null // null
+    var ecashTotalSum: Int = 0 // 66430
+    /**
+     * Фискальный Документ. ФД.
+     */
+    var fiscalDocumentNumber: Int = 0 // 28649
+    /**
+     * Фискальный Номер. ФН.
+     */
+    var fiscalDriveNumber: String = "" // 9280440300037581
+    /**
+     * Фискальный признак. ФП.
+     */
+    var fiscalSign: Long = 0 // 2869721424
+    var items: List<FnsItemDto> = emptyList() // Список товаров
+    var kktNumber: String? = null // null
+    var kktRegId: String? = null// 0000270725037066
+    var nds0: Int? = null // null
+    var nds10: Int? = null // 4706
+    var nds18: Int? = null // 2445
+    var ndsCalculated10: Int? = null // null
+    var ndsCalculated18: Int? = null // null
+    var ndsNo: Int? = null // null
+    var operationType: Int = 1 // 1 is for incoming (for seller)
+    var `operator`: String? = null // Пикина 97283.
+    var requestNumber: Int = 0 // 172
+    var retailPlaceAddress: String? = null // 197341, Санкт-Петербург, б-р. Серебристый, д. 19, к. 1
+    var shiftNumber: Int = 0 // 57
+    var taxationType: Int = 0 // 1
+    /**
+     * Сумма покупки в копейках
+     */
+    var totalSum: Int = 0 // 66430
+    var user: String? = null // ООО "ТД Интерторг"
+    var userInn: String? = null // 7842005813
+
     companion object {
         private val objectMapper = ObjectMapper()
                 .registerModule(KotlinModule())
