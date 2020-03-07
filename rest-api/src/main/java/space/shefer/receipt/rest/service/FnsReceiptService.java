@@ -46,7 +46,7 @@ public class FnsReceiptService {
       savedReceipt.getItems().add(savedItem);
     }
 
-    return receiptRepository.save(savedReceipt);
+    return savedReceipt;
   }
 
 }

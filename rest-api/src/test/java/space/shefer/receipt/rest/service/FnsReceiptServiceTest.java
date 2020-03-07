@@ -27,6 +27,7 @@ public class FnsReceiptServiceTest {
   @Before
   public void setUp() {
     receiptRepository = mock(ReceiptRepository.class);
+    doAnswer(args -> args.getArgument(0)).when(receiptRepository).save(any());
     itemRepository = mock(ItemRepository.class);
     service = spy(new FnsReceiptService(receiptRepository, itemRepository));
   }
