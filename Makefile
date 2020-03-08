@@ -13,19 +13,28 @@ test: ## Run tests
 build: ## Build the executable jar for this project. Tests won't be run.
 	./gradlew build -x test
 
-deploy: build ## Deploy the application in production mode (on port 8080)
+deploy-rest-api: build ## Deploy the REST API application in production mode (on port 8080)
 	nohup java -jar \
 		-Dspring.profiles.active=production \
 		-Xmx2048m \
-		rest-api/target/rest-api-0.1.jar \
+		rest-api/build/libs/rest-api.jar \
 		&
+
+deploy-telegram-bot: build ## Run telegram bot in production mode
+	nohup java -jar \
+		-Dspring.profiles.active=production \
+		-Xmx1024m \
+		telegram-bot/build/libs/telegram-bot.jar \
+		&
+	@make pid MODULE=telegram-bot
 
 logs: ## See logs of running application
 	@tail -f nohup.out -n 20
 
+MODULE ?= "rest-api"
 pid: ## Find PID of running application for kill
 	@ps aux \
-		| grep rest-api \
+		| grep $(MODULE) \
 		| grep jar \
 		| grep java \
 		| grep -v grep \

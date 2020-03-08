@@ -1,9 +1,9 @@
 plugins {
-    id 'org.springframework.boot' apply false
+    id 'org.springframework.boot'
+    id 'io.spring.dependency-management'
+    id 'eclipse'
+    id 'kotlin-spring'
 }
-
-apply plugin: 'kotlin-spring'
-apply plugin: 'eclipse'
 
 dependencies {
     compile "org.jetbrains.kotlin:kotlin-stdlib-jdk8:${kotlinVersion}"
