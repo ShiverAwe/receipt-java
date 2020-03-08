@@ -40,13 +40,14 @@ class ReceiptJsonFileGetMessageHandler(
 
         val chatId = update.message!!.chatId!!
 
-        kotlin.runCatching {
-            receiptWebClient.sendReceiptJson(chatId.toString(), receiptJsonBody)
-        }.exceptionOrNull()?.printStackTrace()
-
-        val sendMessage = SendMessage(chatId, "Thanks for your receipt!")
-
-        bot.execute(sendMessage)
+        runCatching { receiptWebClient.sendReceiptJson(chatId.toString(), receiptJsonBody) }
+                .onFailure { e ->
+                    e.printStackTrace()
+                    bot.execute(SendMessage(chatId, "Receipt was not published due to error: ${e.message}"))
+                }
+                .onSuccess { receiptId ->
+                    bot.execute(SendMessage(chatId, "Thanks for your receipt! Id is ${receiptId}"))
+                }
     }
 
 }
