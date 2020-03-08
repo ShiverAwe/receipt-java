@@ -18,34 +18,34 @@ import java.util.List;
 @NoArgsConstructor
 public class ReportMetaFilter {
   @Nullable
-  List<Long> ids = null;
+  List<Long> ids;
   @Nullable
   @JsonFormat(pattern = DateUtil.RECEIPT_DATETIME_PATTERN)
-  private LocalDateTime dateFrom = null;
+  private LocalDateTime dateFrom;
   @Nullable
   @JsonFormat(pattern = DateUtil.RECEIPT_DATETIME_PATTERN)
-  private LocalDateTime dateTo = null;
+  private LocalDateTime dateTo;
   @Nullable
-  private Double sumMin = null;
+  private Double sumMin;
   @Nullable
-  private Double sumMax = null;
+  private Double sumMax;
   @Nullable
-  private String fn = null;
+  private String fn;
   @Nullable
-  private String fd = null;
+  private String fd;
   @Nullable
-  private String fp = null;
+  private String fp;
   @Nullable
-  private String place = null;
+  private String place;
   @Nullable
-  private ReportMetaSort sort = null;
+  private ReportMetaSort sort;
   @Nullable
-  private Boolean asc = null;
+  private Boolean asc;
   @Nullable
-  private Integer limit = null;
+  private Integer limit;
   @Nullable
-  private Integer offset = null;
+  private Integer offset;
 
   @Nullable
-  private EnumSet<ReceiptStatus> statuses = null;
+  private EnumSet<ReceiptStatus> statuses;
 }
