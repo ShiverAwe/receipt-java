@@ -9,14 +9,18 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import space.shefer.receipt.fns.dto.FnsReceiptDto;
 import space.shefer.receipt.rest.dto.TgbotCreateBody;
+import space.shefer.receipt.rest.entity.Receipt;
 import space.shefer.receipt.rest.service.FnsReceiptService;
 import space.shefer.receipt.tests.util.ResourceUtil;
 
 import static org.junit.Assert.assertEquals;
+import static org.mockito.Mockito.any;
+import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.verify;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 public class TgbotControllerTest {
@@ -40,8 +44,13 @@ public class TgbotControllerTest {
     body.setReceiptJson(receiptJson);
     String bodyString = new ObjectMapper().writeValueAsString(body);
 
-    mockMvc.perform(post("/tgbot/create").content(bodyString)
-      .contentType(MediaType.APPLICATION_JSON))
+    doAnswer(__ -> Receipt.builder().id(807L).build()).when(service).create(any());
+
+    mockMvc
+      .perform(post("/tgbot/create")
+        .content(bodyString)
+        .contentType(MediaType.APPLICATION_JSON))
+      .andExpect(content().string("807"))
       .andExpect(status().isOk());
 
     ArgumentCaptor<FnsReceiptDto> filterCaptor = ArgumentCaptor.forClass(FnsReceiptDto.class);
