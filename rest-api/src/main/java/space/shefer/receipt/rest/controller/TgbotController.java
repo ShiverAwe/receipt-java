@@ -21,9 +21,9 @@ public class TgbotController {
   }
 
   @RequestMapping(value = "/create", method = RequestMethod.POST)
-  public void create(@RequestBody TgbotCreateBody body) {
+  public String create(@RequestBody TgbotCreateBody body) {
     FnsReceiptDto fnsReceiptDto = FnsReceiptDto.fromString(body.getReceiptJson());
-    receiptService.create(fnsReceiptDto);
+    return receiptService.create(fnsReceiptDto).getId().toString();
   }
 
 }
