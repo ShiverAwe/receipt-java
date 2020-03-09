@@ -41,16 +41,22 @@ class ReceiptJsonFileGetMessageHandler(
         val chatId = update.message!!.chatId!!
 
         runCatching { receiptWebClient.sendReceiptJson(chatId.toString(), receiptJsonBody) }
-                .onFailure { e ->
-                    logger.error("Could not send receipt", e)
-                    bot.execute(SendMessage(chatId, "Receipt was not published due to error: ${e.message}").also {
+                .onSuccess { receiptId ->
+                    bot.execute(SendMessage(chatId, getMessageSuccess(receiptId)).also {
                         it.replyToMessageId = update.message.messageId
                     })
                 }
-                .onSuccess { receiptId ->
-                    bot.execute(SendMessage(chatId, "Thanks for your receipt! Id is ${receiptId}").also {
+                .onFailure { e ->
+                    logger.error("Could not send receipt", e)
+                    bot.execute(SendMessage(chatId, getMessageError(e)).also {
                         it.replyToMessageId = update.message.messageId
                     })
                 }
     }
+
+    private fun getMessageSuccess(receiptId: String) =
+            "Thanks for your receipt!\nreceipt.shefer.space/receipt/${receiptId}"
+
+    private fun getMessageError(e: Throwable) =
+            "Receipt was not published due to error: ${e.message}"
 }
