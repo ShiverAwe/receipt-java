@@ -42,12 +42,15 @@ class ReceiptJsonFileGetMessageHandler(
 
         runCatching { receiptWebClient.sendReceiptJson(chatId.toString(), receiptJsonBody) }
                 .onFailure { e ->
-                    e.printStackTrace()
-                    bot.execute(SendMessage(chatId, "Receipt was not published due to error: ${e.message}"))
+                    logger.error("Could not send receipt", e)
+                    bot.execute(SendMessage(chatId, "Receipt was not published due to error: ${e.message}").also {
+                        it.replyToMessageId = update.message.messageId
+                    })
                 }
                 .onSuccess { receiptId ->
-                    bot.execute(SendMessage(chatId, "Thanks for your receipt! Id is ${receiptId}"))
+                    bot.execute(SendMessage(chatId, "Thanks for your receipt! Id is ${receiptId}").also {
+                        it.replyToMessageId = update.message.messageId
+                    })
                 }
     }
-
 }
