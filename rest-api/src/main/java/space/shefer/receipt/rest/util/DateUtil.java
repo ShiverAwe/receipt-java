@@ -7,8 +7,6 @@ import java.time.ZoneId;
 
 public final class DateUtil {
 
-  public static final String RECEIPT_DATETIME_PATTERN = "yyyyMMdd'T'HHmm";
-
   public static LocalDateTime parseGMTDate(String date) {
     return simpleDateFormat(date, "dd-MM-yyyy");
   }

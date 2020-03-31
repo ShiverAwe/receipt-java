@@ -2,6 +2,7 @@ package space.shefer.receipt.tests.util;
 
 
 import javax.annotation.Nullable;
+import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.nio.file.Files;
@@ -16,6 +17,18 @@ public final class ResourceUtil {
       return new String(Files.readAllBytes(Paths.get(clazz.getResource(filename).toURI())));
     }
     catch (IOException | URISyntaxException e) {
+      throw new RuntimeException(e.getMessage(), e);
+    }
+  }
+
+  public static File getResourceAsFile(String filename, @Nullable Class<?> clazz) {
+    if (clazz == null) {
+      clazz = ResourceUtil.class;
+    }
+    try {
+      return new File(clazz.getResource(filename).toURI());
+    }
+    catch (URISyntaxException e) {
       throw new RuntimeException(e.getMessage(), e);
     }
   }

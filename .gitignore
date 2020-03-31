@@ -36,9 +36,18 @@ build/
 /mvnw.cmd
 /${project.build.directory}/
 
-
 ### Production properties ###
 application-production.properties
 
 # Temporary files
 nohup.out
+
+### Gradle ###
+gradle
+.gradle
+gradlew
+gradlew.bat
+
+
+## Lombok plugin
+lombok.config

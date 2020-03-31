@@ -1,0 +1,43 @@
+{
+    "update_id": 555602415,
+    "message": {
+        "chatId": 347937466,
+        "groupMessage": false,
+        "userMessage": true,
+        "channelMessage": false,
+        "superGroupMessage": false,
+        "command": false,
+        "reply": false,
+        "message_id": 9,
+        "from": {
+            "bot": false,
+            "id": 347937466,
+            "first_name": "Vladimir",
+            "is_bot": false,
+            "last_name": "Shefer",
+            "username": "vshefer",
+            "language_code": "ru"
+        },
+        "date": 1583020548,
+        "chat": {
+            "groupChat": false,
+            "userChat": true,
+            "channelChat": false,
+            "superGroupChat": false,
+            "id": 347937466,
+            "type": "private",
+            "first_name": "Vladimir",
+            "last_name": "Shefer",
+            "username": "vshefer"
+        },
+        "document": {
+            "file_id": "fileId1",
+            "file_unique_id": "AgAD4Q0AAiVw2Uo",
+            "file_name": "01_03_2020_02_56_129173139415715957795.json",
+            "mime_type": "application/octet-stream",
+            "file_size": 1349
+        },
+        "new_chat_members": [],
+        "caption": "Копия чека"
+    }
+}

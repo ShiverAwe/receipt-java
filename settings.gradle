@@ -1,0 +1,8 @@
+rootProject.name = 'receipt-java'
+
+include 'rest-api'
+include 'test-util'
+include 'fns-sdk'
+include 'telegram-bot'
+include 'rest-api-dto'
+

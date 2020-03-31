@@ -4,17 +4,21 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 import space.shefer.receipt.rest.dto.ReceiptCreateDto;
+import space.shefer.receipt.rest.dto.ReportMetaFilter;
 import space.shefer.receipt.rest.entity.Place;
 import space.shefer.receipt.rest.entity.Receipt;
 import space.shefer.receipt.rest.repository.ReceiptRepository;
-import space.shefer.receipt.rest.service.report.ReportMetaFilter;
 import space.shefer.receipt.rest.util.DateUtil;
 
 import java.util.Arrays;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.any;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 public class ReceiptServiceTest {
 
@@ -44,7 +48,7 @@ public class ReceiptServiceTest {
         Receipt.builder().id(2L).place(place).build()
       ));
     service.getReceipts(metaFilter);
-    verify(receiptRepository, times(1)).getReceipts(metaFilter);
+    verify(receiptRepository).getReceipts(metaFilter);
   }
 
   @Test
@@ -58,7 +62,7 @@ public class ReceiptServiceTest {
     when(receiptRepository.save(any())).thenReturn(Receipt.builder().id(400L).build());
     service.create(receipt);
     ArgumentCaptor<Receipt> receiptCaptor = ArgumentCaptor.forClass(Receipt.class);
-    verify(receiptRepository, times(1)).save(receiptCaptor.capture());
+    verify(receiptRepository).save(receiptCaptor.capture());
     Receipt actual = receiptCaptor.getValue();
     assertEquals(DateUtil.parseReceiptDate("20190725T2313"), actual.getDate());
     assertEquals("1111", actual.getFn());

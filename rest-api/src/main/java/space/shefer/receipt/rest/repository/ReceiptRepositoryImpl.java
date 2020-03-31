@@ -1,13 +1,18 @@
 package space.shefer.receipt.rest.repository;
 
 import org.springframework.stereotype.Repository;
+import space.shefer.receipt.rest.dto.ReportMetaFilter;
 import space.shefer.receipt.rest.entity.Receipt;
-import space.shefer.receipt.rest.service.report.ReportMetaFilter;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
-import javax.persistence.criteria.*;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Order;
+import javax.persistence.criteria.Path;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -49,6 +54,9 @@ public class ReceiptRepositoryImpl implements ReceiptRepositoryCustom {
     }
     if (filter.getPlace() != null) {
       predicates.add(cb.equal(root.get("place").get("text"), filter.getPlace()));
+    }
+    if (filter.getStatuses() != null && !filter.getStatuses().isEmpty()) {
+      predicates.add(root.get("status").in(filter.getStatuses()));
     }
 
     cr

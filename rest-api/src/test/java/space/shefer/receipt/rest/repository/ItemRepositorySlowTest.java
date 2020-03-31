@@ -3,23 +3,23 @@ package space.shefer.receipt.rest.repository;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.transaction.annotation.Transactional;
+import space.shefer.receipt.rest.dto.ReceiptStatus;
+import space.shefer.receipt.rest.dto.ReportItemFilter;
 import space.shefer.receipt.rest.entity.Item;
 import space.shefer.receipt.rest.entity.Receipt;
-import space.shefer.receipt.rest.service.report.ReportItemFilter;
+import space.shefer.receipt.tests.util.SpringJpaTest;
 
-import java.util.Arrays;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import static java.util.Arrays.asList;
 import static org.junit.Assert.assertEquals;
-import static org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace.NONE;
 
 @RunWith(SpringRunner.class)
-@DataJpaTest
-@AutoConfigureTestDatabase(replace = NONE)
+@SpringJpaTest
+@Transactional
 public class ItemRepositorySlowTest {
   @Autowired
   ItemRepository repository;
@@ -84,7 +84,15 @@ public class ItemRepositorySlowTest {
   }
 
   private Receipt createDummyReceipt() {
-    return receiptRepository.save(Receipt.builder().fd("dummy").fp("dummy").build());
+    return receiptRepository.save(Receipt
+      .builder()
+      .status(ReceiptStatus.IDLE)
+      .sum(0.0)
+      .fn("dummy")
+      .fd("dummy")
+      .fp("dummy")
+      .date(LocalDateTime.now())
+      .build());
   }
 
   private void assertSimilar(Item i1, Item i2) {
