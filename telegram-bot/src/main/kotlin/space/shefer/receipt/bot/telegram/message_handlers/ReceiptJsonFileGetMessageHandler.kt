@@ -10,6 +10,7 @@ import org.telegram.telegrambots.meta.api.objects.Document
 import org.telegram.telegrambots.meta.api.objects.Update
 import space.shefer.receipt.bot.model.PrivateChat
 import space.shefer.receipt.bot.receipt.ReceiptWebClient
+import space.shefer.receipt.bot.utils.getBotId
 import java.nio.file.Files
 
 @Component
@@ -39,9 +40,11 @@ class ReceiptJsonFileGetMessageHandler(
 
         logger.trace(receiptJsonBody)
 
+        val botId = bot.getBotId()
         val chatId = update.message!!.chatId!!
+        val userId = privateChat?.userProfile?.phoneNumber ?: "$botId:$chatId"
 
-        runCatching { receiptWebClient.sendReceiptJson(chatId.toString(), receiptJsonBody) }
+        runCatching { receiptWebClient.sendReceiptJson(userId, receiptJsonBody) }
                 .onSuccess { receiptId ->
                     bot.execute(SendMessage(chatId, getMessageSuccess(receiptId)).also {
                         it.replyToMessageId = update.message.messageId
