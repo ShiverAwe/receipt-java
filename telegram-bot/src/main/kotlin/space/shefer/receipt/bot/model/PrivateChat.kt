@@ -11,8 +11,11 @@ class PrivateChat {
     @Column(name = "id", unique = true, nullable = false)
     var id: String? = null
 
-    @Column(name = "chatId", nullable = false)
+    @Column(name = "chat_id", nullable = false)
     lateinit var chatId: String
+
+    @Column(name = "bot_id", nullable = false)
+    lateinit var botId: String
 
     @ManyToOne
     @JoinColumn(name = "user_profile_id")
