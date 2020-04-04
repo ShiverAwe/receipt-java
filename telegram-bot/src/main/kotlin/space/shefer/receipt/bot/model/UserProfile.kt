@@ -9,7 +9,7 @@ class UserProfile {
     @Id
     @GeneratedValue
     @Column(name = "id", unique = true, nullable = false)
-    var id: String? = null
+    var id: Long? = null
 
     @Column(name = "phone_number", unique = true, nullable = false)
     lateinit var phoneNumber: String
