@@ -9,16 +9,16 @@ import space.shefer.receipt.bot.service.UserProfileService
 
 @Component
 class AuthorizationMessageHandler(
-        private val privateChatService: PrivateChatService,
-        private val userProfileService: UserProfileService
+        private val privateChatService: PrivateChatService
 ) : MessageHandler {
+
     override fun handle(bot: TelegramLongPollingBot, update: Update) {
         val contact = update.message?.contact ?: return
         val chatId = update.message.chatId.toString()
         val botId = bot.botToken.split(':')[0]
-        val privateChat = privateChatService.auth(contact, chatId, botId)
+        privateChatService.auth(contact, chatId, botId)
 
-        bot.execute(SendMessage(privateChat.chatId, "Привет, ${contact.firstName}  ${contact.lastName}"))
+        bot.execute(SendMessage(chatId, "Привет, ${contact.firstName}  ${contact.lastName}"))
     }
 
 }

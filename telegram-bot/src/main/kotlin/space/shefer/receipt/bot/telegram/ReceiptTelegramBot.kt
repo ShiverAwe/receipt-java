@@ -26,7 +26,9 @@ class ReceiptTelegramBot(
         messageHandlers.forEach {
             runCatching {
                 it.handle(this, update)
-            }.onFailure { it.printStackTrace() }
+            }.onFailure {
+                it.printStackTrace()
+            }
         }
     }
 

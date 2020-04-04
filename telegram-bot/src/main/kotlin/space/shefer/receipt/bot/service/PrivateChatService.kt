@@ -10,6 +10,7 @@ class PrivateChatService(
         private val privateChatRepository: PrivateChatRepository,
         private val userProfileService: UserProfileService)
 {
+
     fun auth(contact: Contact, chatId: String, botId: String): PrivateChat {
         val userProfile = userProfileService.getOrCreate(contact)
 
