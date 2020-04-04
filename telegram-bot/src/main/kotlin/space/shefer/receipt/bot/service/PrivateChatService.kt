@@ -8,8 +8,8 @@ import space.shefer.receipt.bot.repository.PrivateChatRepository
 @Service
 class PrivateChatService(
         private val privateChatRepository: PrivateChatRepository,
-        private val userProfileService: UserProfileService)
-{
+        private val userProfileService: UserProfileService
+) {
 
     fun auth(contact: Contact, chatId: String, botId: String): PrivateChat {
         val userProfile = userProfileService.getOrCreate(contact)
@@ -20,6 +20,10 @@ class PrivateChatService(
                     it.botId = botId
                     it.userProfile = userProfile
                 })
+    }
+
+    fun getByBotIdChatId(botId: String, chatId: String): PrivateChat? {
+        return privateChatRepository.findByChatIdAndBotId(chatId, botId)
     }
 
 }

@@ -7,6 +7,7 @@ import org.telegram.telegrambots.meta.api.objects.Update
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMarkup
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardButton
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardRow
+import space.shefer.receipt.bot.model.PrivateChat
 
 @Component
 class StartMessageHandler : MessageHandler {
@@ -18,7 +19,7 @@ class StartMessageHandler : MessageHandler {
             }
     ))
 
-    override fun handle(bot: TelegramLongPollingBot, update: Update) {
+    override fun handle(bot: TelegramLongPollingBot, update: Update, privateChat: PrivateChat?) {
         if (update.message?.text != "/start") {
             return
         }

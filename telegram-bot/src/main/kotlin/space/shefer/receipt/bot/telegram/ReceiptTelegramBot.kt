@@ -5,12 +5,15 @@ import org.springframework.stereotype.Component
 import org.telegram.telegrambots.bots.DefaultBotOptions
 import org.telegram.telegrambots.bots.TelegramLongPollingBot
 import org.telegram.telegrambots.meta.api.objects.Update
+import space.shefer.receipt.bot.service.PrivateChatService
 import space.shefer.receipt.bot.telegram.message_handlers.MessageHandler
+import space.shefer.receipt.bot.utils.getBotId
 
 @Component
 class ReceiptTelegramBot(
         private val messageHandlers: List<MessageHandler>,
-        private val proxyOptions: TelegramHttpProxyOptions
+        private val proxyOptions: TelegramHttpProxyOptions,
+        private val privateChatService: PrivateChatService
 ) : TelegramLongPollingBot(DefaultBotOptions().also {
     if (proxyOptions.enabled) {
         it.proxyHost = proxyOptions.host!!
@@ -23,9 +26,18 @@ class ReceiptTelegramBot(
     lateinit var token: String
 
     override fun onUpdateReceived(update: Update) {
+        val privateChat = if (update.message != null) {
+            privateChatService.getByBotIdChatId(
+                    this.getBotId(),
+                    update.message.chatId.toString()
+            )
+        } else {
+            null
+        }
+
         messageHandlers.forEach {
             runCatching {
-                it.handle(this, update)
+                it.handle(this, update, privateChat)
             }.onFailure {
                 it.printStackTrace()
             }
