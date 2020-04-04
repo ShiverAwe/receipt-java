@@ -17,7 +17,7 @@ class UserProfile {
     @Column(name = "first_name", nullable = false)
     lateinit var firstName: String
 
-    @Column(name = "last_name", nullable = false)
-    lateinit var lastName: String
+    @Column(name = "last_name", nullable = true)
+    var lastName: String? = null
 
 }
