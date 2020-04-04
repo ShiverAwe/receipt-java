@@ -8,6 +8,7 @@ import org.telegram.telegrambots.meta.api.methods.GetFile
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage
 import org.telegram.telegrambots.meta.api.objects.Document
 import org.telegram.telegrambots.meta.api.objects.Update
+import space.shefer.receipt.bot.model.PrivateChat
 import space.shefer.receipt.bot.receipt.ReceiptWebClient
 import java.nio.file.Files
 
@@ -17,7 +18,7 @@ class ReceiptJsonFileGetMessageHandler(
 ) : MessageHandler {
     private val logger: Logger = LoggerFactory.getLogger(this.javaClass)
 
-    override fun handle(bot: TelegramLongPollingBot, update: Update) {
+    override fun handle(bot: TelegramLongPollingBot, update: Update, privateChat: PrivateChat?) {
         val document: Document = update.message?.document ?: run {
             logger.info("No file present")
             return
