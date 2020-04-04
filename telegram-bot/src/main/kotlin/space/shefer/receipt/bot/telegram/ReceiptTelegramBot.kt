@@ -7,6 +7,7 @@ import org.telegram.telegrambots.bots.TelegramLongPollingBot
 import org.telegram.telegrambots.meta.api.objects.Update
 import space.shefer.receipt.bot.service.PrivateChatService
 import space.shefer.receipt.bot.telegram.message_handlers.MessageHandler
+import space.shefer.receipt.bot.utils.getBotId
 
 @Component
 class ReceiptTelegramBot(
@@ -27,7 +28,7 @@ class ReceiptTelegramBot(
     override fun onUpdateReceived(update: Update) {
         val privateChat = if (update.message != null) {
             privateChatService.getByBotIdChatId(
-                    this.botToken.split(':')[0],
+                    this.getBotId(),
                     update.message.chatId.toString()
             )
         } else {
