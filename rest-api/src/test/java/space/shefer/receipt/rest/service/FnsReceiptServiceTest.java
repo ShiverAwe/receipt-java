@@ -1,5 +1,6 @@
 package space.shefer.receipt.rest.service;
 
+import org.jetbrains.annotations.NotNull;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
@@ -15,8 +16,16 @@ import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
 
+import static java.util.Collections.singletonList;
 import static org.junit.Assert.assertEquals;
-import static org.mockito.Mockito.*;
+import static org.junit.Assert.assertSame;
+import static org.mockito.Mockito.any;
+import static org.mockito.Mockito.doAnswer;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 
 public class FnsReceiptServiceTest {
 
@@ -34,28 +43,10 @@ public class FnsReceiptServiceTest {
 
   @Test
   public void create() {
-    FnsReceiptDto fnsReceiptDto = new FnsReceiptDto();
-    fnsReceiptDto.setTotalSum(222222);
-    fnsReceiptDto.setFiscalDocumentNumber(111111);
-    fnsReceiptDto.setFiscalSign(333333);
-
-    LocalDateTime dateTime = LocalDateTime.of(2020, 3, 4, 20,24, 45);
+    LocalDateTime dateTime = LocalDateTime.of(2020, 3, 4, 20, 24, 45);
     int dateTimeEpoch = 1583353485;
-    fnsReceiptDto.setDateTime(dateTimeEpoch);
 
-    FnsItemDto fnsItemDto1 = new FnsItemDto();
-    fnsItemDto1.setName("fnsItemName1");
-    fnsItemDto1.setPrice(9550);
-    fnsItemDto1.setQuantity(7.13);
-    fnsItemDto1.setSum(68091);
-
-    FnsItemDto fnsItemDto2 = new FnsItemDto();
-    fnsItemDto2.setName("fnsItemName2");
-    fnsItemDto2.setPrice(9577);
-    fnsItemDto2.setQuantity(1.33);
-    fnsItemDto2.setSum(12737);
-
-    fnsReceiptDto.setItems(Arrays.asList(fnsItemDto1, fnsItemDto2));
+    FnsReceiptDto fnsReceiptDto = getFnsReceiptDto(dateTimeEpoch);
 
     service.create(fnsReceiptDto);
 
@@ -63,6 +54,7 @@ public class FnsReceiptServiceTest {
     verify(receiptRepository).save(receiptCaptor.capture());
     Receipt receipt = receiptCaptor.getValue();
 
+    assertEquals("444444", receipt.getFn());
     assertEquals("111111", receipt.getFd());
     assertEquals(2222.22, receipt.getSum(), 1e-5);
     assertEquals("333333", receipt.getFp());
@@ -83,6 +75,45 @@ public class FnsReceiptServiceTest {
     assertEquals(item2.getText(), "fnsItemName2");
     assertEquals(item2.getPrice(), 95.77, 1e-5);
     assertEquals(item2.getAmount(), 1.33, 1e-5);
+  }
+
+  @Test
+  public void create_duplicatesIgnored() {
+    FnsReceiptDto fnsReceiptDto = getFnsReceiptDto(1583353485);
+
+    Receipt persistedDuplicateReceipt = new Receipt();
+    doAnswer((invocation) -> singletonList(persistedDuplicateReceipt)).when(receiptRepository).getReceipts(any());
+
+    Receipt result = service.create(fnsReceiptDto);
+
+    verify(receiptRepository, never()).save(any());
+    assertSame(persistedDuplicateReceipt, result);
+  }
+
+  @NotNull
+  private FnsReceiptDto getFnsReceiptDto(int dateTimeEpoch) {
+    FnsReceiptDto fnsReceiptDto = new FnsReceiptDto();
+    fnsReceiptDto.setTotalSum(222222);
+    fnsReceiptDto.setFiscalDriveNumber("444444");
+    fnsReceiptDto.setFiscalDocumentNumber(111111);
+    fnsReceiptDto.setFiscalSign(333333);
+
+    fnsReceiptDto.setDateTime(dateTimeEpoch);
+
+    FnsItemDto fnsItemDto1 = new FnsItemDto();
+    fnsItemDto1.setName("fnsItemName1");
+    fnsItemDto1.setPrice(9550);
+    fnsItemDto1.setQuantity(7.13);
+    fnsItemDto1.setSum(68091);
+
+    FnsItemDto fnsItemDto2 = new FnsItemDto();
+    fnsItemDto2.setName("fnsItemName2");
+    fnsItemDto2.setPrice(9577);
+    fnsItemDto2.setQuantity(1.33);
+    fnsItemDto2.setSum(12737);
+
+    fnsReceiptDto.setItems(Arrays.asList(fnsItemDto1, fnsItemDto2));
+    return fnsReceiptDto;
   }
 
 }

@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import space.shefer.receipt.fns.dto.FnsItemDto;
 import space.shefer.receipt.fns.dto.FnsReceiptDto;
 import space.shefer.receipt.rest.dto.ReceiptStatus;
+import space.shefer.receipt.rest.dto.ReportMetaFilter;
 import space.shefer.receipt.rest.entity.Item;
 import space.shefer.receipt.rest.entity.Receipt;
 import space.shefer.receipt.rest.repository.ItemRepository;
@@ -12,6 +13,8 @@ import space.shefer.receipt.rest.repository.ReceiptRepository;
 
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
+import java.util.EnumSet;
+import java.util.List;
 
 @Service
 public class FnsReceiptService {
@@ -34,6 +37,24 @@ public class FnsReceiptService {
     receipt.setDate(LocalDateTime.ofEpochSecond(receiptDto.getDateTime(), 0, ZoneOffset.UTC));
     receipt.setStatus(ReceiptStatus.LOADED);
     receipt.setProvider("TGBOT_NALOG");
+
+    List<Receipt> matchingReceipts = receiptRepository.getReceipts(
+      ReportMetaFilter.builder()
+        .fn(receipt.getFn())
+        .fd(receipt.getFd())
+        .fp(receipt.getFp())
+        .dateFrom(receipt.getDate())
+        .dateTo(receipt.getDate())
+        .sumMax(receipt.getSum())
+        .sumMin(receipt.getSum())
+        .statuses(EnumSet.of(receipt.getStatus()))
+        .build()
+    );
+
+    if (!matchingReceipts.isEmpty()) {
+      return matchingReceipts.get(0);
+    }
+
     Receipt savedReceipt = receiptRepository.save(receipt);
 
     for (FnsItemDto itemDto : receiptDto.getItems()) {
