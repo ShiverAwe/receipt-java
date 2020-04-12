@@ -2,8 +2,8 @@ package space.shefer.receipt.rest.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import space.shefer.receipt.fns.dto.FnsItemDto;
-import space.shefer.receipt.fns.dto.FnsReceiptDto;
+import space.shefer.receipt.fnssdk.dto.FnsItemDto;
+import space.shefer.receipt.fnssdk.dto.FnsReceiptDto;
 import space.shefer.receipt.rest.dto.ReceiptStatus;
 import space.shefer.receipt.rest.dto.ReportMetaFilter;
 import space.shefer.receipt.rest.entity.Item;

@@ -1,4 +1,4 @@
-package space.shefer.receipt.fns.dto
+package space.shefer.receipt.fnssdk.dto
 
 class FnsItemDto {
     var name: String = ""  // Полное название товара

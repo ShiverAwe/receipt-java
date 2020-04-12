@@ -1,59 +1,53 @@
-package space.shefer.receipt.fns.webclient;
+package space.shefer.receipt.fnssdk.webclient
 
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Component;
-import org.springframework.web.client.RestTemplate;
-
-import java.net.URI;
-import java.util.Base64;
+import org.springframework.beans.factory.annotation.Value
+import org.springframework.http.HttpEntity
+import org.springframework.http.HttpHeaders
+import org.springframework.http.HttpMethod
+import org.springframework.stereotype.Component
+import org.springframework.web.client.RestTemplate
+import java.net.URI
+import java.util.*
 
 @Component
-public class FnsReceiptWebClient {
+class FnsReceiptWebClient {
 
-  private static final String HOST = "https://proverkacheka.nalog.ru:9999";
-  @Value("${fns.login}")
-  private String login;
-  @Value("${fns.password}")
-  private String password;
+    @Value("\${fns.login}")
+    lateinit var login: String
 
-  public String get(String fn, String fd, String fp) {
-    String uri = urlGet(fn, fd, fp);
+    @Value("\${fns.password}")
+    lateinit var password: String
 
-    HttpHeaders headers = new HttpHeaders();
-    headers.add("device-id", "");
-    headers.add("device-os", "");
-    headers.add("Authorization", getAuthHeader(login, password));
+    operator fun get(fn: String, fd: String, fp: String): String? {
+        val uri = urlGet(fn, fd, fp)
+        val headers = HttpHeaders()
+        headers.add("device-id", "")
+        headers.add("device-os", "")
+        headers.add("Authorization", getAuthHeader(login, password))
+        val requestEntity = HttpEntity<String>(headers)
+        val restTemplate = RestTemplate()
+        val responseEntity = restTemplate.exchange(
+                URI.create(uri), HttpMethod.GET, requestEntity, String::class.java)
+        val statusCode = responseEntity.statusCode
+        return responseEntity.body
+    }
 
-    HttpEntity<String> requestEntity = new HttpEntity<>(headers);
+    private fun getAuthHeader(login: String, password: String): String {
+        val plainCredentials = "$login:$password"
+        val plainCredentialsBytes = plainCredentials.toByteArray()
+        val base64CredentialsBytes = Base64.getEncoder().encode(plainCredentialsBytes)
+        val base64Credentials = String(base64CredentialsBytes)
+        return "Basic $base64Credentials"
+    }
 
-    RestTemplate restTemplate = new RestTemplate();
-    ResponseEntity<String> responseEntity = restTemplate.exchange(
-      URI.create(uri), HttpMethod.GET, requestEntity, String.class);
-
-    HttpStatus statusCode = responseEntity.getStatusCode();
-
-    return responseEntity.getBody();
-  }
-
-  private String getAuthHeader(String login, String password) {
-    String plainCredentials = login + ":" + password;
-    byte[] plainCredentialsBytes = plainCredentials.getBytes();
-    byte[] base64CredentialsBytes = Base64.getEncoder().encode(plainCredentialsBytes);
-    String base64Credentials = new String(base64CredentialsBytes);
-    return "Basic " + base64Credentials;
-  }
-
-  private static String urlGet(String fn, String fd, String fp) {
-    return HOST + "/v1/inns/*/kkts/*" +
-      "/fss/" + fn +
-      "/tickets/" + fd +
-      "?fiscalSign=" + fp +
-      "&sendToEmail=no";
-  }
-
+    companion object {
+        private const val HOST = "https://proverkacheka.nalog.ru:9999"
+        private fun urlGet(fn: String, fd: String, fp: String): String {
+            return HOST + "/v1/inns/*/kkts/*" +
+                    "/fss/" + fn +
+                    "/tickets/" + fd +
+                    "?fiscalSign=" + fp +
+                    "&sendToEmail=no"
+        }
+    }
 }

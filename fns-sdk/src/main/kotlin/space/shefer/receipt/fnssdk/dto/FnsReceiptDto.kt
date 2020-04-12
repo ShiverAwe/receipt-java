@@ -1,4 +1,4 @@
-package space.shefer.receipt.fns.dto
+package space.shefer.receipt.fnssdk.dto
 
 import com.fasterxml.jackson.databind.DeserializationFeature
 import com.fasterxml.jackson.databind.ObjectMapper

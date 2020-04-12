@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-import space.shefer.receipt.fns.dto.FnsReceiptDto;
+import space.shefer.receipt.fnssdk.dto.FnsReceiptDto;
 import space.shefer.receipt.rest.dto.TgbotCreateBody;
 import space.shefer.receipt.rest.service.FnsReceiptService;
 

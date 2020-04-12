@@ -1,4 +1,4 @@
-package space.shefer.receipt.fns.dto
+package space.shefer.receipt.fnssdk.dto
 
 import junit.framework.TestCase.assertEquals
 import org.junit.Test
