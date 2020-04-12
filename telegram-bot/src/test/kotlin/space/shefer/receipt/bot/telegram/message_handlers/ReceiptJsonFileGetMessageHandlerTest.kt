@@ -31,16 +31,22 @@ class ReceiptJsonFileGetMessageHandlerTest {
             it.fileId == "fileId1"
         })
 
+        doAnswer { "botId1:botPrivateKey1" }.`when`(bot).getBotToken()
+
         val receiptJsonFilePath = "/bot/update/receipt_sent.receipt.json"
         val receiptJson = ResourceUtil.getResourceAsString(receiptJsonFilePath, javaClass)
         val jsonFile = ResourceUtil.getResourceAsFile(receiptJsonFilePath, javaClass)
 
         doAnswer { jsonFile }.`when`(bot).downloadFile(telegramFile)
 
-        handler.handle(bot, update)
+        handler.handle(bot, update, null)
 
-        verify(receiptWebClient).sendReceiptJson("347937466", receiptJson)
-        verify(bot).execute(argThat<SendMessage> { it.text == "Thanks for your receipt!" })
+        verify(receiptWebClient).sendReceiptJson("botId1:347937466", receiptJson)
+
+        verify(bot).execute(argThat<SendMessage> {
+            it.text.contains("Thanks for your receipt")
+                    && it.text.contains("receipt.shefer.space/receipt")
+        })
     }
 
 }
