@@ -59,7 +59,7 @@ class ReceiptJsonFileGetMessageHandler(
     }
 
     private fun getMessageSuccess(receiptId: String) =
-            "Thanks for your receipt!\nreceipt.shefer.space/receipt/${receiptId}"
+            "Thanks for your receipt!\nhttps://receipt.shefer.space/receipt/${receiptId}"
 
     private fun getMessageError(e: Throwable) =
             "Receipt was not published due to error: ${e.message}"
