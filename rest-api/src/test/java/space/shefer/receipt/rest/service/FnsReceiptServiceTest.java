@@ -1,6 +1,5 @@
 package space.shefer.receipt.rest.service;
 
-import org.jetbrains.annotations.NotNull;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
@@ -90,7 +89,6 @@ public class FnsReceiptServiceTest {
     assertSame(persistedDuplicateReceipt, result);
   }
 
-  @NotNull
   private FnsReceiptDto getFnsReceiptDto(int dateTimeEpoch) {
     FnsReceiptDto fnsReceiptDto = new FnsReceiptDto();
     fnsReceiptDto.setTotalSum(222222);
