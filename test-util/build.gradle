@@ -8,9 +8,9 @@ apply plugin: 'kotlin-jpa'
 apply plugin: 'eclipse'
 
 dependencies {
-    compile('org.springframework.boot:spring-boot-starter-data-jpa')
-    compile('org.springframework.boot:spring-boot-starter-test')
-    implementation "org.jetbrains.kotlin:kotlin-stdlib"
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'org.springframework.boot:spring-boot-starter-test'
+    implementation 'org.jetbrains.kotlin:kotlin-stdlib'
 
-    compile "com.google.code.findbugs:jsr305:${jsr305Version}"
+    implementation "com.google.code.findbugs:jsr305:${jsr305Version}"
 }
