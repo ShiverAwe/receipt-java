@@ -3,8 +3,6 @@ buildscript {
     ext {
         kotlinVersion = '1.3.60'
         springBootVersion = '2.2.1.RELEASE'
-        lombokVersion = '1.18.12'
-        jsr305Version = '3.0.2'
     }
 
     repositories {
@@ -21,11 +19,13 @@ buildscript {
 }
 
 plugins {
+    id "io.freefair.lombok" version "5.0.0"
     id 'org.springframework.boot' version '2.2.1.RELEASE' apply false
 }
 
 allprojects {
-    group 'shefer.space.receipt'
+    group 'space.shefer.receipt'
+    version '2020.4'
 }
 
 subprojects {
@@ -35,7 +35,11 @@ subprojects {
         maven { url "https://plugins.gradle.org/m2/" }
     }
 
+    apply plugin: 'java'
+    apply plugin: 'eclipse'
     apply plugin: 'kotlin'
+    apply plugin: 'io.spring.dependency-management'
+
     sourceCompatibility = 1.8
 
     compileKotlin {
@@ -52,13 +56,22 @@ subprojects {
         }
     }
 
-    apply plugin: 'io.spring.dependency-management'
 
     dependencyManagement {
         imports {
             mavenBom("org.springframework.boot:spring-boot-dependencies:${springBootVersion}") {
                 bomProperty("kotlin.version", "${kotlinVersion}")
             }
+        }
+        dependencies {
+            dependency 'commons-codec:commons-codec:1.9'
+            dependency "com.google.code.findbugs:jsr305:3.0.2"
+            dependency "com.h2database:h2:1.4.200"
+            dependency 'com.vladmihalcea:hibernate-types-52:2.4.2'
+            dependency "org.apache.commons:commons-lang3:3.9"
+            dependency "org.postgresql:postgresql:42.2.10"
+            dependency "org.projectlombok:lombok:1.18.12"
+            dependency 'org.telegram:telegrambots:4.6'
         }
     }
 

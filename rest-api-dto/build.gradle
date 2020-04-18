@@ -1,21 +1,11 @@
 plugins {
-    id 'java'
-    id "io.freefair.lombok" version "5.0.0-rc4"
-}
-
-group 'shefer.space.receipt'
-version 'unspecified'
-
-sourceCompatibility = 1.8
-
-repositories {
-    mavenCentral()
+    id "io.freefair.lombok"
 }
 
 dependencies {
-    compile "org.projectlombok:lombok:${lombokVersion}"
-    compile "com.google.code.findbugs:jsr305:${jsr305Version}"
-    compile "com.fasterxml.jackson.core:jackson-databind"
+    implementation "com.fasterxml.jackson.core:jackson-databind"
+    implementation "com.google.code.findbugs:jsr305"
+    implementation "org.projectlombok:lombok"
 
-    testCompile 'junit:junit'
+    testImplementation 'junit:junit'
 }

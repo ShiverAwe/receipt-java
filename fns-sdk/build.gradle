@@ -1,20 +1,15 @@
 plugins {
+    id 'kotlin-spring'
     id 'org.springframework.boot' apply false
 }
 
-apply plugin: 'kotlin-spring'
-apply plugin: 'eclipse'
-
 dependencies {
-    compile('org.springframework.boot:spring-boot-starter-web')
-    compile('org.springframework:spring-context-support')
+    implementation 'com.fasterxml.jackson.module:jackson-module-kotlin'
+    implementation "org.apache.commons:commons-lang3"
+    implementation 'org.jetbrains.kotlin:kotlin-stdlib-jdk8'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework:spring-context-support'
 
-    compile("org.jetbrains.kotlin:kotlin-stdlib-jdk8:${kotlinVersion}")
-    compile('com.fasterxml.jackson.module:jackson-module-kotlin')
-
-    testCompile "org.springframework.boot:spring-boot-starter-test"
-
-    compile "org.apache.commons:commons-lang3:3.9"
-
-    testCompile project(':test-util')
+    testImplementation project(':test-util')
+    testImplementation "org.springframework.boot:spring-boot-starter-test"
 }
