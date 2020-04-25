@@ -10,7 +10,7 @@ import javax.annotation.PostConstruct
 class FnsReceiptService {
 
     @Autowired
-    val fnsReceiptService = FnsReceiptWebClient()
+    lateinit var fnsReceiptService: FnsReceiptWebClient
 
     fun getReceiptExists(fn: String, fd: String, fp: String, time: String, money: Float): String? {
         var dataReceipt: String? = null
