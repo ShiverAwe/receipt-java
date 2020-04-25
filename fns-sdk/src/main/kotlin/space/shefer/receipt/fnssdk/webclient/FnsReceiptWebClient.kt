@@ -18,18 +18,36 @@ class FnsReceiptWebClient {
     @Value("\${fns.password}")
     lateinit var password: String
 
-    operator fun get(fn: String, fd: String, fp: String): String? {
+    fun get(fn: String, fd: String, fp: String): String? {
         val uri = urlGet(fn, fd, fp)
         val headers = HttpHeaders()
         headers.add("device-id", "")
         headers.add("device-os", "")
         headers.add("Authorization", getAuthHeader(login, password))
-        val requestEntity = HttpEntity<String>(headers)
-        val restTemplate = RestTemplate()
-        val responseEntity = restTemplate.exchange(
-                URI.create(uri), HttpMethod.GET, requestEntity, String::class.java)
+        val responseEntity = RestTemplate().exchange(
+                URI.create(uri),
+                HttpMethod.GET,
+                HttpEntity<String>(headers),
+                String::class.java
+        )
         val statusCode = responseEntity.statusCode
         return responseEntity.body
+    }
+
+    fun getReceiptExists(fn: String, fd: String, fp: String, time: String, money: Float): Boolean {
+        val uri = getReceiptExistsUrl(fn, fd, fp, time, money)
+        val headers = HttpHeaders()
+        headers.add("device-id", "")
+        headers.add("device-os", "")
+        headers.add("Authorization", getAuthHeader(login, password))
+        val responseEntity = RestTemplate().exchange(
+                URI.create(uri),
+                HttpMethod.GET,
+                HttpEntity<String>(headers),
+                String::class.java
+        )
+        return responseEntity.statusCode?.value() == 204
+
     }
 
     private fun getAuthHeader(login: String, password: String): String {
@@ -49,5 +67,17 @@ class FnsReceiptWebClient {
                     "?fiscalSign=" + fp +
                     "&sendToEmail=no"
         }
+
+        private fun getReceiptExistsUrl(fn: String, fd: String, fp: String, time: String, money: Float): String {
+            val moneyForUrl: Int = (money * 100).toInt()
+            return HOST + "/v1/ofds/*/inns/*" +
+                    "/fss/" + fn +
+                    "/operations/1" +
+                    "/tickets/" + fd +
+                    "?fiscalSign=" + fp +
+                    "&date=" + time +
+                    "&sum=" + moneyForUrl
+        }
     }
 }
+
