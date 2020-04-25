@@ -1,6 +1,8 @@
 package space.shefer.receipt.rest.service;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import space.shefer.receipt.rest.dto.ReceiptCreateDto;
 import space.shefer.receipt.rest.dto.ReceiptMetaDto;
@@ -15,6 +17,9 @@ import java.util.stream.Collectors;
 @Service
 public class ReceiptService {
 
+  @Value(value = "${receipt.place.default}")
+  private String defaultPlace;
+
   private final ReceiptRepository receiptRepository;
 
   @Autowired
@@ -24,7 +29,9 @@ public class ReceiptService {
 
   public List<ReceiptMetaDto> getReceipts(ReportMetaFilter metaFilter) {
     List<Receipt> receipts = receiptRepository.getReceipts(metaFilter);
-    return receipts.stream().map(Receipt::toDto).collect(Collectors.toList());
+    return receipts.stream().map(Receipt::toDto)
+      .peek(this::setDefaultPlaceIfNull)
+      .collect(Collectors.toList());
   }
 
   public Long create(ReceiptCreateDto receipt) {
@@ -33,6 +40,12 @@ public class ReceiptService {
     entity.setStatus(ReceiptStatus.IDLE);
     Receipt savedReceipt = receiptRepository.save(entity);
     return savedReceipt.getId();
+  }
+
+  private void setDefaultPlaceIfNull(ReceiptMetaDto i) {
+    if (i.getPlace() == null && !StringUtils.isBlank(defaultPlace)) {
+      i.setPlace(defaultPlace);
+    }
   }
 
 }
