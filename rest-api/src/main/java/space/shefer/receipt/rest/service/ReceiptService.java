@@ -42,6 +42,15 @@ public class ReceiptService {
     return savedReceipt.getId();
   }
 
+  public Receipt setStatus(Receipt receipt, ReceiptStatus status) {
+    receipt.setStatus(status);
+    return receiptRepository.save(receipt);
+  }
+
+  public List<Receipt> getAllIdle() {
+    return receiptRepository.findAllIdle();
+  }
+
   private void setDefaultPlaceIfNull(ReceiptMetaDto i) {
     if (i.getPlace() == null && !StringUtils.isBlank(defaultPlace)) {
       i.setPlace(defaultPlace);
