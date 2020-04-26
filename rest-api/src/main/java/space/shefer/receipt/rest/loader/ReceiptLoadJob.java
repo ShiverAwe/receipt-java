@@ -29,7 +29,7 @@ public class ReceiptLoadJob {
     this.fnsReceiptService = fnsReceiptService;
   }
 
-  @Scheduled(initialDelay = 100)
+  @Scheduled(initialDelay = 10000)
   public void load() {
     DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-ddTHH:mm:ss");
     List<Receipt> receipts = receiptService.getAllIdle();
