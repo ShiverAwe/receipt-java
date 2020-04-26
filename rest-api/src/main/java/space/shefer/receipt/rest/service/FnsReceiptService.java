@@ -28,15 +28,14 @@ public class FnsReceiptService {
   private final ReceiptRepository receiptRepository;
   private final ItemRepository itemRepository;
 
-  public Receipt create(FnsReceiptDto receiptDto) {
-    Receipt receipt = new Receipt();
+  public Receipt create(FnsReceiptDto receiptDto, Receipt receipt, String provider) {
     receipt.setFn(receiptDto.getFiscalDriveNumber());
     receipt.setFd(String.valueOf(receiptDto.getFiscalDocumentNumber()));
     receipt.setFp(String.valueOf(receiptDto.getFiscalSign()));
     receipt.setSum(receiptDto.getTotalSum() / 100d);
     receipt.setDate(LocalDateTime.ofEpochSecond(receiptDto.getDateTime(), 0, ZoneOffset.UTC));
     receipt.setStatus(ReceiptStatus.LOADED);
-    receipt.setProvider("TGBOT_NALOG");
+    receipt.setProvider(provider);
 
     List<Receipt> matchingReceipts = receiptRepository.getReceipts(
       ReportMetaFilter.builder()

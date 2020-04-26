@@ -5,6 +5,7 @@ import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 import space.shefer.receipt.fnssdk.dto.FnsItemDto;
 import space.shefer.receipt.fnssdk.dto.FnsReceiptDto;
+import space.shefer.receipt.rest.dto.ReceiptProvider;
 import space.shefer.receipt.rest.dto.ReceiptStatus;
 import space.shefer.receipt.rest.entity.Item;
 import space.shefer.receipt.rest.entity.Receipt;
@@ -47,7 +48,7 @@ public class FnsReceiptServiceTest {
 
     FnsReceiptDto fnsReceiptDto = getFnsReceiptDto(dateTimeEpoch);
 
-    service.create(fnsReceiptDto);
+    service.create(fnsReceiptDto, new Receipt(), ReceiptProvider.TGBOT_NALOG.name());
 
     ArgumentCaptor<Receipt> receiptCaptor = ArgumentCaptor.forClass(Receipt.class);
     verify(receiptRepository).save(receiptCaptor.capture());
@@ -83,7 +84,7 @@ public class FnsReceiptServiceTest {
     Receipt persistedDuplicateReceipt = new Receipt();
     doAnswer((invocation) -> singletonList(persistedDuplicateReceipt)).when(receiptRepository).getReceipts(any());
 
-    Receipt result = service.create(fnsReceiptDto);
+    Receipt result = service.create(fnsReceiptDto, new Receipt(), ReceiptProvider.TGBOT_NALOG.name());
 
     verify(receiptRepository, never()).save(any());
     assertSame(persistedDuplicateReceipt, result);

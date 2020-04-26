@@ -8,6 +8,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import space.shefer.receipt.fnssdk.dto.FnsReceiptDto;
+import space.shefer.receipt.rest.dto.ReceiptProvider;
 import space.shefer.receipt.rest.dto.TgbotCreateBody;
 import space.shefer.receipt.rest.entity.Receipt;
 import space.shefer.receipt.rest.service.FnsReceiptService;
@@ -44,7 +45,7 @@ public class TgbotControllerTest {
     body.setReceiptJson(receiptJson);
     String bodyString = new ObjectMapper().writeValueAsString(body);
 
-    doAnswer(__ -> Receipt.builder().id(807L).build()).when(service).create(any());
+    doAnswer(__ -> Receipt.builder().id(807L).build()).when(service).create(any(), new Receipt(), "TGBOT_NALOG");
 
     mockMvc
       .perform(post("/tgbot/create")
@@ -54,7 +55,7 @@ public class TgbotControllerTest {
       .andExpect(status().isOk());
 
     ArgumentCaptor<FnsReceiptDto> filterCaptor = ArgumentCaptor.forClass(FnsReceiptDto.class);
-    verify(service).create(filterCaptor.capture());
+    verify(service).create(filterCaptor.capture(), new Receipt(), ReceiptProvider.TGBOT_NALOG.name());
 
     FnsReceiptDto receipt = filterCaptor.getValue();
     assertEquals(1582995060, receipt.getDateTime());
