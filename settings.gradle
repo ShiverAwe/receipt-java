@@ -5,4 +5,5 @@ include 'test-util'
 include 'fns-sdk'
 include 'telegram-bot'
 include 'rest-api-dto'
+include 'vk'
 
