@@ -25,7 +25,6 @@ plugins {
 
 allprojects {
     group 'space.shefer.receipt'
-    version '2020.4'
 }
 
 subprojects {
