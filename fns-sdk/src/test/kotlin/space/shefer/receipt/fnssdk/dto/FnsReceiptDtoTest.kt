@@ -1,8 +1,9 @@
 package space.shefer.receipt.fnssdk.dto
 
-import junit.framework.TestCase.assertEquals
 import org.junit.Test
 import space.shefer.receipt.tests.util.ResourceUtil
+import junit.framework.TestCase.assertEquals
+
 
 class FnsReceiptDtoTest {
 
