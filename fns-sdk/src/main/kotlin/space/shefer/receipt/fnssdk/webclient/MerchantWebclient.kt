@@ -7,6 +7,7 @@ import space.shefer.receipt.fnssdk.primainform.MerchantSuggestion
 import java.net.URI
 
 class MerchantWebclient {
+
     fun getMerchantFromPrimaInformOrNone(inn: String): MerchantSuggestion? {
 
         val responseEntity = RestTemplate().exchange(
