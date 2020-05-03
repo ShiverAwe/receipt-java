@@ -2,6 +2,7 @@ package space.shefer.receipt.rest.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import space.shefer.receipt.fnssdk.dto.FnsItemDto;
 import space.shefer.receipt.fnssdk.dto.FnsReceiptDto;
 import space.shefer.receipt.rest.dto.ReceiptStatus;
@@ -26,6 +27,7 @@ public class FnsReceiptService {
   private final ReceiptRepository receiptRepository;
   private final ItemRepository itemRepository;
 
+  @Transactional
   public Receipt update(FnsReceiptDto receiptDto, Receipt receipt, String provider) {
     receipt.setFn(receiptDto.getFiscalDriveNumber());
     receipt.setFd(String.valueOf(receiptDto.getFiscalDocumentNumber()));
