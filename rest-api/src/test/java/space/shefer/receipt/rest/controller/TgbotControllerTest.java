@@ -15,6 +15,8 @@ import space.shefer.receipt.rest.service.FnsReceiptService;
 import space.shefer.receipt.tests.util.ResourceUtil;
 
 import static org.junit.Assert.assertEquals;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.any;
 import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.mock;
@@ -45,9 +47,7 @@ public class TgbotControllerTest {
     body.setReceiptJson(receiptJson);
     String bodyString = new ObjectMapper().writeValueAsString(body);
 
-    doAnswer(__ -> Receipt.builder().id(807L).build())
-      .when(service)
-      .update(any(), new Receipt(), ReceiptProvider.TGBOT_NALOG.name());
+    doAnswer(__ -> Receipt.builder().id(807L).build()).when(service).update(any(), any(), anyString());
 
     mockMvc
       .perform(post("/tgbot/create")
@@ -57,7 +57,7 @@ public class TgbotControllerTest {
       .andExpect(status().isOk());
 
     ArgumentCaptor<FnsReceiptDto> filterCaptor = ArgumentCaptor.forClass(FnsReceiptDto.class);
-    verify(service).update(filterCaptor.capture(), new Receipt(), ReceiptProvider.TGBOT_NALOG.name());
+    verify(service).update(filterCaptor.capture(), any(), eq(ReceiptProvider.TGBOT_NALOG.name()));
 
     FnsReceiptDto receipt = filterCaptor.getValue();
     assertEquals(1582995060, receipt.getDateTime());
