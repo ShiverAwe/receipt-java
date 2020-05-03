@@ -11,8 +11,6 @@ import space.shefer.receipt.rest.entity.Receipt;
 import space.shefer.receipt.rest.repository.ItemRepository;
 import space.shefer.receipt.rest.repository.ReceiptRepository;
 
-import java.time.LocalDateTime;
-import java.time.ZoneOffset;
 import java.util.EnumSet;
 import java.util.List;
 
@@ -33,7 +31,7 @@ public class FnsReceiptService {
     receipt.setFd(String.valueOf(receiptDto.getFiscalDocumentNumber()));
     receipt.setFp(String.valueOf(receiptDto.getFiscalSign()));
     receipt.setSum(receiptDto.getTotalSum() / 100d);
-    receipt.setDate(LocalDateTime.ofEpochSecond(receiptDto.getDateTime(), 0, ZoneOffset.UTC));
+    receipt.setDate(receiptDto.getDateTime());
     receipt.setStatus(ReceiptStatus.LOADED);
     receipt.setProvider(provider);
 
