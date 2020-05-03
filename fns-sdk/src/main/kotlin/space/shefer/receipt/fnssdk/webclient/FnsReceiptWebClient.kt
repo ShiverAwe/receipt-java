@@ -31,7 +31,11 @@ class FnsReceiptWebClient {
                 String::class.java
         )
         val statusCode = responseEntity.statusCode
-        return responseEntity.body
+
+        if (responseEntity.statusCode.equals(200)) {
+            return responseEntity.body
+        }
+        return null
     }
 
     fun getReceiptExists(fn: String, fd: String, fp: String, time: String, money: Float): Boolean {

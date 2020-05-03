@@ -1,0 +1,13 @@
+version: "3"
+services:
+  rest-api:
+    container_name: receipt-java-rest-api
+    image: vshefer/receipt-java/rest-api
+    ports:
+      - 8080:8080
+    environment:
+      - PROFILE=production
+
+  telegram-bot:
+    container_name: receipt-java-telegram-bot
+    image: vshefer/receipt-java/telegram-bot
