@@ -39,18 +39,7 @@ public class FnsReceiptService {
     receipt.setRawData(objectMapper.writeValueAsString(receiptDto));
     receipt.setProvider("TGBOT_NALOG");
 
-    List<Receipt> matchingReceipts = receiptRepository.getReceipts(
-      ReportMetaFilter.builder()
-        .fn(receipt.getFn())
-        .fd(receipt.getFd())
-        .fp(receipt.getFp())
-        .dateFrom(receipt.getDate())
-        .dateTo(receipt.getDate())
-        .sumMax(receipt.getSum())
-        .sumMin(receipt.getSum())
-        .statuses(EnumSet.of(receipt.getStatus()))
-        .build()
-    );
+    List<Receipt> matchingReceipts = findMatching(receipt);
 
     if (!matchingReceipts.isEmpty()) {
       return matchingReceipts.get(0);
@@ -69,6 +58,21 @@ public class FnsReceiptService {
     }
 
     return savedReceipt;
+  }
+
+  private List<Receipt> findMatching(Receipt receipt) {
+    return receiptRepository.getReceipts(
+      ReportMetaFilter.builder()
+        .fn(receipt.getFn())
+        .fd(receipt.getFd())
+        .fp(receipt.getFp())
+        .dateFrom(receipt.getDate())
+        .dateTo(receipt.getDate())
+        .sumMax(receipt.getSum())
+        .sumMin(receipt.getSum())
+        .statuses(EnumSet.of(receipt.getStatus()))
+        .build()
+    );
   }
 
 }
