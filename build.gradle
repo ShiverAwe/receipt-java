@@ -66,6 +66,7 @@ subprojects {
             dependency 'commons-codec:commons-codec:1.9'
             dependency "com.google.code.findbugs:jsr305:3.0.2"
             dependency "com.h2database:h2:1.4.200"
+            dependency 'com.vk.api:sdk:1.0.6'
             dependency 'com.vladmihalcea:hibernate-types-52:2.4.2'
             dependency "org.apache.commons:commons-lang3:3.9"
             dependency "org.postgresql:postgresql:42.2.10"

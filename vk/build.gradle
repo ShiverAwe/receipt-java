@@ -1,0 +1,13 @@
+plugins {
+    id 'io.freefair.lombok'
+}
+
+dependencies {
+    implementation 'com.google.code.findbugs:jsr305'
+    implementation 'com.vk.api:sdk'
+    implementation 'org.projectlombok:lombok'
+    implementation 'org.springframework:spring-context'
+    implementation 'org.springframework:spring-core'
+
+    testImplementation 'junit:junit'
+}
