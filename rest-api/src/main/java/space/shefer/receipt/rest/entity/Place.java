@@ -1,30 +1,35 @@
 package space.shefer.receipt.rest.entity;
 
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-import javax.persistence.*;
-import java.util.List;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 
 @Entity
-@Table(name = "place")
-@Data
+@Table(name = "place2")
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class Place {
+public class Place extends BaseUuidIdEntity {
 
-  @Id
-  @SequenceGenerator(name="place_id_seq",sequenceName="place_id_seq", allocationSize=1)
-  @GeneratedValue(strategy=GenerationType.SEQUENCE, generator="place_id_seq")
-  @Column(name = "id", nullable = false)
-  private Long id;
+  @Column(name = "inn", nullable = false)
+  private String inn;
 
-  @Column(name = "text", nullable = false)
-  private String text; // TODO Why text, not name?
+  @Column(name = "simple_name")
+  private String simpleName;
 
-  @OneToMany(fetch = FetchType.LAZY)
-  @JoinColumn(name ="place_id")
-  private List<Receipt> receipts;
+  @Column(name = "full_name")
+  private String fullName;
+
+  @Column(name = "address")
+  private String address;
+
+  @Column(name = "mcc")
+  private String mcc;
 
 }
