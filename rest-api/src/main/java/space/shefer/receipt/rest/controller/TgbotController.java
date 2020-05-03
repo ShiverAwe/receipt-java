@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-import space.shefer.receipt.fnssdk.dto.FnsReceiptDto;
+import space.shefer.receipt.fnssdk.dto.FnsAppReceiptDto;
 import space.shefer.receipt.rest.dto.ReceiptProvider;
 import space.shefer.receipt.rest.dto.TgbotCreateBody;
 import space.shefer.receipt.rest.entity.Receipt;
@@ -24,9 +24,9 @@ public class TgbotController {
 
   @RequestMapping(value = "/create", method = RequestMethod.POST)
   public String create(@RequestBody TgbotCreateBody body) {
-    FnsReceiptDto fnsReceiptDto = FnsReceiptDto.fromString(body.getReceiptJson());
+    FnsAppReceiptDto fnsAppReceiptDto = FnsAppReceiptDto.fromString(body.getReceiptJson());
     return receiptService
-      .update(fnsReceiptDto, new Receipt(), ReceiptProvider.TGBOT_NALOG.name())
+      .update(fnsAppReceiptDto, new Receipt(), ReceiptProvider.TGBOT_NALOG.name())
       .getId()
       .toString();
   }

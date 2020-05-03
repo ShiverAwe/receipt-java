@@ -14,6 +14,8 @@ import space.shefer.receipt.rest.entity.Receipt;
 import space.shefer.receipt.rest.service.FnsReceiptService;
 import space.shefer.receipt.tests.util.ResourceUtil;
 
+import java.time.LocalDateTime;
+
 import static org.junit.Assert.assertEquals;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
@@ -60,7 +62,7 @@ public class TgbotControllerTest {
     verify(service).update(filterCaptor.capture(), any(), eq(ReceiptProvider.TGBOT_NALOG.name()));
 
     FnsReceiptDto receipt = filterCaptor.getValue();
-    assertEquals(1582995060, receipt.getDateTime());
+    assertEquals(LocalDateTime.of(2020, 2, 29, 16, 51), receipt.getDateTime());
     assertEquals(47900, receipt.getTotalSum());
     assertEquals("9289000100408074", receipt.getFiscalDriveNumber());
     // TODO check other fields

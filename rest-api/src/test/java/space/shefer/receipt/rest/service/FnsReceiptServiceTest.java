@@ -3,6 +3,7 @@ package space.shefer.receipt.rest.service;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
+import space.shefer.receipt.fnssdk.dto.FnsAppReceiptDto;
 import space.shefer.receipt.fnssdk.dto.FnsItemDto;
 import space.shefer.receipt.fnssdk.dto.FnsReceiptDto;
 import space.shefer.receipt.rest.dto.ReceiptProvider;
@@ -44,9 +45,8 @@ public class FnsReceiptServiceTest {
   @Test
   public void create() {
     LocalDateTime dateTime = LocalDateTime.of(2020, 3, 4, 20, 24, 45);
-    int dateTimeEpoch = 1583353485;
 
-    FnsReceiptDto fnsReceiptDto = getFnsReceiptDto(dateTimeEpoch);
+    FnsReceiptDto fnsReceiptDto = getFnsReceiptDto(dateTime);
 
     service.update(fnsReceiptDto, new Receipt(), ReceiptProvider.TGBOT_NALOG.name());
 
@@ -79,7 +79,8 @@ public class FnsReceiptServiceTest {
 
   @Test
   public void create_duplicatesIgnored() {
-    FnsReceiptDto fnsReceiptDto = getFnsReceiptDto(1583353485);
+    LocalDateTime dateTime = LocalDateTime.of(2020, 3, 4, 20, 24, 45);
+    FnsReceiptDto fnsReceiptDto = getFnsReceiptDto(dateTime);
 
     Receipt persistedDuplicateReceipt = new Receipt();
     doAnswer((invocation) -> singletonList(persistedDuplicateReceipt)).when(receiptRepository).getReceipts(any());
@@ -90,14 +91,14 @@ public class FnsReceiptServiceTest {
     assertSame(persistedDuplicateReceipt, result);
   }
 
-  private FnsReceiptDto getFnsReceiptDto(int dateTimeEpoch) {
-    FnsReceiptDto fnsReceiptDto = new FnsReceiptDto();
+  private FnsAppReceiptDto getFnsReceiptDto(LocalDateTime dateTime) {
+    FnsAppReceiptDto fnsReceiptDto = new FnsAppReceiptDto();
     fnsReceiptDto.setTotalSum(222222);
     fnsReceiptDto.setFiscalDriveNumber("444444");
     fnsReceiptDto.setFiscalDocumentNumber(111111);
     fnsReceiptDto.setFiscalSign(333333);
 
-    fnsReceiptDto.setDateTime(dateTimeEpoch);
+    fnsReceiptDto.setDateTime(dateTime);
 
     FnsItemDto fnsItemDto1 = new FnsItemDto();
     fnsItemDto1.setName("fnsItemName1");

@@ -1,36 +1,26 @@
 package space.shefer.receipt.fnssdk.dto
 
-import com.fasterxml.jackson.annotation.JsonFormat
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
-import com.fasterxml.jackson.annotation.JsonInclude
-import com.fasterxml.jackson.databind.DeserializationFeature
-import com.fasterxml.jackson.databind.ObjectMapper
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
-import com.fasterxml.jackson.module.kotlin.KotlinModule
 import java.time.LocalDateTime
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-class FnsReceiptDto {
+abstract class FnsReceiptDto {
+    abstract var dateTime: LocalDateTime?
     var cashTotalSum: Int = 0 // 0
-    /**
-     * Дата и время создания чека в Unix Timestamp
-     */
-
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss", timezone = "utc")
-    @JsonInclude(JsonInclude.Include.ALWAYS)
-    var dateTime: LocalDateTime? = null // 1559062560
-
     var discount: Double? = null // null
     var discountSum: Double? = null // null
     var ecashTotalSum: Int = 0 // 66430
+
     /**
      * Фискальный Документ. ФД.
      */
     var fiscalDocumentNumber: Int = 0 // 28649
+
     /**
      * Фискальный Номер. ФН.
      */
     var fiscalDriveNumber: String = "" // 9280440300037581
+
     /**
      * Фискальный признак. ФП.
      */
@@ -50,20 +40,11 @@ class FnsReceiptDto {
     var retailPlaceAddress: String? = null // 197341, Санкт-Петербург, б-р. Серебристый, д. 19, к. 1
     var shiftNumber: Int = 0 // 57
     var taxationType: Int = 0 // 1
+
     /**
      * Сумма покупки в копейках
      */
     var totalSum: Int = 0 // 66430
     var user: String? = null // ООО "ТД Интерторг"
     var userInn: String? = null // 7842005813
-
-    companion object {
-        private val objectMapper = ObjectMapper()
-                .registerModule(KotlinModule())
-                .registerModule(JavaTimeModule())
-                .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
-
-        @JvmStatic
-        fun fromString(string: String): FnsReceiptDto = objectMapper.readValue(string, FnsReceiptDto::class.java)
-    }
 }
