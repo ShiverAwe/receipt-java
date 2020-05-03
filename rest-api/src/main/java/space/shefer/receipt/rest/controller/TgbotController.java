@@ -26,7 +26,7 @@ public class TgbotController {
   public String create(@RequestBody TgbotCreateBody body) {
     FnsReceiptDto fnsReceiptDto = FnsReceiptDto.fromString(body.getReceiptJson());
     return receiptService
-      .create(fnsReceiptDto, new Receipt(), ReceiptProvider.TGBOT_NALOG.name())
+      .update(fnsReceiptDto, new Receipt(), ReceiptProvider.TGBOT_NALOG.name())
       .getId()
       .toString();
   }

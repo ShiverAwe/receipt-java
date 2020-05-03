@@ -28,7 +28,7 @@ public class FnsReceiptService {
   private final ReceiptRepository receiptRepository;
   private final ItemRepository itemRepository;
 
-  public Receipt create(FnsReceiptDto receiptDto, Receipt receipt, String provider) {
+  public Receipt update(FnsReceiptDto receiptDto, Receipt receipt, String provider) {
     receipt.setFn(receiptDto.getFiscalDriveNumber());
     receipt.setFd(String.valueOf(receiptDto.getFiscalDocumentNumber()));
     receipt.setFp(String.valueOf(receiptDto.getFiscalSign()));

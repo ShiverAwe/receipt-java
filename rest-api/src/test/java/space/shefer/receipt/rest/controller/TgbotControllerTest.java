@@ -47,7 +47,7 @@ public class TgbotControllerTest {
 
     doAnswer(__ -> Receipt.builder().id(807L).build())
       .when(service)
-      .create(any(), new Receipt(), ReceiptProvider.TGBOT_NALOG.name());
+      .update(any(), new Receipt(), ReceiptProvider.TGBOT_NALOG.name());
 
     mockMvc
       .perform(post("/tgbot/create")
@@ -57,7 +57,7 @@ public class TgbotControllerTest {
       .andExpect(status().isOk());
 
     ArgumentCaptor<FnsReceiptDto> filterCaptor = ArgumentCaptor.forClass(FnsReceiptDto.class);
-    verify(service).create(filterCaptor.capture(), new Receipt(), ReceiptProvider.TGBOT_NALOG.name());
+    verify(service).update(filterCaptor.capture(), new Receipt(), ReceiptProvider.TGBOT_NALOG.name());
 
     FnsReceiptDto receipt = filterCaptor.getValue();
     assertEquals(1582995060, receipt.getDateTime());

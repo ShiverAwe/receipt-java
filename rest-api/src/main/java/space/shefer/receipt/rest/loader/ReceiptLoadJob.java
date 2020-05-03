@@ -44,7 +44,7 @@ public class ReceiptLoadJob {
         );
 
         if (rawReceipt != null) {
-          fnsReceiptService.create(FnsReceiptDto.fromString(rawReceipt), receipt, ReceiptProvider.NALOG.name());
+          fnsReceiptService.update(FnsReceiptDto.fromString(rawReceipt), receipt, ReceiptProvider.NALOG.name());
         }
         else {
           receiptService.setStatus(receipt, ReceiptStatus.FAILED);

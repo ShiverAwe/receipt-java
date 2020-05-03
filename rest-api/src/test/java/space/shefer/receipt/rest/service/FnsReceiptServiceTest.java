@@ -48,7 +48,7 @@ public class FnsReceiptServiceTest {
 
     FnsReceiptDto fnsReceiptDto = getFnsReceiptDto(dateTimeEpoch);
 
-    service.create(fnsReceiptDto, new Receipt(), ReceiptProvider.TGBOT_NALOG.name());
+    service.update(fnsReceiptDto, new Receipt(), ReceiptProvider.TGBOT_NALOG.name());
 
     ArgumentCaptor<Receipt> receiptCaptor = ArgumentCaptor.forClass(Receipt.class);
     verify(receiptRepository).save(receiptCaptor.capture());
@@ -84,7 +84,7 @@ public class FnsReceiptServiceTest {
     Receipt persistedDuplicateReceipt = new Receipt();
     doAnswer((invocation) -> singletonList(persistedDuplicateReceipt)).when(receiptRepository).getReceipts(any());
 
-    Receipt result = service.create(fnsReceiptDto, new Receipt(), ReceiptProvider.TGBOT_NALOG.name());
+    Receipt result = service.update(fnsReceiptDto, new Receipt(), ReceiptProvider.TGBOT_NALOG.name());
 
     verify(receiptRepository, never()).save(any());
     assertSame(persistedDuplicateReceipt, result);
