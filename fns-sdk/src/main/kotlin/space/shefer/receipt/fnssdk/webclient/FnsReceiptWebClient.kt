@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Value
 import org.springframework.http.HttpEntity
 import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpMethod
+import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Component
 import org.springframework.web.client.RestTemplate
 import java.net.URI
@@ -32,7 +33,7 @@ class FnsReceiptWebClient {
         )
         val statusCode = responseEntity.statusCode
 
-        if (responseEntity.statusCode.equals(200)) {
+        if (responseEntity.statusCode == HttpStatus.OK) {
             return responseEntity.body
         }
         return null
@@ -50,7 +51,7 @@ class FnsReceiptWebClient {
                 HttpEntity<String>(headers),
                 String::class.java
         )
-        return responseEntity.statusCode?.value() == 204
+        return responseEntity.statusCode == HttpStatus.NO_CONTENT
 
     }
 
