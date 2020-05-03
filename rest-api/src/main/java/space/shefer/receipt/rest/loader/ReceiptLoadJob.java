@@ -3,7 +3,7 @@ package space.shefer.receipt.rest.loader;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
-import space.shefer.receipt.fnssdk.dto.FnsReceiptDto;
+import space.shefer.receipt.fnssdk.dto.FnsResponseDto;
 import space.shefer.receipt.fnssdk.service.FnsService;
 import space.shefer.receipt.rest.dto.ReceiptProvider;
 import space.shefer.receipt.rest.dto.ReceiptStatus;
@@ -44,7 +44,11 @@ public class ReceiptLoadJob {
         );
 
         if (rawReceipt != null) {
-          fnsReceiptService.update(FnsReceiptDto.fromString(rawReceipt), receipt, ReceiptProvider.NALOG.name());
+          fnsReceiptService.update(
+            FnsResponseDto.fromString(rawReceipt).document.receipt,
+            receipt,
+            ReceiptProvider.NALOG.name()
+          );
         }
         else {
           receiptService.setStatus(receipt, ReceiptStatus.FAILED);
