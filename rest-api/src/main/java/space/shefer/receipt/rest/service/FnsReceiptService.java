@@ -1,6 +1,8 @@
 package space.shefer.receipt.rest.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.RequiredArgsConstructor;
+import lombok.SneakyThrows;
 import org.springframework.stereotype.Service;
 import space.shefer.receipt.fnssdk.dto.FnsItemDto;
 import space.shefer.receipt.fnssdk.dto.FnsReceiptDto;
@@ -17,17 +19,15 @@ import java.util.EnumSet;
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class FnsReceiptService {
 
-  @Autowired
-  public FnsReceiptService(ReceiptRepository receiptRepository, ItemRepository itemRepository) {
-    this.receiptRepository = receiptRepository;
-    this.itemRepository = itemRepository;
-  }
+  private static ObjectMapper objectMapper = new ObjectMapper();
 
   private final ReceiptRepository receiptRepository;
   private final ItemRepository itemRepository;
 
+  @SneakyThrows
   public Receipt create(FnsReceiptDto receiptDto) {
     Receipt receipt = new Receipt();
     receipt.setFn(receiptDto.getFiscalDriveNumber());
@@ -36,20 +36,10 @@ public class FnsReceiptService {
     receipt.setSum(receiptDto.getTotalSum() / 100d);
     receipt.setDate(LocalDateTime.ofEpochSecond(receiptDto.getDateTime(), 0, ZoneOffset.UTC));
     receipt.setStatus(ReceiptStatus.LOADED);
+    receipt.setRawData(objectMapper.writeValueAsString(receiptDto));
     receipt.setProvider("TGBOT_NALOG");
 
-    List<Receipt> matchingReceipts = receiptRepository.getReceipts(
-      ReportMetaFilter.builder()
-        .fn(receipt.getFn())
-        .fd(receipt.getFd())
-        .fp(receipt.getFp())
-        .dateFrom(receipt.getDate())
-        .dateTo(receipt.getDate())
-        .sumMax(receipt.getSum())
-        .sumMin(receipt.getSum())
-        .statuses(EnumSet.of(receipt.getStatus()))
-        .build()
-    );
+    List<Receipt> matchingReceipts = findMatching(receipt);
 
     if (!matchingReceipts.isEmpty()) {
       return matchingReceipts.get(0);
@@ -68,6 +58,21 @@ public class FnsReceiptService {
     }
 
     return savedReceipt;
+  }
+
+  private List<Receipt> findMatching(Receipt receipt) {
+    return receiptRepository.getReceipts(
+      ReportMetaFilter.builder()
+        .fn(receipt.getFn())
+        .fd(receipt.getFd())
+        .fp(receipt.getFp())
+        .dateFrom(receipt.getDate())
+        .dateTo(receipt.getDate())
+        .sumMax(receipt.getSum())
+        .sumMin(receipt.getSum())
+        .statuses(EnumSet.of(receipt.getStatus()))
+        .build()
+    );
   }
 
 }

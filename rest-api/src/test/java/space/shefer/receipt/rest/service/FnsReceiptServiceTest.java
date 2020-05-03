@@ -17,6 +17,8 @@ import java.util.List;
 
 import static java.util.Collections.singletonList;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertSame;
 import static org.mockito.Mockito.any;
 import static org.mockito.Mockito.doAnswer;
@@ -60,6 +62,8 @@ public class FnsReceiptServiceTest {
     assertEquals(dateTime, receipt.getDate());
     assertEquals(receipt.getStatus(), ReceiptStatus.LOADED);
     assertEquals("TGBOT_NALOG", receipt.getProvider());
+    assertNotNull(receipt.getRawData());
+    assertFalse(receipt.getRawData().isEmpty());
 
     ArgumentCaptor<Item> itemCaptor = ArgumentCaptor.forClass(Item.class);
     verify(itemRepository, times(2)).save(itemCaptor.capture());
