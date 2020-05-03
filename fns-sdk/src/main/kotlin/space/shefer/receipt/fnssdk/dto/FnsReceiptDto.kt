@@ -5,6 +5,10 @@ import java.time.LocalDateTime
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 abstract class FnsReceiptDto {
+    /**
+     * The dateTime parameter had to be made abstract due to differences
+     * in date formats in the FNS api and in the tax service mobile application.
+     */
     abstract var dateTime: LocalDateTime?
     var cashTotalSum: Int = 0 // 0
     var discount: Double? = null // null
