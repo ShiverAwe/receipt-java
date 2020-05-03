@@ -3,11 +3,10 @@ package space.shefer.receipt.fnssdk.service
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import space.shefer.receipt.fnssdk.webclient.FnsReceiptWebClient
-import java.lang.Exception
 import java.util.concurrent.TimeUnit
 
 @Service
-class FnsReceiptService {
+class FnsService {
 
     @Autowired
     lateinit var fnsReceiptService: FnsReceiptWebClient

@@ -1,5 +1,8 @@
 package space.shefer.receipt.fnssdk.dto
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties
+
+@JsonIgnoreProperties(ignoreUnknown = true)
 class FnsItemDto {
     var name: String = ""  // Полное название товара
     var price: Int = 0   // Стоитость товара в копейках

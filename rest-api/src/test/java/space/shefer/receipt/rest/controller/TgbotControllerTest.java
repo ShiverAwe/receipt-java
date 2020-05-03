@@ -8,12 +8,17 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import space.shefer.receipt.fnssdk.dto.FnsReceiptDto;
+import space.shefer.receipt.rest.dto.ReceiptProvider;
 import space.shefer.receipt.rest.dto.TgbotCreateBody;
 import space.shefer.receipt.rest.entity.Receipt;
 import space.shefer.receipt.rest.service.FnsReceiptService;
 import space.shefer.receipt.tests.util.ResourceUtil;
 
+import java.time.LocalDateTime;
+
 import static org.junit.Assert.assertEquals;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.any;
 import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.mock;
@@ -44,7 +49,7 @@ public class TgbotControllerTest {
     body.setReceiptJson(receiptJson);
     String bodyString = new ObjectMapper().writeValueAsString(body);
 
-    doAnswer(__ -> Receipt.builder().id(807L).build()).when(service).create(any());
+    doAnswer(__ -> Receipt.builder().id(807L).build()).when(service).update(any(), any(), anyString());
 
     mockMvc
       .perform(post("/tgbot/create")
@@ -54,10 +59,10 @@ public class TgbotControllerTest {
       .andExpect(status().isOk());
 
     ArgumentCaptor<FnsReceiptDto> filterCaptor = ArgumentCaptor.forClass(FnsReceiptDto.class);
-    verify(service).create(filterCaptor.capture());
+    verify(service).update(filterCaptor.capture(), any(), eq(ReceiptProvider.TGBOT_NALOG.name()));
 
     FnsReceiptDto receipt = filterCaptor.getValue();
-    assertEquals(1582995060, receipt.getDateTime());
+    assertEquals(LocalDateTime.of(2020, 2, 29, 16, 51), receipt.getDateTime());
     assertEquals(47900, receipt.getTotalSum());
     assertEquals("9289000100408074", receipt.getFiscalDriveNumber());
     // TODO check other fields
