@@ -35,6 +35,8 @@ PUT /receipts
   "offset": 12, // [optional] integer
   "sort": "DATE", // [optional] "DATE" (date) or null (id)
   "asc": true, // [optional] boolean
+  "id": "123421", 
+  "status":"LOADED"
 }
 ```
 ```json
