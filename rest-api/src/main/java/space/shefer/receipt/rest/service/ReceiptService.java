@@ -35,6 +35,22 @@ public class ReceiptService {
   }
 
   public Long create(ReceiptCreateDto receipt) {
+    List<Receipt> matchingReceipts = receiptRepository.getReceipts(
+      ReportMetaFilter.builder()
+        .fn(receipt.getFn())
+        .fd(receipt.getFd())
+        .fp(receipt.getFp())
+        .dateFrom(receipt.getDate())
+        .dateTo(receipt.getDate())
+        .sumMax(receipt.getSum())
+        .sumMin(receipt.getSum())
+        .build()
+    );
+
+    if (!matchingReceipts.isEmpty()) {
+      return matchingReceipts.get(0).getId();
+    }
+
     Receipt entity = new Receipt();
     entity.setFrom(receipt);
     entity.setStatus(ReceiptStatus.IDLE);
