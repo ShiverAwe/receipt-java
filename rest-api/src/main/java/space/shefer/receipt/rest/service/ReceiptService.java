@@ -55,8 +55,7 @@ public class ReceiptService {
     Receipt entity = new Receipt();
     entity.setFrom(receipt);
     entity.setStatus(ReceiptStatus.IDLE);
-    Receipt savedReceipt = receiptRepository.save(entity);
-    return savedReceipt;
+    return receiptRepository.save(entity);
   }
 
   public Receipt setStatus(Receipt receipt, ReceiptStatus status) {
