@@ -13,8 +13,8 @@ POST /create
     "sum": "123.45", // [required] float 
 }
 {
-  "id": "123421", 
-  "status":"LOADED"
+   "id": "123421", 
+   "status":"LOADED"
 }
 ```
 Returns Id of created receipt
