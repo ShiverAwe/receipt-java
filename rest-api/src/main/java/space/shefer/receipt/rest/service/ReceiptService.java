@@ -5,7 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import space.shefer.receipt.rest.dto.ReceiptCreateDto;
-import space.shefer.receipt.rest.dto.ReceiptDeleteDto;
+import space.shefer.receipt.rest.dto.ReceiptCreateNewFormatDto;
 import space.shefer.receipt.rest.dto.ReceiptMetaDto;
 import space.shefer.receipt.rest.dto.ReceiptStatus;
 import space.shefer.receipt.rest.dto.ReportMetaFilter;
@@ -35,7 +35,7 @@ public class ReceiptService {
       .collect(Collectors.toList());
   }
 
-  public ReceiptDeleteDto create(ReceiptCreateDto receipt) {
+  public Receipt create(ReceiptCreateDto receipt) {
     List<Receipt> matchingReceipts = receiptRepository.getReceipts(
       ReportMetaFilter.builder()
         .fn(receipt.getFn())
@@ -49,20 +49,14 @@ public class ReceiptService {
     );
 
     if (!matchingReceipts.isEmpty()) {
-      ReceiptDeleteDto receiptDeleteDto = new ReceiptDeleteDto();
-      receiptDeleteDto.setStatus(matchingReceipts.get(0).getStatus());
-      receiptDeleteDto.setId(matchingReceipts.get(0).getId());
-      return receiptDeleteDto;
+      return matchingReceipts.get(0);
     }
 
     Receipt entity = new Receipt();
     entity.setFrom(receipt);
     entity.setStatus(ReceiptStatus.IDLE);
     Receipt savedReceipt = receiptRepository.save(entity);
-    ReceiptDeleteDto receiptDeleteDto = new ReceiptDeleteDto();
-    receiptDeleteDto.setStatus(savedReceipt.getStatus());
-    receiptDeleteDto.setId(savedReceipt.getId());
-    return receiptDeleteDto;
+    return savedReceipt;
   }
 
   public Receipt setStatus(Receipt receipt, ReceiptStatus status) {

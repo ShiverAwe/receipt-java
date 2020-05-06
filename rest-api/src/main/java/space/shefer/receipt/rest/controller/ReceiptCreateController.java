@@ -6,7 +6,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import space.shefer.receipt.rest.dto.ReceiptCreateDto;
-import space.shefer.receipt.rest.dto.ReceiptDeleteDto;
+import space.shefer.receipt.rest.dto.ReceiptCreateNewFormatDto;
+import space.shefer.receipt.rest.entity.Receipt;
 import space.shefer.receipt.rest.service.ReceiptService;
 
 @RestController
@@ -20,8 +21,12 @@ public class ReceiptCreateController {
   }
 
   @RequestMapping(value = "/create", method = RequestMethod.POST)
-  public ReceiptDeleteDto create(@RequestBody ReceiptCreateDto query) {
-    return receiptService.create(query);
+  public ReceiptCreateNewFormatDto create(@RequestBody ReceiptCreateDto query) {
+    ReceiptCreateNewFormatDto receiptCreateNewFormatDto = new ReceiptCreateNewFormatDto();
+    Receipt receipt = receiptService.create(query);
+    receiptCreateNewFormatDto.setId(receipt.getId());
+    receiptCreateNewFormatDto.setStatus(receipt.getStatus());
+    return receiptCreateNewFormatDto;
   }
 
 }

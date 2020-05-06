@@ -5,9 +5,8 @@ import lombok.Data;
 import javax.annotation.Nullable;
 
 @Data
-public class ReceiptDeleteDto {
+public class ReceiptCreateNewFormatDto {
 
-  @Nullable
   private ReceiptStatus status;
   private Long id;
 
