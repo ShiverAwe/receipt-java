@@ -66,9 +66,7 @@ public class ReceiptService {
       if (receipt.get().getStatus() == ReceiptStatus.LOADED) {
         throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Receipt is already loaded");
       }
-      else {
-        receiptRepository.deleteById(id);
-      }
+      receiptRepository.deleteById(id);
     }
   }
 
