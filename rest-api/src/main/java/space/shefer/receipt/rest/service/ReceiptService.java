@@ -3,7 +3,9 @@ package space.shefer.receipt.rest.service;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 import space.shefer.receipt.rest.dto.ReceiptCreateDto;
 import space.shefer.receipt.rest.dto.ReceiptMetaDto;
 import space.shefer.receipt.rest.dto.ReceiptStatus;
@@ -12,6 +14,7 @@ import space.shefer.receipt.rest.entity.Receipt;
 import space.shefer.receipt.rest.repository.ReceiptRepository;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -70,6 +73,16 @@ public class ReceiptService {
   private void setDefaultPlaceIfNull(ReceiptMetaDto i) {
     if (i.getPlace() == null && !StringUtils.isBlank(defaultPlace)) {
       i.setPlace(defaultPlace);
+    }
+  }
+
+  public void deleteReceipt(long id) {
+    Optional<Receipt> receipt = receiptRepository.findById(id);
+    if (receipt.isPresent()) {
+      if (receipt.get().getStatus() == ReceiptStatus.LOADED) {
+        throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Receipt is already loaded");
+      }
+      receiptRepository.deleteById(id);
     }
   }
 
