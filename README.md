@@ -12,6 +12,10 @@ POST /create
     "fp": "12345678", // [required] string 
     "sum": "123.45", // [required] float 
 }
+{
+  "id": "123421", 
+  "status":"LOADED"
+}
 ```
 Returns Id of created receipt
 ```json
@@ -84,13 +88,4 @@ PUT /items
     "amount": 0.159
   }
 ]
-```
-
-### Create
-```
-POST /create
-{
-  "id": "123421", 
-  "status":"LOADED"
-}
 ```

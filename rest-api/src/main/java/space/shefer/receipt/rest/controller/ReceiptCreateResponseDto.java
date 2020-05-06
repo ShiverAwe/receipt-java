@@ -11,12 +11,12 @@ import space.shefer.receipt.rest.entity.Receipt;
 import space.shefer.receipt.rest.service.ReceiptService;
 
 @RestController
-public class ReceiptCreateController {
+public class ReceiptCreateResponseDto {
 
   private final ReceiptService receiptService;
 
   @Autowired
-  public ReceiptCreateController(ReceiptService receiptService) {
+  public ReceiptCreateResponseDto(ReceiptService receiptService) {
     this.receiptService = receiptService;
   }
 
