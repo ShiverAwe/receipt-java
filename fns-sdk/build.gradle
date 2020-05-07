@@ -1,13 +1,13 @@
 plugins {
     id 'kotlin-spring'
-    id 'org.springframework.boot' apply false
 }
 
 dependencies {
+    implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310'
     implementation 'com.fasterxml.jackson.module:jackson-module-kotlin'
     implementation "org.apache.commons:commons-lang3"
     implementation 'org.jetbrains.kotlin:kotlin-stdlib-jdk8'
-    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework:spring-web'
     implementation 'org.springframework:spring-context-support'
 
     testImplementation project(':test-util')

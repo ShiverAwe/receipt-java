@@ -8,10 +8,10 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import space.shefer.receipt.fnssdk.dto.FnsReceiptDto;
-import space.shefer.receipt.rest.dto.ReceiptProvider;
+import space.shefer.receipt.platform.core.dto.ReceiptProvider;
+import space.shefer.receipt.platform.core.entity.Receipt;
+import space.shefer.receipt.platform.core.service.FnsReceiptService;
 import space.shefer.receipt.rest.dto.TgbotCreateBody;
-import space.shefer.receipt.rest.entity.Receipt;
-import space.shefer.receipt.rest.service.FnsReceiptService;
 import space.shefer.receipt.tests.util.ResourceUtil;
 
 import java.time.LocalDateTime;

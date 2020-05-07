@@ -1,12 +1,11 @@
 plugins {
     id 'kotlin-jpa'
     id 'kotlin-spring'
-    id 'org.springframework.boot' apply false
 }
 
 dependencies {
     implementation "com.google.code.findbugs:jsr305"
     implementation 'org.jetbrains.kotlin:kotlin-stdlib'
-    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'org.springframework.data:spring-data-jpa'
     implementation 'org.springframework.boot:spring-boot-starter-test'
 }

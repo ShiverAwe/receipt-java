@@ -4,17 +4,15 @@ plugins {
 }
 
 dependencies {
+    implementation project(':core')
     implementation project(':fns-sdk')
     implementation project(':rest-api-dto')
 
-    implementation "com.google.code.findbugs:jsr305"
-    implementation 'com.vladmihalcea:hibernate-types-52'
+    implementation 'com.google.code.findbugs:jsr305'
     implementation 'commons-codec:commons-codec'
-    implementation "org.apache.commons:commons-lang3"
+    implementation 'org.apache.commons:commons-lang3'
     implementation 'org.springframework.boot:spring-boot-starter-web'
-    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation 'org.springframework:spring-context-support'
-    implementation 'org.postgresql:postgresql'
     implementation "org.projectlombok:lombok"
 
     testImplementation project(':test-util')
