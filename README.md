@@ -17,7 +17,7 @@ POST /create
    "status": "LOADED"
 }
 ```
-Returns id and status of created receipt
+Returns header of created receipt
 ```json
 {
    "id": "123421", 
