@@ -6,10 +6,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import space.shefer.receipt.fnssdk.dto.FnsAppReceiptDto;
-import space.shefer.receipt.rest.dto.ReceiptProvider;
+import space.shefer.receipt.platform.core.dto.ReceiptProvider;
+import space.shefer.receipt.platform.core.entity.Receipt;
+import space.shefer.receipt.platform.core.service.FnsReceiptService;
 import space.shefer.receipt.rest.dto.TgbotCreateBody;
-import space.shefer.receipt.rest.entity.Receipt;
-import space.shefer.receipt.rest.service.FnsReceiptService;
 
 @RestController
 @RequestMapping("tgbot")

@@ -8,6 +8,12 @@ services:
     environment:
       - PROFILE=production
 
+  jobs:
+    container_name: receipt-java-jobs
+    image: vshefer/receipt-java/jobs
+    environment:
+      - PROFILE=production
+
   telegram-bot:
     container_name: receipt-java-telegram-bot
     image: vshefer/receipt-java/telegram-bot

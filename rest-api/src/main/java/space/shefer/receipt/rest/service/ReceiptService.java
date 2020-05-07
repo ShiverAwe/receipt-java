@@ -6,12 +6,13 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
+import space.shefer.receipt.platform.core.dto.ReceiptStatus;
+import space.shefer.receipt.platform.core.dto.ReportMetaFilter;
+import space.shefer.receipt.platform.core.entity.Receipt;
+import space.shefer.receipt.platform.core.repository.ReceiptRepository;
+import space.shefer.receipt.rest.converters.ReceiptMetaConverter;
 import space.shefer.receipt.rest.dto.ReceiptCreateDto;
 import space.shefer.receipt.rest.dto.ReceiptMetaDto;
-import space.shefer.receipt.rest.dto.ReceiptStatus;
-import space.shefer.receipt.rest.dto.ReportMetaFilter;
-import space.shefer.receipt.rest.entity.Receipt;
-import space.shefer.receipt.rest.repository.ReceiptRepository;
 
 import java.util.List;
 import java.util.Optional;
@@ -34,7 +35,7 @@ public class ReceiptService {
 
   public List<ReceiptMetaDto> getReceipts(ReportMetaFilter metaFilter) {
     List<Receipt> receipts = receiptRepository.getReceipts(metaFilter);
-    return receipts.stream().map(Receipt::toDto)
+    return receipts.stream().map(ReceiptMetaConverter::toDto)
       .peek(this::setDefaultPlaceIfNull)
       .peek(receipt -> receipt.setMerchantLogoUrl(merchantLogoService.getUrlForImagePlace(receipt.getPlace())))
       .collect(Collectors.toList());
@@ -58,18 +59,9 @@ public class ReceiptService {
     }
 
     Receipt entity = new Receipt();
-    entity.setFrom(receipt);
+    ReceiptMetaConverter.map(receipt, entity);
     entity.setStatus(ReceiptStatus.IDLE);
     return receiptRepository.save(entity);
-  }
-
-  public Receipt setStatus(Receipt receipt, ReceiptStatus status) {
-    receipt.setStatus(status);
-    return receiptRepository.save(receipt);
-  }
-
-  public List<Receipt> getAllIdle() {
-    return receiptRepository.findAllIdle();
   }
 
   private void setDefaultPlaceIfNull(ReceiptMetaDto i) {

@@ -1,6 +1,7 @@
 package space.shefer.receipt.rest.dto;
 
 import lombok.Data;
+import space.shefer.receipt.platform.core.dto.ReceiptStatus;
 
 import javax.annotation.Nullable;
 import java.time.LocalDateTime;

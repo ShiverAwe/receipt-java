@@ -6,10 +6,10 @@ import org.mockito.ArgumentCaptor;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import space.shefer.receipt.rest.dto.ReportMetaFilter;
+import space.shefer.receipt.platform.core.dto.ReportMetaFilter;
+import space.shefer.receipt.platform.core.util.DateUtil;
 import space.shefer.receipt.rest.service.ItemService;
 import space.shefer.receipt.rest.service.ReceiptService;
-import space.shefer.receipt.rest.util.DateUtil;
 import space.shefer.receipt.tests.util.ResourceUtil;
 
 import static org.junit.Assert.assertEquals;

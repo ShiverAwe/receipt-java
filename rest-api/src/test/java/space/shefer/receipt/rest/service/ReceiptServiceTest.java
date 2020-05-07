@@ -3,12 +3,12 @@ package space.shefer.receipt.rest.service;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
+import space.shefer.receipt.platform.core.dto.ReportMetaFilter;
+import space.shefer.receipt.platform.core.entity.Place;
+import space.shefer.receipt.platform.core.entity.Receipt;
+import space.shefer.receipt.platform.core.repository.ReceiptRepository;
+import space.shefer.receipt.platform.core.util.DateUtil;
 import space.shefer.receipt.rest.dto.ReceiptCreateDto;
-import space.shefer.receipt.rest.dto.ReportMetaFilter;
-import space.shefer.receipt.rest.entity.Place;
-import space.shefer.receipt.rest.entity.Receipt;
-import space.shefer.receipt.rest.repository.ReceiptRepository;
-import space.shefer.receipt.rest.util.DateUtil;
 
 import java.util.Arrays;
 

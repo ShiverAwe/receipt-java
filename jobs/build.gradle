@@ -1,0 +1,17 @@
+plugins {
+    id 'io.freefair.lombok'
+    id 'org.springframework.boot'
+}
+
+dependencies {
+    implementation project(':core')
+    implementation project(':core-dto')
+    implementation project(':fns-sdk')
+
+    implementation 'com.google.code.findbugs:jsr305'
+    implementation 'org.apache.commons:commons-lang3'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework:spring-context-support'
+    implementation 'org.projectlombok:lombok'
+
+}

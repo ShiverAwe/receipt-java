@@ -2,7 +2,7 @@ package space.shefer.receipt.rest.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
-import space.shefer.receipt.rest.dto.util.DateUtil;
+import space.shefer.receipt.platform.core.dto.util.DateUtil;
 
 import java.time.LocalDateTime;
 
