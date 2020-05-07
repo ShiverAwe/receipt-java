@@ -7,7 +7,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 import space.shefer.receipt.rest.dto.ReceiptCreateDto;
-import space.shefer.receipt.rest.dto.ReceiptCreateNewFormatDto;
 import space.shefer.receipt.rest.dto.ReceiptMetaDto;
 import space.shefer.receipt.rest.dto.ReceiptStatus;
 import space.shefer.receipt.rest.dto.ReportMetaFilter;

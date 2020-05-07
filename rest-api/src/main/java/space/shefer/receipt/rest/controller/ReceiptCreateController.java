@@ -6,27 +6,24 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import space.shefer.receipt.rest.dto.ReceiptCreateDto;
-import space.shefer.receipt.rest.dto.ReceiptCreateNewFormatDto;
+import space.shefer.receipt.rest.dto.ReceiptMetaDto;
 import space.shefer.receipt.rest.entity.Receipt;
 import space.shefer.receipt.rest.service.ReceiptService;
 
 @RestController
-public class ReceiptCreateResponseDto {
+public class ReceiptCreateController {
 
   private final ReceiptService receiptService;
 
   @Autowired
-  public ReceiptCreateResponseDto(ReceiptService receiptService) {
+  public ReceiptCreateController(ReceiptService receiptService) {
     this.receiptService = receiptService;
   }
 
   @RequestMapping(value = "/create", method = RequestMethod.POST)
-  public ReceiptCreateNewFormatDto create(@RequestBody ReceiptCreateDto query) {
-    ReceiptCreateNewFormatDto receiptCreateNewFormatDto = new ReceiptCreateNewFormatDto();
+  public ReceiptMetaDto create(@RequestBody ReceiptCreateDto query) {
     Receipt receipt = receiptService.create(query);
-    receiptCreateNewFormatDto.setId(receipt.getId());
-    receiptCreateNewFormatDto.setStatus(receipt.getStatus());
-    return receiptCreateNewFormatDto;
+    return Receipt.toDto(receipt);
   }
 
 }
