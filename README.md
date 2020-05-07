@@ -14,7 +14,7 @@ POST /create
 }
 {
    "id": "123421", 
-   "status":"LOADED"
+   "status": "LOADED"
 }
 ```
 Returns id and status of created receipt
