@@ -12,16 +12,19 @@ POST /create
     "fp": "12345678", // [required] string 
     "sum": "123.45", // [required] float 
 }
-{
-   "id": "123421", 
-   "status": "LOADED"
-}
 ```
 Returns header of created receipt
-```json
+```
 {
-   "id": "123421", 
-   "status":"LOADED"
+   "id": "1", //[required] Long
+   "date": "2020-05-01 22:35", // [required] LocalDateTime
+   "fn": "9282440300557138", // [required] string
+   "fd": "7100", // [required] string
+   "fp": "159748002", // [required] string
+   "sum": "403", // [required] Double
+   "provider": "provider", // [required] string
+   "status": "LOADED", // [required] ReceiptStatus
+   "place": "1" // [required] string
 }
 ```
 
