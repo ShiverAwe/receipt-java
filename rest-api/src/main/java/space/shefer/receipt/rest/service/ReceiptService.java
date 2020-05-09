@@ -37,7 +37,7 @@ public class ReceiptService {
       .collect(Collectors.toList());
   }
 
-  public Long create(ReceiptCreateDto receipt) {
+  public Receipt create(ReceiptCreateDto receipt) {
     List<Receipt> matchingReceipts = receiptRepository.getReceipts(
       ReportMetaFilter.builder()
         .fn(receipt.getFn())
@@ -51,14 +51,13 @@ public class ReceiptService {
     );
 
     if (!matchingReceipts.isEmpty()) {
-      return matchingReceipts.get(0).getId();
+      return matchingReceipts.get(0);
     }
 
     Receipt entity = new Receipt();
     entity.setFrom(receipt);
     entity.setStatus(ReceiptStatus.IDLE);
-    Receipt savedReceipt = receiptRepository.save(entity);
-    return savedReceipt.getId();
+    return receiptRepository.save(entity);
   }
 
   public Receipt setStatus(Receipt receipt, ReceiptStatus status) {

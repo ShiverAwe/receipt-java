@@ -13,9 +13,19 @@ POST /create
     "sum": "123.45", // [required] float 
 }
 ```
-Returns Id of created receipt
-```json
-123
+Returns header of created receipt
+```
+{
+   "id": "1", //[required] Long
+   "date": "2020-05-01 22:35", // [required] LocalDateTime
+   "fn": "9282440300557138", // [required] string
+   "fd": "7100", // [required] string
+   "fp": "159748002", // [required] string
+   "sum": "403", // [required] Double
+   "provider": "provider", // [required] string
+   "status": "LOADED", // [required] ReceiptStatus
+   "place": "1" // [required] string
+}
 ```
 
 ### Get the receipts
@@ -85,4 +95,3 @@ PUT /items
   }
 ]
 ```
-
