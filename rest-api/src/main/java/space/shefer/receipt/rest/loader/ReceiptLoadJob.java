@@ -35,22 +35,27 @@ public class ReceiptLoadJob {
     List<Receipt> receipts = receiptService.getAllIdle();
 
     receipts.forEach(receipt -> {
-        String rawReceipt = fnsService.getReceiptExists(
-          receipt.getFn(),
-          receipt.getFd(),
-          receipt.getFp(),
-          receipt.getDate().format(dateTimeFormatter),
-          receipt.getSum().floatValue()
-        );
-
-        if (rawReceipt != null) {
-          fnsReceiptService.update(
-            FnsResponseDto.fromString(rawReceipt).document.receipt,
-            receipt,
-            ReceiptProvider.NALOG.name()
+        try {
+          String rawReceipt = fnsService.getReceiptExists(
+            receipt.getFn(),
+            receipt.getFd(),
+            receipt.getFp(),
+            receipt.getDate().format(dateTimeFormatter),
+            receipt.getSum().floatValue()
           );
+
+          if (rawReceipt != null) {
+            fnsReceiptService.update(
+              FnsResponseDto.fromString(rawReceipt).document.receipt,
+              receipt,
+              ReceiptProvider.NALOG.name()
+            );
+          }
+          else {
+            receiptService.setStatus(receipt, ReceiptStatus.FAILED);
+          }
         }
-        else {
+        catch (Exception e) {
           receiptService.setStatus(receipt, ReceiptStatus.FAILED);
         }
       }
