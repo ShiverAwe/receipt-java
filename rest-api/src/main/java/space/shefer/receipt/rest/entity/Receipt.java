@@ -61,6 +61,15 @@ public class Receipt {
   @JoinColumn(name = "receipt_id")
   private List<Item> items = new ArrayList<>();
 
+  @Column(name = "retail")
+  private String retail;
+
+  @Column(name = "retail_inn")
+  private String retailInn;
+
+  @Column(name = "retail_place_address")
+  private String retailPlaceAddress;
+
 
   public static ReceiptMetaDto toDto(Receipt receipt) {
     ReceiptMetaDto result = new ReceiptMetaDto();
@@ -70,7 +79,9 @@ public class Receipt {
     result.setFp(receipt.getFp());
     result.setDate(receipt.getDate());
     result.setSum(receipt.getSum());
-    result.setProvider(receipt.getProvider());
+    result.setRetail(receipt.getRetail());
+    result.setRetailInn(receipt.getRetailInn());
+    result.setRetailPlaceAddress(receipt.getRetailPlaceAddress());
     if (receipt.getPlace() != null) {
       result.setPlace(receipt.getPlace().getText());
     }

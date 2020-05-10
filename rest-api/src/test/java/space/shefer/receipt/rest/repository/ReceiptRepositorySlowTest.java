@@ -35,10 +35,14 @@ public class ReceiptRepositorySlowTest {
   public void getReceipts_noFilter() {
     LocalDateTime date = DateUtil.parseReceiptDate("20190813T1355");
     List<Receipt> receiptsInitial = Arrays.asList(
-      new Receipt(null, date, "83479", "96253", "76193", 123.45, "TAXCOM", LOADED, null, emptyList()),
-      new Receipt(null, date, "34780", "89255", "82661", 121.44, "TAXCOM", LOADED, null, emptyList()),
-      new Receipt(null, date, "03845", "11111", "11547", 723.75, "TAXCOM", LOADED, null, emptyList()),
-      new Receipt(null, date, "82640", "34579", "99999", 103.55, "TAXCOM", LOADED, null, emptyList())
+      new Receipt(null, date, "83479", "96253", "76193", 123.45, "TAXCOM", LOADED, null,
+        emptyList(), "ООО \"Лента\"", "7814148471", "197374, СПб, ул. Савушкина, 112, лит. А"),
+      new Receipt(null, date, "34780", "89255", "82661", 121.44, "TAXCOM", LOADED, null,
+        emptyList(), "ООО \"Лента\"", "7814148471", "197374, СПб, ул. Савушкина, 112, лит. А"),
+      new Receipt(null, date, "03845", "11111", "11547", 723.75, "TAXCOM", LOADED, null,
+        emptyList(), "ООО \"Лента\"", "7814148471", "197374, СПб, ул. Савушкина, 112, лит. А"),
+      new Receipt(null, date, "82640", "34579", "99999", 103.55, "TAXCOM", LOADED, null,
+        emptyList(), "ООО \"Лента\"", "7814148471", "197374, СПб, ул. Савушкина, 112, лит. А")
     );
     repository.saveAll(receiptsInitial);
     List<Receipt> receiptsAll = repository.findAll();
@@ -70,64 +74,78 @@ public class ReceiptRepositorySlowTest {
     {// WRONG ID
       Receipt receipt =
         repository.save(new Receipt(null,
-          dateOk, "11111", "22222", "33333", sumOk, "TAXCOM", LOADED, null, emptyList()));
+          dateOk, "11111", "22222", "33333", sumOk, "TAXCOM", LOADED, null, emptyList(),
+          "ООО \"Лента\"", "7814148471", "197374, СПб, ул. Савушкина, 112, лит. А"));
       bannedId = receipt.getId();
     }
     {// OK
       Receipt receipt =
         repository.save(new Receipt(null,
-          dateOk, "11111", "22222", "33333", sumOk, "TAXCOM", LOADED, null, emptyList()));
+          dateOk, "11111", "22222", "33333", sumOk, "TAXCOM", LOADED, null, emptyList(),
+          "ООО \"Лента\"","7814148471","197374, СПб, ул. Савушкина, 112, лит. А"));
       expectedReceipts.add(receipt);
     }
     {// OK
       Receipt receipt =
         repository.save(new Receipt(null,
-          dateOk, "11111", "22222", "33333", sumOk, "TAXCOM", LOADED, null, emptyList()));
+          dateOk, "11111", "22222", "33333", sumOk, "TAXCOM", LOADED, null, emptyList(),
+          "ООО \"Лента\"","7814148471","197374, СПб, ул. Савушкина, 112, лит. А"));
       expectedReceipts.add(receipt);
     }
     {// WRONG DATE: WRONG YEAR
       repository.save(new Receipt(null,
-        dateWrongYear, "11111", "22222", "33333", sumOk, "TAXCOM", LOADED, null, emptyList()));
+        dateWrongYear, "11111", "22222", "33333", sumOk, "TAXCOM", LOADED, null, emptyList(),
+        "ООО \"Лента\"","7814148471","197374, СПб, ул. Савушкина, 112, лит. А"));
     }
     {// WRONG DATE: WRONG MONTH
       repository.save(new Receipt(null,
-        dateWrongMonth, "11111", "22222", "33333", sumOk, "TAXCOM", LOADED, null, emptyList()));
+        dateWrongMonth, "11111", "22222", "33333", sumOk, "TAXCOM", LOADED, null, emptyList(),
+        "ООО \"Лента\"","7814148471","197374, СПб, ул. Савушкина, 112, лит. А"));
     }
     {// WRONG DATE: WRONG DATE
       repository.save(new Receipt(null,
-        dateWrongDate, "11111", "22222", "33333", sumOk, "TAXCOM", LOADED, null, emptyList()));
+        dateWrongDate, "11111", "22222", "33333", sumOk, "TAXCOM", LOADED, null,  emptyList(),
+        "ООО \"Лента\"","7814148471","197374, СПб, ул. Савушкина, 112, лит. А"));
     }
     {// WRONG DATE: WRONG HOUR
       repository.save(new Receipt(null,
-        dateWrongHour, "11111", "22222", "33333", sumOk, "TAXCOM", LOADED, null, emptyList()));
+        dateWrongHour, "11111", "22222", "33333", sumOk, "TAXCOM", LOADED, null,  emptyList(),
+        "ООО \"Лента\"","7814148471","197374, СПб, ул. Савушкина, 112, лит. А"));
     }
     {// WRONG DATE: WRONG MINUTE
       repository.save(new Receipt(null,
-        dateWrongMinute, "11111", "22222", "33333", sumOk, "TAXCOM", LOADED, null, emptyList()));
+        dateWrongMinute, "11111", "22222", "33333", sumOk, "TAXCOM", LOADED, null,  emptyList(),
+        "ООО \"Лента\"","7814148471","197374, СПб, ул. Савушкина, 112, лит. А"));
     }
     {// WRONG DATE: WRONG SECOND
       repository.save(new Receipt(null,
-        dateWrongSecond, "11111", "22222", "33333", sumOk, "TAXCOM", LOADED, null, emptyList()));
+        dateWrongSecond, "11111", "22222", "33333", sumOk, "TAXCOM", LOADED, null,  emptyList(),
+        "ООО \"Лента\"","7814148471","197374, СПб, ул. Савушкина, 112, лит. А"));
     }
     {// WRONG FN
       repository.save(new Receipt(null,
-        dateOk, "83759", "22222", "33333", sumOk, "TAXCOM", LOADED, null, emptyList()));
+        dateOk, "83759", "22222", "33333", sumOk, "TAXCOM", LOADED, null, emptyList(),
+        "ООО \"Лента\"","7814148471","197374, СПб, ул. Савушкина, 112, лит. А"));
     }
     {// WRONG FD
       repository.save(new Receipt(null,
-        dateOk, "11111", "02349", "33333", sumOk, "TAXCOM", LOADED, null, emptyList()));
+        dateOk, "11111", "02349", "33333", sumOk, "TAXCOM", LOADED, null,  emptyList(),
+        "ООО \"Лента\"","7814148471","197374, СПб, ул. Савушкина, 112, лит. А"));
     }
     {// WRONG FP
       repository.save(new Receipt(null,
-        dateOk, "11111", "22222", "73458", sumOk, "TAXCOM", LOADED, null, emptyList()));
+        dateOk, "11111", "22222", "73458", sumOk, "TAXCOM", LOADED, null, emptyList(),
+        "ООО \"Лента\"","7814148471","197374, СПб, ул. Савушкина, 112, лит. А"));
     }
     {// WRONG SUM
       repository.save(new Receipt(null,
-        dateOk, "11111", "22222", "33333", 65.3, "TAXCOM", LOADED, null, emptyList()));
+        dateOk, "11111", "22222", "33333", 65.3, "TAXCOM", LOADED, null,  emptyList(),
+        "ООО \"Лента\"","7814148471","197374, СПб, ул. Савушкина, 112, лит. А"));
     }
     {// WRONG STATUS
       repository.save(new Receipt(null,
-        dateOk, "11111", "22222", "33333", sumOk, "TAXCOM", IDLE, null, emptyList()));
+        dateOk, "11111", "22222", "33333", sumOk, "TAXCOM", IDLE, null,  emptyList(),
+        "ООО \"Лента\"","7814148471","197374, СПб, ул. Савушкина, 112, лит. А"));
     }
 
     repository.flush();
@@ -164,5 +182,8 @@ public class ReceiptRepositorySlowTest {
     assertEquals(r1.getStatus(), r2.getStatus());
     assertEquals(r1.getPlace(), r2.getPlace());
     assertEquals(r1.getItems(), r2.getItems());
+    assertEquals(r1.getRetail(), r2.getRetail());
+    assertEquals(r1.getRetailInn(), r2.getRetailInn());
+    assertEquals(r1.getRetailPlaceAddress(), r2.getRetailPlaceAddress());
   }
 }
