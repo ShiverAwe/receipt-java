@@ -17,5 +17,11 @@ public class ReceiptMetaDto {
   private String provider;
   private ReceiptStatus status;
   private String place;
+  @Nullable
+  private String retail;
+  @Nullable
+  private String retailInn;
+  @Nullable
+  private String retailPlaceAddress;
 
 }
