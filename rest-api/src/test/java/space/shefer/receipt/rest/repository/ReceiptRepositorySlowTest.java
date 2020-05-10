@@ -182,8 +182,8 @@ public class ReceiptRepositorySlowTest {
     assertEquals(r1.getStatus(), r2.getStatus());
     assertEquals(r1.getPlace(), r2.getPlace());
     assertEquals(r1.getItems(), r2.getItems());
-    assertEquals(r1.getRetail(), r2.getRetail());
-    assertEquals(r1.getRetailInn(), r2.getRetailInn());
-    assertEquals(r1.getRetailPlaceAddress(), r2.getRetailPlaceAddress());
+    assertEquals(r1.getMerchantName(), r2.getMerchantName());
+    assertEquals(r1.getMerchantInn(), r2.getMerchantInn());
+    assertEquals(r1.getMerchantPlaceAddress(), r2.getMerchantPlaceAddress());
   }
 }

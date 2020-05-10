@@ -17,10 +17,10 @@ public class ReceiptMetaDto {
   private ReceiptStatus status;
   private String place;
   @Nullable
-  private String retail;
+  private String merchantName;
   @Nullable
-  private String retailInn;
+  private String merchantInn;
   @Nullable
-  private String retailPlaceAddress;
+  private String merchantPlaceAddress;
 
 }

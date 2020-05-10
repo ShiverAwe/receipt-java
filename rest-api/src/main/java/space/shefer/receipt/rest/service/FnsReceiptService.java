@@ -34,9 +34,9 @@ public class FnsReceiptService {
     receipt.setFp(String.valueOf(receiptDto.getFiscalSign()));
     receipt.setSum(receiptDto.getTotalSum() / 100d);
     receipt.setDate(receiptDto.getDateTime());
-    receipt.setRetail(receiptDto.getUser());
-    receipt.setRetailInn(receiptDto.getUserInn());
-    receipt.setRetailPlaceAddress(receiptDto.getRetailPlaceAddress());
+    receipt.setMerchantName(receiptDto.getUser());
+    receipt.setMerchantInn(receiptDto.getUserInn());
+    receipt.setMerchantPlaceAddress(receiptDto.getRetailPlaceAddress());
     receipt.setStatus(ReceiptStatus.LOADED);
     receipt.setProvider(provider);
 
