@@ -14,7 +14,6 @@ public class ReceiptMetaDto {
   private String fd;
   private String fp;
   private Double sum;
-  private String provider;
   private ReceiptStatus status;
   private String place;
   @Nullable

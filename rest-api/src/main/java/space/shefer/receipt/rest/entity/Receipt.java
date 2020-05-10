@@ -96,7 +96,6 @@ public class Receipt {
     setFp(receipt.getFp());
     setSum(receipt.getSum());
     setStatus(receipt.getStatus());
-    setProvider(receipt.getProvider());
     // TODO add place
   }
 
