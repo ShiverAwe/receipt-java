@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.apache.commons.lang3.ObjectUtils;
 import space.shefer.receipt.rest.dto.ReceiptCreateDto;
 import space.shefer.receipt.rest.dto.ReceiptMetaDto;
 import space.shefer.receipt.rest.dto.ReceiptStatus;
@@ -82,9 +83,7 @@ public class Receipt {
     result.setMerchantName(receipt.getMerchantName());
     result.setMerchantInn(receipt.getMerchantInn());
     result.setMerchantPlaceAddress(receipt.getMerchantPlaceAddress());
-    if (receipt.getPlace() != null) {
-      result.setPlace(receipt.getPlace().getText());
-    }
+    result.setPlace(ObjectUtils.firstNonNull(receipt.getMerchantName(), receipt.getMerchantInn()));
     result.setStatus(receipt.getStatus());
     return result;
   }
