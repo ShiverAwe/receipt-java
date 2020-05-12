@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.apache.commons.lang3.ObjectUtils;
 import space.shefer.receipt.rest.dto.ReceiptCreateDto;
 import space.shefer.receipt.rest.dto.ReceiptMetaDto;
 import space.shefer.receipt.rest.dto.ReceiptStatus;
@@ -61,6 +62,15 @@ public class Receipt {
   @JoinColumn(name = "receipt_id")
   private List<Item> items = new ArrayList<>();
 
+  @Column(name = "merchant_name")
+  private String merchantName;
+
+  @Column(name = "merchant_inn")
+  private String merchantInn;
+
+  @Column(name = "merchant_place_address")
+  private String merchantPlaceAddress;
+
 
   public static ReceiptMetaDto toDto(Receipt receipt) {
     ReceiptMetaDto result = new ReceiptMetaDto();
@@ -70,10 +80,10 @@ public class Receipt {
     result.setFp(receipt.getFp());
     result.setDate(receipt.getDate());
     result.setSum(receipt.getSum());
-    result.setProvider(receipt.getProvider());
-    if (receipt.getPlace() != null) {
-      result.setPlace(receipt.getPlace().getText());
-    }
+    result.setMerchantName(receipt.getMerchantName());
+    result.setMerchantInn(receipt.getMerchantInn());
+    result.setMerchantPlaceAddress(receipt.getMerchantPlaceAddress());
+    result.setPlace(ObjectUtils.firstNonNull(receipt.getMerchantName(), receipt.getMerchantInn()));
     result.setStatus(receipt.getStatus());
     return result;
   }
@@ -85,8 +95,9 @@ public class Receipt {
     setFp(receipt.getFp());
     setSum(receipt.getSum());
     setStatus(receipt.getStatus());
-    setProvider(receipt.getProvider());
-    // TODO add place
+    setMerchantName(receipt.getMerchantName());
+    setMerchantInn(receipt.getMerchantName());
+    setMerchantPlaceAddress(receipt.getMerchantPlaceAddress());
   }
 
   public void setFrom(ReceiptCreateDto receipt){
