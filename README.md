@@ -25,6 +25,11 @@ Returns header of created receipt
    "provider": "provider", // [required] string
    "status": "LOADED", // [required] ReceiptStatus
    "place": "1" // [required] string
+   "merchantName": "Лента" // [optional] string
+   "merchantInn": "7814148471" // [optional] string
+   "merchantPlaceAddress": "1" // [optional] string
+   "merchantLogoUrl": "https://exampleLogo.ru/content/logolenta.jpg" [optional] string 
+
 }
 ```
 
@@ -58,7 +63,11 @@ PUT /receipts
     "sum": 1740.0,
     "provider": "TAXCOM",
     "status": "LOADED",
-    "place": "ООО \"О'КЕЙ\""
+    "place": "ООО \"О'КЕЙ\"",
+    "merchantName": "Лента",
+    "merchantInn": "7814148471",
+    "merchantPlaceAddress": "1",
+    "merchantLogoUrl": "https://exampleLogo.ru/content/logolenta.jpg"
   }
 ]
 ```

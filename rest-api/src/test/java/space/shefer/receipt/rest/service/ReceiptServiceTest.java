@@ -29,7 +29,8 @@ public class ReceiptServiceTest {
   @Before
   public void setUp() {
     receiptRepository = mock(ReceiptRepository.class);
-    service = spy(new ReceiptService(receiptRepository));
+    MerchantLogoService merchantLogoService = mock(MerchantLogoService.class);
+    service = spy(new ReceiptService(receiptRepository, merchantLogoService));
   }
 
   @Test
