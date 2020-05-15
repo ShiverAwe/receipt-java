@@ -9,18 +9,18 @@ public enum MerchantSimpleName {
   REAL("РЕАЛЪ", "https://images.app.goo.gl/J8SJrWD3ZE7PnxMLA");
 
   private final String value;
-  private final String url;
+  private final String logoUrl;
 
-  MerchantSimpleName(String value,String url) {
+  MerchantSimpleName(String value,String logoUrl) {
     this.value = value;
-    this.url = url;
+    this.logoUrl = logoUrl;
   }
 
   public String getValue() {
     return value;
   }
 
-  public String getUrl() {
-    return url;
+  public String getLogoUrl() {
+    return logoUrl;
   }
 }
