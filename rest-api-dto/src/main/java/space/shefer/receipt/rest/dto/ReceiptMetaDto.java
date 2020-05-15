@@ -23,5 +23,5 @@ public class ReceiptMetaDto {
   @Nullable
   private String merchantPlaceAddress;
   @Nullable
-  private String MerchantImageUrl;
+  private String merchantImageUrl;
 }
