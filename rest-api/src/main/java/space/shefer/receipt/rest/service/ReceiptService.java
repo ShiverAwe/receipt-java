@@ -24,16 +24,19 @@ public class ReceiptService {
   private String defaultPlace;
 
   private final ReceiptRepository receiptRepository;
+  private final MerchantLogoService merchantLogoService;
 
   @Autowired
-  public ReceiptService(ReceiptRepository receiptRepository) {
+  public ReceiptService(ReceiptRepository receiptRepository, MerchantLogoService merchantLogoService) {
     this.receiptRepository = receiptRepository;
+    this.merchantLogoService = merchantLogoService;
   }
 
   public List<ReceiptMetaDto> getReceipts(ReportMetaFilter metaFilter) {
     List<Receipt> receipts = receiptRepository.getReceipts(metaFilter);
     return receipts.stream().map(Receipt::toDto)
       .peek(this::setDefaultPlaceIfNull)
+      .peek(setUrl -> setUrl.setMerchantImageUrl(merchantLogoService.getUrlForImagePlace(setUrl.getPlace())))
       .collect(Collectors.toList());
   }
 
