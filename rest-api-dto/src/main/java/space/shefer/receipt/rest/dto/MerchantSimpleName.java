@@ -11,7 +11,7 @@ public enum MerchantSimpleName {
   private final String value;
   private final String logoUrl;
 
-  MerchantSimpleName(String value,String logoUrl) {
+  MerchantSimpleName(String value, String logoUrl) {
     this.value = value;
     this.logoUrl = logoUrl;
   }
