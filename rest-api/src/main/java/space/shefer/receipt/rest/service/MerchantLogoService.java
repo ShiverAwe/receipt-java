@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Map;
 
 
-public class ImagePlaceService {
+public class MerchantLogoService {
 
 // Магазины с ссылками
   private Map<ReceiptImagePlace, String> setStoresAndImages() {
@@ -39,8 +39,8 @@ public class ImagePlaceService {
 // Ищу есть ли у нас такой магаз
   public String getUrlForImagePlace(String namePlace) {
     if (namePlace == null) return null;
-    for (Map.Entry<ReceiptImagePlace, String> receiptImagePlace : setStoresAndImages().entrySet()) {
-      if (receiptImagePlace.getKey().toString().equalsIgnoreCase(namePlace)) {
+    for (Map.Entry<MerchantSimpleName, String> receiptImagePlace : setStoresAndImages().entrySet()) {
+      if (receiptImagePlace.getKey().getValue().equalsIgnoreCase(namePlace)) {
         return receiptImagePlace.getValue();
       }
     }
