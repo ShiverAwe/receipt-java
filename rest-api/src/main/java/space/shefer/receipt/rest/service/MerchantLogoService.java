@@ -21,7 +21,7 @@ public class MerchantLogoService {
         .map(MerchantSimpleName::getUrl).get();
     }
     catch (NoSuchElementException e) {
-      url = "Place";
+      return null;
     }
 
     return url;
