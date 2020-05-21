@@ -36,7 +36,7 @@ public class ReceiptService {
     List<Receipt> receipts = receiptRepository.getReceipts(metaFilter);
     return receipts.stream().map(Receipt::toDto)
       .peek(this::setDefaultPlaceIfNull)
-      .peek(receipt->receipt.setMerchantImageUrl(merchantLogoService.getUrlForImagePlace(receipt.getPlace())))
+      .peek(receipt -> receipt.setMerchantImageUrl(merchantLogoService.getUrlForImagePlace(receipt.getPlace())))
       .collect(Collectors.toList());
   }
 

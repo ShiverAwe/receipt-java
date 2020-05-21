@@ -10,9 +10,9 @@ import java.util.stream.Stream;
 public class MerchantLogoService {
 
   @Nullable
-  public String getUrlForImagePlace(String namePlace) {
+  public String getUrlForImagePlace(String merchantFullName) {
     return Stream.of(MerchantSimpleName.values())
-      .filter(merchant -> merchant.getValue().contains(namePlace.toUpperCase()))
+      .filter(merchant -> merchantFullName.toUpperCase().contains(merchant.getValue()))
       .findFirst()
       .map(MerchantSimpleName::getLogoUrl).orElse(null);
   }
