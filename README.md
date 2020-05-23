@@ -25,6 +25,13 @@ Returns header of created receipt
    "provider": "provider", // [required] string
    "status": "LOADED", // [required] ReceiptStatus
    "place": "1" // [required] string
+   "merchantName": "Лента" // [required] string
+   "merchantInn": "7814148471" // [required] string
+   "merchantPlaceAddress": "1" // [required] string
+   "merchantLogoUrl": "https://irecommend.ru/content/kompyuternaya-programma
+                -mobilnoe-prilozhenie-gipermarkety
+                -lenta#&gid=gallery_node3567990field_product_images&pid=1" // [required] string
+
 }
 ```
 
