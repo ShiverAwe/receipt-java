@@ -1,12 +1,12 @@
 package space.shefer.receipt.rest.dto;
 
 public enum MerchantSimpleName {
-  KARUSEL("КАРУСЕЛЬ", "https://images.app.goo.gl/qsXCpg2eihLbwFqC7"),
-  LENTA("ЛЕНТА", "https://images.app.goo.gl/zq5jQrQ6LTbRe9WX7"),
-  PEREKRESTOK("ПЕРЕКРЕСТОК", "https://images.app.goo.gl/L2MMepenJQeqM2un6"),
-  OKEY("ОКЕЙ", "https://images.app.goo.gl/dQJ841uupaAueuyc7"),
-  DIXY("ДИКСИ", "https://images.app.goo.gl/NAfEjeTZHRV6DDBYA"),
-  REAL("РЕАЛЪ", "https://images.app.goo.gl/J8SJrWD3ZE7PnxMLA");
+  KARUSEL("КАРУСЕЛЬ", "https://logosklad.ru/photo/logos/111/1458302934.jpg#.Xskw49d9YMs.link"),
+  LENTA("ЛЕНТА", "https://irecommend.ru/content/kompyuternaya-programma-mobilnoe-prilozhenie-gipermarkety-lenta#&gid=gallery_node3567990field_product_images&pid=1"),
+  PEREKRESTOK("ПЕРЕКРЕСТОК", "https://logosklad.ru/photo/logos/616/1582597280.jpg#.XskxMmZsY7g.link"),
+  OKEY("О’КЕЙ", "https://logosklad.ru/UserFiles/image/okey/okey-logo-old.png#.XskxWWjaeWU.link"),
+  DIXY("ДИКСИ", "https://akcionnik.ru/wp-content/uploads/2019/03/Logotip-Diksi.jpg"),
+  REAL("РЕАЛЪ", "https://sun9-70.userapi.com/c604816/v604816859/276f2/HBdUQrpnKvc.jpg");
 
   private final String value;
   private final String logoUrl;
