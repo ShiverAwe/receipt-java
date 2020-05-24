@@ -1,6 +1,7 @@
 # receipt-java
 
 [![Build Status](https://travis-ci.com/receipt-project/receipt-java.svg?branch=master)](https://travis-ci.com/receipt-project/receipt-java)
+[![TeamcityBuild](https://teamcity.shefer.space/app/rest/builds/strob:(buildType:(project:(id:ReceiptJava)))/statusIcon.svg)](https://teamcity.shefer.space/viewType.html?buildTypeId=ReceiptJava_Build)
 
 ### Submit the receipt
 ```
