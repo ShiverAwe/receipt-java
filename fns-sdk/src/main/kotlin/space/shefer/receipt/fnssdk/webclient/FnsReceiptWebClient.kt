@@ -31,7 +31,6 @@ class FnsReceiptWebClient {
                 HttpEntity<String>(headers),
                 String::class.java
         )
-        val statusCode = responseEntity.statusCode
 
         if (responseEntity.statusCode == HttpStatus.OK) {
             return responseEntity.body
@@ -52,7 +51,52 @@ class FnsReceiptWebClient {
                 String::class.java
         )
         return responseEntity.statusCode == HttpStatus.NO_CONTENT
+    }
 
+    fun recoveryPassword(number: String): Boolean {
+        val headers = HttpHeaders()
+        headers.add("Content-Type", "application/json; charset=UTF-8")
+        val responseEntity = RestTemplate().exchange(
+                URI("https://proverkacheka.nalog.ru:9999/v1/mobile/users/restore"),
+                HttpMethod.POST,
+                HttpEntity("{\"phone\":\"$number\"}", headers),
+                String::class.java
+        )
+        return responseEntity.statusCode == HttpStatus.NO_CONTENT;
+    }
+
+    fun registration(email: String, name: String, phone: String): Boolean {
+        val headers = HttpHeaders()
+        headers.add("Content-Type", "application/json; charset=UTF-8")
+        return try {
+            val responseEntity = RestTemplate().exchange(
+                    URI("https://proverkacheka.nalog.ru:9999/v1/mobile/users/signup"),
+                    HttpMethod.POST,
+                    HttpEntity("{\"email\":\"$email\",\"name\":\"$name\",\"phone\":\"$phone\"}", headers),
+                    String::class.java
+
+            )
+            responseEntity.statusCode == HttpStatus.NO_CONTENT;
+        } catch (e: Exception) {
+            false;
+        }
+    }
+
+    fun loginFns(loginUser: String, passwordUser: String): String? {
+        val headers = HttpHeaders()
+        headers.add("Content-Type", "application/json; charset=UTF-8")
+        headers.add("Authorization", getAuthHeader(loginUser, passwordUser))
+        val responseEntity = RestTemplate().exchange(
+                URI("https://proverkacheka.nalog.ru:9999/v1/mobile/users/login"),
+                HttpMethod.GET,
+                HttpEntity<String>(headers),
+                String::class.java
+        )
+        if (responseEntity.statusCode == HttpStatus.OK) {
+            return responseEntity.body.toString()
+
+        }
+        return null;
     }
 
     private fun getAuthHeader(login: String, password: String): String {
