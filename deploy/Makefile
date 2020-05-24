@@ -39,7 +39,7 @@ logs: require-module ## Show logs
 	docker logs -f $(CONTAINER)\
 		2> /dev/null || echo "Application $(MODULE) not exists"
 
-deploy: require-module build cleanup run logs ## Full (re-)deploy of application with cleanup
+deploy: require-module build cleanup run ## Full (re-)deploy of application with cleanup
 
 require-module: ## Fail if MODULE variable is undefined
 ifndef MODULE
