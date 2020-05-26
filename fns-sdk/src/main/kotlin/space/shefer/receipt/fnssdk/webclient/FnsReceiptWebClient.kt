@@ -6,6 +6,7 @@ import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpMethod
 import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Component
+import org.springframework.web.client.HttpClientErrorException
 import org.springframework.web.client.RestTemplate
 import java.net.URI
 import java.util.*
@@ -57,9 +58,9 @@ class FnsReceiptWebClient {
         val headers = HttpHeaders()
         headers.add("Content-Type", "application/json; charset=UTF-8")
         val responseEntity = RestTemplate().exchange(
-                URI("https://proverkacheka.nalog.ru:9999/v1/mobile/users/restore"),
+                URI("$HOST/v1/mobile/users/restore"),
                 HttpMethod.POST,
-                HttpEntity("{\"phone\":\"$number\"}", headers),
+                HttpEntity("""{"phone":"$number"}""", headers),
                 String::class.java
         )
         return responseEntity.statusCode == HttpStatus.NO_CONTENT;
@@ -68,18 +69,14 @@ class FnsReceiptWebClient {
     fun registration(email: String, name: String, phone: String): Boolean {
         val headers = HttpHeaders()
         headers.add("Content-Type", "application/json; charset=UTF-8")
-        return try {
-            val responseEntity = RestTemplate().exchange(
-                    URI("https://proverkacheka.nalog.ru:9999/v1/mobile/users/signup"),
-                    HttpMethod.POST,
-                    HttpEntity("{\"email\":\"$email\",\"name\":\"$name\",\"phone\":\"$phone\"}", headers),
-                    String::class.java
+        val responseEntity = RestTemplate().exchange(
+                URI("$HOST/v1/mobile/users/signup"),
+                HttpMethod.POST,
+                HttpEntity("""{"email":"$email","name":"$name","phone":"$phone"}""", headers),
+                String::class.java
 
-            )
-            responseEntity.statusCode == HttpStatus.NO_CONTENT;
-        } catch (e: Exception) {
-            false;
-        }
+        )
+        return responseEntity.statusCode == HttpStatus.NO_CONTENT;
     }
 
     fun loginFns(loginUser: String, passwordUser: String): String? {
@@ -87,7 +84,7 @@ class FnsReceiptWebClient {
         headers.add("Content-Type", "application/json; charset=UTF-8")
         headers.add("Authorization", getAuthHeader(loginUser, passwordUser))
         val responseEntity = RestTemplate().exchange(
-                URI("https://proverkacheka.nalog.ru:9999/v1/mobile/users/login"),
+                URI("$HOST/v1/mobile/users/login"),
                 HttpMethod.GET,
                 HttpEntity<String>(headers),
                 String::class.java
@@ -129,4 +126,3 @@ class FnsReceiptWebClient {
         }
     }
 }
-
