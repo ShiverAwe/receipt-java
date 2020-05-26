@@ -20,7 +20,18 @@ public class UserController {
   }
 
   @RequestMapping(value = "/login", method = RequestMethod.GET)
-  public String receipts(@RequestBody UserDataDto userDataDto) {
-    return fnsReceiptService.loginFns(userDataDto.getLogin(), userDataDto.getPassword());
+  public void login(@RequestBody UserDataDto userDataDto) {
+    fnsReceiptService.login(userDataDto.getLogin(), userDataDto.getPassword());
   }
+
+  @RequestMapping(value = "/signUp", method = RequestMethod.GET)
+  public void signUp(@RequestBody UserDataDto userDataDto) {
+    fnsReceiptService.signUp(userDataDto.getEmail(), userDataDto.getName(), userDataDto.getPhone());
+  }
+
+  @RequestMapping(value = "/passwordRestore", method = RequestMethod.GET)
+  public void passwordRestore(@RequestBody UserDataDto userDataDto) {
+    fnsReceiptService.passwordRestore(userDataDto.getPhone());
+  }
+
 }
