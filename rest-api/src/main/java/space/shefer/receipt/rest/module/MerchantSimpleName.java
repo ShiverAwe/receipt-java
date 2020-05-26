@@ -1,6 +1,7 @@
-package space.shefer.receipt.rest.dto;
+package space.shefer.receipt.rest.module;
 
 public enum MerchantSimpleName {
+
   KARUSEL("КАРУСЕЛЬ", "https://logosklad.ru/photo/logos/111/1458302934.jpg#.Xskw49d9YMs.link"),
   LENTA("ЛЕНТА", "https://irecommend.ru/content/kompyuternaya-programma-mobilnoe-prilozhenie-gipermarkety-lenta#&gid=gallery_node3567990field_product_images&pid=1"),
   PEREKRESTOK("ПЕРЕКРЕСТОК", "https://logosklad.ru/photo/logos/616/1582597280.jpg#.XskxMmZsY7g.link"),
@@ -23,4 +24,5 @@ public enum MerchantSimpleName {
   public String getLogoUrl() {
     return logoUrl;
   }
+
 }
