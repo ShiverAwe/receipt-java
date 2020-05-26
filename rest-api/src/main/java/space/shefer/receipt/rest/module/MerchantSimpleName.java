@@ -1,4 +1,4 @@
-package space.shefer.receipt.rest.dto;
+package space.shefer.receipt.rest.module;
 
 public enum MerchantSimpleName {
   KARUSEL("КАРУСЕЛЬ", "https://logosklad.ru/photo/logos/111/1458302934.jpg#.Xskw49d9YMs.link"),
