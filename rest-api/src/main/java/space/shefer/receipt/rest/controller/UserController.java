@@ -6,7 +6,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import space.shefer.receipt.fnssdk.webclient.FnsReceiptWebClient;
-import space.shefer.receipt.rest.dto.UserDataDto;
+import space.shefer.receipt.rest.dto.UserLoginDto;
+import space.shefer.receipt.rest.dto.UserPasswordRestoreDto;
+import space.shefer.receipt.rest.dto.UserSignUpDto;
 
 
 @RestController
@@ -19,19 +21,19 @@ public class UserController {
     this.fnsReceiptService = fnsReceiptService;
   }
 
-  @RequestMapping(value = "/login", method = RequestMethod.GET)
-  public void login(@RequestBody UserDataDto userDataDto) {
-    fnsReceiptService.login(userDataDto.getLogin(), userDataDto.getPassword());
+  @RequestMapping(value = "/login", method = RequestMethod.POST)
+  public void login(@RequestBody UserLoginDto userLoginDto) {
+    fnsReceiptService.login(userLoginDto.getLogin(), userLoginDto.getPassword());
   }
 
-  @RequestMapping(value = "/signUp", method = RequestMethod.GET)
-  public void signUp(@RequestBody UserDataDto userDataDto) {
-    fnsReceiptService.signUp(userDataDto.getEmail(), userDataDto.getName(), userDataDto.getPhone());
+  @RequestMapping(value = "/signUp", method = RequestMethod.POST)
+  public void signUp(@RequestBody UserSignUpDto userSignUpDto) {
+    fnsReceiptService.signUp(userSignUpDto.getEmail(), userSignUpDto.getName(), userSignUpDto.getPhone());
   }
 
-  @RequestMapping(value = "/passwordRestore", method = RequestMethod.GET)
-  public void passwordRestore(@RequestBody UserDataDto userDataDto) {
-    fnsReceiptService.passwordRestore(userDataDto.getPhone());
+  @RequestMapping(value = "/passwordRestore", method = RequestMethod.POST)
+  public void passwordRestore(@RequestBody UserPasswordRestoreDto userPasswordRestoreDto) {
+    fnsReceiptService.passwordRestore(userPasswordRestoreDto.getPhone());
   }
 
 }
