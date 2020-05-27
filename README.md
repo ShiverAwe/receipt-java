@@ -112,7 +112,7 @@ POST / https://proverkacheka.nalog.ru:9999/v1/mobile/users/login
    "name": "<имя, указанное при регистрации>", // [required] string
 }
 ```
-
+### Registration 
 ```
 POST / https://proverkacheka.nalog.ru:9999/v1/mobile/users/signup
 {
@@ -125,6 +125,7 @@ POST / https://proverkacheka.nalog.ru:9999/v1/mobile/users/signup
 а в ответ возвращается 204 No content.
 Если пользователь уже существует, то возвращается 409 Conflict и сообщение «user exists
 
+### Password restore
 ```
 POST / https://proverkacheka.nalog.ru:9999/v1/mobile/users/restore
 {
