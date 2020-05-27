@@ -32,6 +32,10 @@ Returns header of created receipt
    "merchantLogoUrl": "https://exampleLogo.ru/content/logolenta.jpg" [optional] string 
 
 }
+{
+   "id": "1", //[required] Long
+   "status": "LOADED", // [required] ReceiptStatus
+}
 ```
 
 ### Get the receipts
