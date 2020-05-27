@@ -95,3 +95,46 @@ PUT /items
   }
 ]
 ```
+### Execute actions with data user
+```
+POST / https://proverkacheka.nalog.ru:9999/v1/mobile/users/login
+{
+    "number": "+79657747378", // [required] String
+    "password": "86548", // [required] string 
+}
+```
+Returns header of created account
+```
+Если все хорошо, то вернется 200 OK и сообщение в виде json
+{
+   "email": "<адрес электронной почты, указанный при регистрации>", // [required] string
+   "name": "<имя, указанное при регистрации>", // [required] string
+}
+Если указать некорректный номер телефона или пароль, 
+то вернется 403 Forbidden и сообщение «the user was not found or the specified password was not correct»
+
+}
+```
+
+```
+POST / https://proverkacheka.nalog.ru:9999/v1/mobile/users/signup
+
+Если результат успешен, то пользователь создается, СМС с паролем отправляется на указанный номер, 
+а в ответ возвращается 204 No content.
+{
+    "email": "vasiapupkin@mail.ru", // [required] String
+    "name": "Vika", // [required] string 
+    "phone": "+79657747378", // [required] String
+}
+Если пользователь уже существует, то возвращается 409 Conflict и сообщение «user exists
+```
+
+```
+POST / https://proverkacheka.nalog.ru:9999/v1/mobile/users/restore
+{
+     "phone":"+79991234567"
+}
+Если номер телефона найден, то возвращается 204 No Content и на телефон приходит СМС с новым паролем.
+
+Если номер телефона не найден или номер некорректный, то возвращается 404 Not Found и сообщение «the user was not found».
+```

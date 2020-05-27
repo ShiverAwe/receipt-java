@@ -23,7 +23,7 @@ public class UserController {
 
   @RequestMapping(value = "/login", method = RequestMethod.POST)
   public void login(@RequestBody UserLoginDto userLoginDto) {
-    fnsReceiptService.login(userLoginDto.getLogin(), userLoginDto.getPassword());
+    fnsReceiptService.login(userLoginDto.getPhone(), userLoginDto.getPassword());
   }
 
   @RequestMapping(value = "/signUp", method = RequestMethod.POST)
