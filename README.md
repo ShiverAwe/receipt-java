@@ -107,7 +107,7 @@ PUT /items
 ```
 ### Login
 ```
-POST / https://proverkacheka.nalog.ru:9999/v1/mobile/users/login
+POST /login
 {
     "number": "+79657747378", // [required] String
     "password": "86548", // [required] string 
@@ -124,7 +124,7 @@ POST / https://proverkacheka.nalog.ru:9999/v1/mobile/users/login
 ```
 ### Registration 
 ```
-POST / https://proverkacheka.nalog.ru:9999/v1/mobile/users/signup
+POST /signUp
 {
     "email": "vasiapupkin@mail.ru", // [required] String
     "name": "Vika", // [required] string 
@@ -137,7 +137,7 @@ POST / https://proverkacheka.nalog.ru:9999/v1/mobile/users/signup
 
 ### Password restore
 ```
-POST / https://proverkacheka.nalog.ru:9999/v1/mobile/users/restore
+POST /passwordRestore
 {
      "phone":"+79991234567"
 }
