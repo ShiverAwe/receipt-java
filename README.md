@@ -32,7 +32,7 @@ Returns header of created receipt
    "merchantLogoUrl": "https://exampleLogo.ru/content/logolenta.jpg" [optional] string 
 
 }
-```
+ ```
 
 ### Get the receipts
 ```
@@ -51,6 +51,10 @@ PUT /receipts
   "offset": 12, // [optional] integer
   "sort": "DATE", // [optional] "DATE" (date) or null (id)
   "asc": true, // [optional] boolean
+  "statuses": [
+        "FAILED",
+        "IDLE"
+    ]
 }
 ```
 ```json
