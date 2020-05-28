@@ -107,7 +107,7 @@ PUT /items
 ```
 ### Login
 ```
-POST / login
+POST /login
 {
     "number": "+79657747378", // [required] String
     "password": "86548", // [required] string 
@@ -124,7 +124,7 @@ POST / login
 ```
 ### Registration 
 ```
-POST / signUp
+POST /signUp
 {
     "email": "vasiapupkin@mail.ru", // [required] String
     "name": "Vika", // [required] string 
@@ -137,7 +137,7 @@ POST / signUp
 
 ### Password restore
 ```
-POST / passwordRestore
+POST /passwordRestore
 {
      "phone":"+79991234567"
 }
