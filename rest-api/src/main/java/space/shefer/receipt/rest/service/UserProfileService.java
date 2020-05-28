@@ -15,10 +15,10 @@ public class UserProfileService {
     this.userProfileRepository = userProfileRepository;
   }
 
-  public void saveCorrectUserData(String phone, String password) {
+  public UserProfile createOrUpdate(String phone, String password) {
     UserProfile userProfile = userProfileRepository.getByPhone(phone);
+    UserProfile resultUser = new UserProfile();
     if (userProfile == null) {
-      UserProfile resultUser = new UserProfile();
       resultUser.setPassword(password);
       resultUser.setPhone(phone);
       userProfileRepository.save(resultUser);
@@ -29,5 +29,6 @@ public class UserProfileService {
         userProfileRepository.save(userProfile);
       }
     }
+    return resultUser;
   }
 }
