@@ -31,7 +31,6 @@ class FnsReceiptWebClient {
                 HttpEntity<String>(headers),
                 String::class.java
         )
-        val statusCode = responseEntity.statusCode
 
         if (responseEntity.statusCode == HttpStatus.OK) {
             return responseEntity.body
@@ -52,7 +51,40 @@ class FnsReceiptWebClient {
                 String::class.java
         )
         return responseEntity.statusCode == HttpStatus.NO_CONTENT
+    }
 
+    fun passwordRestore(number: String) {
+        val headers = HttpHeaders()
+        headers.add("Content-Type", "application/json; charset=UTF-8")
+        RestTemplate().exchange(
+                URI("$HOST/v1/mobile/users/restore"),
+                HttpMethod.POST,
+                HttpEntity("""{"phone":"$number"}""", headers),
+                String::class.java
+        )
+    }
+
+    fun signUp(email: String, name: String, phone: String) {
+        val headers = HttpHeaders()
+        headers.add("Content-Type", "application/json; charset=UTF-8")
+        RestTemplate().exchange(
+                URI("$HOST/v1/mobile/users/signup"),
+                HttpMethod.POST,
+                HttpEntity("""{"email":"$email","name":"$name","phone":"$phone"}""", headers),
+                String::class.java
+        )
+    }
+
+    fun login(loginUser: String, passwordUser: String) {
+        val headers = HttpHeaders()
+        headers.add("Content-Type", "application/json; charset=UTF-8")
+        headers.add("Authorization", getAuthHeader(loginUser, passwordUser))
+        RestTemplate().exchange(
+                URI("$HOST/v1/mobile/users/login"),
+                HttpMethod.GET,
+                HttpEntity<String>(headers),
+                String::class.java
+        )
     }
 
     private fun getAuthHeader(login: String, password: String): String {
@@ -85,4 +117,3 @@ class FnsReceiptWebClient {
         }
     }
 }
-
