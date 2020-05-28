@@ -22,7 +22,7 @@ public class UserProfileService {
       resultUser.setPassword(password);
       resultUser.setPhone(phone);
       userProfileRepository.save(resultUser);
-
+      return userProfileRepository.getByPhone(phone);
     }
     if (!userProfile.getPassword().equals(password)) {
       userProfile.setPassword(password);
