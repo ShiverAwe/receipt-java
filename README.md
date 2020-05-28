@@ -51,10 +51,7 @@ PUT /receipts
   "offset": 12, // [optional] integer
   "sort": "DATE", // [optional] "DATE" (date) or null (id)
   "asc": true, // [optional] boolean
-  "statuses": [
-        "FAILED",
-        "IDLE"
-    ]
+  "statuses": ["FAILED", "IDLE"]
 }
 ```
 ```json
@@ -157,3 +154,5 @@ DELETE /delete
      "id":"1", // [required] long 
 }
 ```
+В случае если статус чека будет LOADED то выбросится следующее исключение
+ResponseStatusException(HttpStatus.BAD_REQUEST, "Receipt is already loaded");
