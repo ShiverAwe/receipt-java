@@ -32,7 +32,7 @@ Returns header of created receipt
    "merchantLogoUrl": "https://exampleLogo.ru/content/logolenta.jpg" [optional] string 
 
 }
- ```
+```
 
 ### Get the receipts
 ```
@@ -43,7 +43,7 @@ PUT /receipts
   "dateTo": "20190501T2359", // [optional] date in format YYYYMMDD'T'HHmm
   "sumMin": "10.0", // [optional] double
   "sumMax": "200.0", // [optional] double
-  "fn": "23948523549", // [optional] string
+  "fn": "23948523549", // [optional] List<String>
   "fd": "230952", // [optional] string
   "fp": "2345045", // [optional] string
   "place": "Пятерочка", // [optional] string
@@ -51,7 +51,7 @@ PUT /receipts
   "offset": 12, // [optional] integer
   "sort": "DATE", // [optional] "DATE" (date) or null (id)
   "asc": true, // [optional] boolean
-  "statuses": ["FAILED", "IDLE"]
+  "statuses": ["FAILED", "IDLE"], // [optional] List<String>
 }
 ```
 ```json
@@ -154,5 +154,5 @@ DELETE /delete
      "id":"1", // [required] long 
 }
 ```
-В случае если статус чека будет LOADED то выбросится следующее исключение
-ResponseStatusException(HttpStatus.BAD_REQUEST, "Receipt is already loaded");
+В случае успеха вернется пустой ответ. 
+Если Statuses=Loaded, то вернется пустой ответ со статусом  400 Bad Request
