@@ -32,10 +32,6 @@ Returns header of created receipt
    "merchantLogoUrl": "https://exampleLogo.ru/content/logolenta.jpg" [optional] string 
 
 }
-{
-   "id": "1", //[required] Long
-   "status": "LOADED", // [required] ReceiptStatus
-}
 ```
 
 ### Get the receipts
@@ -150,3 +146,10 @@ POST / https://proverkacheka.nalog.ru:9999/v1/mobile/users/restore
 
 Если номер телефона не найден или номер некорректный, то возвращается 404 Not Found и сообщение «the user was not found».
 
+### Receipt delete
+```
+DELETE /delete
+{
+     "id":"1", // [required] long 
+}
+```
