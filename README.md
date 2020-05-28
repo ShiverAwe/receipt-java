@@ -151,7 +151,7 @@ POST / https://proverkacheka.nalog.ru:9999/v1/mobile/users/restore
 ```
 DELETE /delete
 {
-     "id":"1", // [required] long 
+     "id": 1, // [required] integer 
 }
 ```
 В случае успеха вернется пустой ответ. 
