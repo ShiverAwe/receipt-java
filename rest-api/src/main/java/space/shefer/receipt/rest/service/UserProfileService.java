@@ -17,8 +17,8 @@ public class UserProfileService {
 
   public UserProfile createOrUpdate(String phone, String password) {
     UserProfile userProfile = userProfileRepository.getByPhone(phone);
-    UserProfile resultUser = new UserProfile();
     if (userProfile == null) {
+      UserProfile resultUser = new UserProfile();
       resultUser.setPassword(password);
       resultUser.setPhone(phone);
       return userProfileRepository.save(resultUser);
