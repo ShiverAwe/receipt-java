@@ -21,14 +21,13 @@ public class UserProfileService {
     if (userProfile == null) {
       resultUser.setPassword(password);
       resultUser.setPhone(phone);
-      userProfileRepository.save(resultUser);
-      return userProfileRepository.getByPhone(phone);
+      return userProfileRepository.save(resultUser);
     }
     if (!userProfile.getPassword().equals(password)) {
       userProfile.setPassword(password);
       userProfile.setPhone(phone);
-      userProfileRepository.save(userProfile);
+      return userProfileRepository.save(userProfile);
     }
-    return userProfileRepository.getByPhone(phone);
+    return userProfile;
   }
 }
