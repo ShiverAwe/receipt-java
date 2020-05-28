@@ -43,7 +43,7 @@ PUT /receipts
   "dateTo": "20190501T2359", // [optional] date in format YYYYMMDD'T'HHmm
   "sumMin": "10.0", // [optional] double
   "sumMax": "200.0", // [optional] double
-  "fn": "23948523549", // [optional] List<String>
+  "fn": "23948523549", // [optional] String
   "fd": "230952", // [optional] string
   "fp": "2345045", // [optional] string
   "place": "Пятерочка", // [optional] string
