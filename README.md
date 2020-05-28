@@ -51,6 +51,7 @@ PUT /receipts
   "offset": 12, // [optional] integer
   "sort": "DATE", // [optional] "DATE" (date) or null (id)
   "asc": true, // [optional] boolean
+  "statuses": ["FAILED", "IDLE"], // [optional] List<String>
 }
 ```
 ```json
@@ -146,3 +147,12 @@ POST /passwordRestore
 
 Если номер телефона не найден или номер некорректный, то возвращается 404 Not Found и сообщение «the user was not found».
 
+### Receipt delete
+```
+DELETE /delete
+{
+     "id": 1, // [required] integer 
+}
+```
+В случае успеха вернется пустой ответ. 
+Если Statuses=Loaded, то вернется пустой ответ со статусом  400 Bad Request
