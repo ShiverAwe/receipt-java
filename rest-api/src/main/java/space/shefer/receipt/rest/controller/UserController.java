@@ -9,31 +9,36 @@ import space.shefer.receipt.fnssdk.webclient.FnsReceiptWebClient;
 import space.shefer.receipt.rest.dto.UserLoginDto;
 import space.shefer.receipt.rest.dto.UserPasswordRestoreDto;
 import space.shefer.receipt.rest.dto.UserSignUpDto;
+import space.shefer.receipt.rest.service.UserProfileService;
 
 
 @RestController
 public class UserController {
 
-  private final FnsReceiptWebClient fnsReceiptService;
+  private final FnsReceiptWebClient fnsReceiptWebClient;
+  private final UserProfileService userProfileService;
 
   @Autowired
-  public UserController(FnsReceiptWebClient fnsReceiptService) {
-    this.fnsReceiptService = fnsReceiptService;
+  public UserController(FnsReceiptWebClient fnsReceiptWebClient, UserProfileService userProfileService) {
+    this.fnsReceiptWebClient = fnsReceiptWebClient;
+    this.userProfileService = userProfileService;
   }
 
   @RequestMapping(value = "/login", method = RequestMethod.POST)
   public void login(@RequestBody UserLoginDto userLoginDto) {
-    fnsReceiptService.login(userLoginDto.getPhone(), userLoginDto.getPassword());
+    fnsReceiptWebClient.login(userLoginDto.getPhone(), userLoginDto.getPassword());
+    userProfileService.createOrUpdate(userLoginDto.getPhone(), userLoginDto.getPassword());
   }
 
   @RequestMapping(value = "/signUp", method = RequestMethod.POST)
   public void signUp(@RequestBody UserSignUpDto userSignUpDto) {
-    fnsReceiptService.signUp(userSignUpDto.getEmail(), userSignUpDto.getName(), userSignUpDto.getPhone());
+    fnsReceiptWebClient.signUp(userSignUpDto.getEmail(), userSignUpDto.getName(), userSignUpDto.getPhone());
   }
 
   @RequestMapping(value = "/passwordRestore", method = RequestMethod.POST)
   public void passwordRestore(@RequestBody UserPasswordRestoreDto userPasswordRestoreDto) {
-    fnsReceiptService.passwordRestore(userPasswordRestoreDto.getPhone());
+    fnsReceiptWebClient.passwordRestore(userPasswordRestoreDto.getPhone());
   }
+
 
 }
