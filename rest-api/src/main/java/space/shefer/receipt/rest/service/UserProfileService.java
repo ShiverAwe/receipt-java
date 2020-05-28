@@ -22,13 +22,13 @@ public class UserProfileService {
       resultUser.setPassword(password);
       resultUser.setPhone(phone);
       userProfileRepository.save(resultUser);
+
     }
-    else {
-      if (!userProfile.getPassword().equals(password)) {
-        userProfile.setPassword(password);
-        userProfileRepository.save(userProfile);
-      }
+    if (!userProfile.getPassword().equals(password)) {
+      userProfile.setPassword(password);
+      userProfile.setPhone(phone);
+      userProfileRepository.save(userProfile);
     }
-    return resultUser;
+    return userProfileRepository.getByPhone(phone);
   }
 }
