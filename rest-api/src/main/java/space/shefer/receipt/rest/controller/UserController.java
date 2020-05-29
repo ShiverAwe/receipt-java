@@ -27,7 +27,7 @@ public class UserController {
   @RequestMapping(value = "/login", method = RequestMethod.POST)
   public void login(@RequestBody UserLoginDto userLoginDto) {
     fnsReceiptWebClient.login(userLoginDto.getPhone(), userLoginDto.getPassword());
-    userProfileService.createOrUpdate(userLoginDto.getPhone(), userLoginDto.getPassword()).getAccessToken();
+    userProfileService.createOrUpdate(userLoginDto.getPhone(), userLoginDto.getPassword());
   }
 
   @RequestMapping(value = "/signUp", method = RequestMethod.POST)
