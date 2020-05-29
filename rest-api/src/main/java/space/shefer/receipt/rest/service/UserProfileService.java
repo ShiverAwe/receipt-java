@@ -34,12 +34,4 @@ public class UserProfileService {
     return userProfile;
   }
 
-  public String getAccessToken(String phone) {
-    UserProfile userProfile = userProfileRepository.getByPhone(phone);
-    if (userProfile != null) {
-      return userProfile.getAccessToken();
-    }
-    return null;
-  }
-
 }
