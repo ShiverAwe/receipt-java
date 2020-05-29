@@ -22,4 +22,7 @@ public class UserProfile extends BaseUuidIdEntity {
   @Column(name = "fns_request_count")
   private int fnsRequestCount = 0;
 
+  @Column(name = "access_token")
+  private String accessToken;
+
 }

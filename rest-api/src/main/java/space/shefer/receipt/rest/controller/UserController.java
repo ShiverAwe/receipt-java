@@ -9,6 +9,7 @@ import space.shefer.receipt.fnssdk.webclient.FnsReceiptWebClient;
 import space.shefer.receipt.rest.dto.UserLoginDto;
 import space.shefer.receipt.rest.dto.UserPasswordRestoreDto;
 import space.shefer.receipt.rest.dto.UserSignUpDto;
+import space.shefer.receipt.rest.entity.UserProfile;
 import space.shefer.receipt.rest.service.UserProfileService;
 
 
@@ -25,9 +26,10 @@ public class UserController {
   }
 
   @RequestMapping(value = "/login", method = RequestMethod.POST)
-  public void login(@RequestBody UserLoginDto userLoginDto) {
+  public String login(@RequestBody UserLoginDto userLoginDto) {
     fnsReceiptWebClient.login(userLoginDto.getPhone(), userLoginDto.getPassword());
-    userProfileService.createOrUpdate(userLoginDto.getPhone(), userLoginDto.getPassword());
+    UserProfile userProfile = userProfileService.createOrUpdate(userLoginDto.getPhone(), userLoginDto.getPassword());
+    return userProfile.getAccessToken();
   }
 
   @RequestMapping(value = "/signUp", method = RequestMethod.POST)
