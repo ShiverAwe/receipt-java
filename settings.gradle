@@ -1,5 +1,6 @@
 rootProject.name = 'receipt-java'
 
+// Keep modules ordered by name
 include 'core'
 include 'core-dto'
 include 'jobs'

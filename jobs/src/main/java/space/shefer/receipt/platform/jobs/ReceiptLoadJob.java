@@ -4,6 +4,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import space.shefer.receipt.fnssdk.dto.FnsResponseDto;
+import space.shefer.receipt.fnssdk.excepion.AuthorizationFailedException;
+import space.shefer.receipt.fnssdk.excepion.ReceiptNotFoundException;
 import space.shefer.receipt.fnssdk.service.FnsService;
 import space.shefer.receipt.platform.core.dto.ReceiptProvider;
 import space.shefer.receipt.platform.core.dto.ReceiptStatus;
@@ -48,8 +50,16 @@ public class ReceiptLoadJob {
             receiptService.setStatus(receipt, ReceiptStatus.FAILED);
           }
         }
-        catch (Exception e) {
+        catch (AuthorizationFailedException e){
+          e.printStackTrace();
+        }
+        catch (ReceiptNotFoundException e) {
           receiptService.setStatus(receipt, ReceiptStatus.FAILED);
+          e.printStackTrace();
+        }
+        catch (Exception e) {
+          receiptService.setStatus(receipt, ReceiptStatus.IDLE);
+          e.printStackTrace();
         }
       }
     );

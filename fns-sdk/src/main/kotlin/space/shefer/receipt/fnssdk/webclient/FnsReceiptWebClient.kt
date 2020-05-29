@@ -6,7 +6,10 @@ import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpMethod
 import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Component
+import org.springframework.web.client.HttpClientErrorException
+import org.springframework.web.client.HttpServerErrorException
 import org.springframework.web.client.RestTemplate
+import space.shefer.receipt.fnssdk.excepion.AuthorizationFailedException
 import java.net.URI
 import java.util.*
 
@@ -20,6 +23,7 @@ class FnsReceiptWebClient {
     lateinit var password: String
 
     fun get(fn: String, fd: String, fp: String): String? {
+        login(login, password)
         val uri = urlGet(fn, fd, fp)
         val headers = HttpHeaders()
         headers.add("device-id", "")
@@ -31,7 +35,6 @@ class FnsReceiptWebClient {
                 HttpEntity<String>(headers),
                 String::class.java
         )
-
         if (responseEntity.statusCode == HttpStatus.OK) {
             return responseEntity.body
         }
@@ -39,17 +42,25 @@ class FnsReceiptWebClient {
     }
 
     fun getReceiptExists(fn: String, fd: String, fp: String, time: String, money: Float): Boolean {
-        val uri = getReceiptExistsUrl(fn, fd, fp, time, money)
+        val moneyForUrl: Int = (money * 100).toInt()
+        val uri = "$HOST/v1/ofds/*/inns/*/fss/$fn/operations/1/tickets/$fd?fiscalSign=$fp&date=$time&sum=$moneyForUrl"
         val headers = HttpHeaders()
-        headers.add("device-id", "")
-        headers.add("device-os", "")
-        headers.add("Authorization", getAuthHeader(login, password))
-        val responseEntity = RestTemplate().exchange(
-                URI.create(uri),
-                HttpMethod.GET,
-                HttpEntity<String>(headers),
-                String::class.java
-        )
+
+        val responseEntity = try {
+            RestTemplate().exchange(
+                    URI.create(uri),
+                    HttpMethod.GET,
+                    HttpEntity<String>(headers),
+                    String::class.java
+            )
+        } catch (e: HttpServerErrorException) {
+            if (e.statusCode == HttpStatus.NOT_ACCEPTABLE) {
+                return false
+            }
+
+            throw e
+        }
+
         return responseEntity.statusCode == HttpStatus.NO_CONTENT
     }
 
@@ -75,16 +86,24 @@ class FnsReceiptWebClient {
         )
     }
 
-    fun login(loginUser: String, passwordUser: String) {
+    fun login(login: String, password: String) {
         val headers = HttpHeaders()
         headers.add("Content-Type", "application/json; charset=UTF-8")
-        headers.add("Authorization", getAuthHeader(loginUser, passwordUser))
-        RestTemplate().exchange(
-                URI("$HOST/v1/mobile/users/login"),
-                HttpMethod.GET,
-                HttpEntity<String>(headers),
-                String::class.java
-        )
+        headers.add("Authorization", getAuthHeader(login, password))
+        try {
+            RestTemplate().exchange(
+                    URI("$HOST/v1/mobile/users/login"),
+                    HttpMethod.GET,
+                    HttpEntity<String>(headers),
+                    String::class.java
+            )
+        } catch (e: HttpClientErrorException) {
+            if (e.statusCode == HttpStatus.FORBIDDEN) {
+                throw AuthorizationFailedException(login, e)
+            } else {
+                throw e
+            }
+        }
     }
 
     private fun getAuthHeader(login: String, password: String): String {
@@ -105,15 +124,5 @@ class FnsReceiptWebClient {
                     "&sendToEmail=no"
         }
 
-        private fun getReceiptExistsUrl(fn: String, fd: String, fp: String, time: String, money: Float): String {
-            val moneyForUrl: Int = (money * 100).toInt()
-            return HOST + "/v1/ofds/*/inns/*" +
-                    "/fss/" + fn +
-                    "/operations/1" +
-                    "/tickets/" + fd +
-                    "?fiscalSign=" + fp +
-                    "&date=" + time +
-                    "&sum=" + moneyForUrl
-        }
     }
 }
