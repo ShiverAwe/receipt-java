@@ -2,6 +2,8 @@ package space.shefer.receipt.fnssdk.service
 
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
+import space.shefer.receipt.fnssdk.excepion.AuthorizationFailedException
+import space.shefer.receipt.fnssdk.excepion.ReceiptNotFoundException
 import space.shefer.receipt.fnssdk.webclient.FnsReceiptWebClient
 import java.util.concurrent.TimeUnit
 
@@ -9,22 +11,30 @@ import java.util.concurrent.TimeUnit
 class FnsService {
 
     @Autowired
-    lateinit var fnsReceiptService: FnsReceiptWebClient
+    lateinit var fnsReceiptWebClient: FnsReceiptWebClient
 
     fun getReceiptExists(fn: String, fd: String, fp: String, time: String, money: Float): String? {
+        if (fnsReceiptWebClient.getReceiptExists(fn, fd, fp, time, money)) {
+            for (i in 1..MAX_ATTEMPTS) {
+                try {
+                    val dataReceipt: String? = fnsReceiptWebClient.get(fn, fd, fp)
 
-        var dataReceipt: String? = null
-        if (fnsReceiptService.getReceiptExists(fn, fd, fp, time, money)) {
-            for (i in 1..10) {
-                dataReceipt = fnsReceiptService.get(fn, fd, fp)
-                if (dataReceipt != null) {
-                    break
+                    if (dataReceipt != null) {
+                        return dataReceipt
+                    }
+                } catch (e: AuthorizationFailedException) {
+                    throw e
+                } catch (e: Exception) {
+                    e.printStackTrace()
                 }
-                if ((i == 10) && (dataReceipt == null)) throw Exception("Receipt couldn't found, try again")
                 TimeUnit.SECONDS.sleep(1)
             }
         }
-        return dataReceipt
+        throw ReceiptNotFoundException(fn, fd, fp)
+    }
+
+    companion object {
+        private const val MAX_ATTEMPTS = 10
     }
 
 }
