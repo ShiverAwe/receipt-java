@@ -5,6 +5,8 @@ import org.springframework.stereotype.Service;
 import space.shefer.receipt.rest.entity.UserProfile;
 import space.shefer.receipt.rest.repository.UserProfileRepository;
 
+import java.util.UUID;
+
 @Service
 public class UserProfileService {
 
@@ -21,6 +23,7 @@ public class UserProfileService {
       UserProfile resultUser = new UserProfile();
       resultUser.setPassword(password);
       resultUser.setPhone(phone);
+      resultUser.setAccessToken(UUID.randomUUID().toString());
       return userProfileRepository.save(resultUser);
     }
     if (!userProfile.getPassword().equals(password)) {
@@ -30,4 +33,13 @@ public class UserProfileService {
     }
     return userProfile;
   }
+
+  public String getAccessToken(String phone) {
+    UserProfile userProfile = userProfileRepository.getByPhone(phone);
+    if (userProfile != null) {
+      return userProfile.getAccessToken();
+    }
+    return null;
+  }
+
 }
