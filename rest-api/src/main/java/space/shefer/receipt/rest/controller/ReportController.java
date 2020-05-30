@@ -1,13 +1,10 @@
 package space.shefer.receipt.rest.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.client.HttpServerErrorException;
 import space.shefer.receipt.platform.core.dto.ReportItemFilter;
 import space.shefer.receipt.platform.core.dto.ReportMetaFilter;
 import space.shefer.receipt.rest.dto.ReceiptItemDto;
@@ -32,11 +29,6 @@ public class ReportController {
   @RequestMapping(value = "/items", method = RequestMethod.PUT)
   public List<ReceiptItemDto> items(@RequestBody ReportItemFilter query) {
     return itemService.getItems(query);
-  }
-
-  @RequestMapping(value = "/merchant", method = RequestMethod.GET)
-  public String merchants(int inn) {
-    throw HttpServerErrorException.create(HttpStatus.NOT_IMPLEMENTED, "Not implemented", HttpHeaders.EMPTY, null, null);
   }
 
 }
