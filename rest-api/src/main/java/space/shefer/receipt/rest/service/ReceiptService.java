@@ -14,7 +14,6 @@ import space.shefer.receipt.rest.converters.ReceiptMetaConverter;
 import space.shefer.receipt.rest.dto.ReceiptCreateDto;
 import space.shefer.receipt.rest.dto.ReceiptMetaDto;
 
-import javax.validation.constraints.NotNull;
 import java.util.List;
 import java.util.Optional;
 import java.util.regex.Matcher;
