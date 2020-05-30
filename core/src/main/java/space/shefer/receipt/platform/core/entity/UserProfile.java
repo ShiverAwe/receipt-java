@@ -1,4 +1,4 @@
-package space.shefer.receipt.rest.entity;
+package space.shefer.receipt.platform.core.entity;
 
 import lombok.Getter;
 import lombok.Setter;
