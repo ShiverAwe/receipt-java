@@ -27,10 +27,10 @@ import static org.mockito.Mockito.verify;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-public class ReceiptCreateControllerTest {
+public class ReceiptControllerTest {
 
   private MockMvc mockMvc;
-  private ReceiptCreateController controller;
+  private ReceiptController controller;
   private ReceiptService receiptService;
   private UserProfileService userProfileService;
 
@@ -38,7 +38,7 @@ public class ReceiptCreateControllerTest {
   public void setUp() {
     receiptService = mock(ReceiptService.class);
     userProfileService = mock(UserProfileService.class);
-    controller = spy(new ReceiptCreateController(receiptService, userProfileService));
+    controller = spy(new ReceiptController(receiptService, userProfileService));
     mockMvc = MockMvcBuilders.standaloneSetup(controller).build();
   }
 
