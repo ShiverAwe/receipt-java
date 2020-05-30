@@ -1,9 +1,9 @@
-package space.shefer.receipt.rest.repository;
+package space.shefer.receipt.platform.core.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
-import space.shefer.receipt.rest.entity.UserProfile;
+import space.shefer.receipt.platform.core.entity.UserProfile;
 
 
 public interface UserProfileRepository extends JpaRepository<UserProfile, String> {

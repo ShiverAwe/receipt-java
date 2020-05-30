@@ -9,8 +9,8 @@ import space.shefer.receipt.fnssdk.webclient.FnsReceiptWebClient;
 import space.shefer.receipt.rest.dto.UserLoginDto;
 import space.shefer.receipt.rest.dto.UserPasswordRestoreDto;
 import space.shefer.receipt.rest.dto.UserSignUpDto;
-import space.shefer.receipt.rest.entity.UserProfile;
-import space.shefer.receipt.rest.service.UserProfileService;
+import space.shefer.receipt.platform.core.entity.UserProfile;
+import space.shefer.receipt.platform.core.service.UserProfileService;
 
 
 @RestController

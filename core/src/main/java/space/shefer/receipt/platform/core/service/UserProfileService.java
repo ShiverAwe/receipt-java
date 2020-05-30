@@ -1,9 +1,10 @@
-package space.shefer.receipt.rest.service;
+package space.shefer.receipt.platform.core.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import space.shefer.receipt.rest.entity.UserProfile;
-import space.shefer.receipt.rest.repository.UserProfileRepository;
+import space.shefer.receipt.platform.core.entity.UserProfile;
+import space.shefer.receipt.platform.core.repository.UserProfileRepository;
+
 
 import java.util.UUID;
 
