@@ -4,7 +4,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 import space.shefer.receipt.platform.core.dto.ReportMetaFilter;
-import space.shefer.receipt.platform.core.entity.Place;
 import space.shefer.receipt.platform.core.entity.Receipt;
 import space.shefer.receipt.platform.core.repository.ReceiptRepository;
 import space.shefer.receipt.platform.core.util.DateUtil;
@@ -24,7 +23,6 @@ public class ReceiptServiceTest {
 
   private ReceiptService service;
   private ReceiptRepository receiptRepository;
-  private Place place = new Place(123L, "", null);
 
   @Before
   public void setUp() {
@@ -45,8 +43,8 @@ public class ReceiptServiceTest {
     metaFilter.setSumMax(800.0);
     when(receiptRepository.getReceipts(any()))
       .thenReturn(Arrays.asList(
-        Receipt.builder().id(1L).place(place).build(),
-        Receipt.builder().id(2L).place(place).build()
+        Receipt.builder().id(1L).build(),
+        Receipt.builder().id(2L).build()
       ));
     service.getReceipts(metaFilter);
     verify(receiptRepository).getReceipts(metaFilter);

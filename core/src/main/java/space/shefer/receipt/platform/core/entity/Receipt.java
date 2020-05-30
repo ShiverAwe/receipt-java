@@ -27,9 +27,9 @@ import java.util.List;
 @Entity
 @Table(name = "receipt")
 @Data
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
 public class Receipt {
 
   @Id
@@ -61,11 +61,6 @@ public class Receipt {
   @Enumerated(EnumType.STRING)
   @Column(name = "status", nullable = false)
   private ReceiptStatus status;
-
-  @Nullable
-  @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "place_id")
-  private Place place;
 
   @Builder.Default
   @OneToMany(fetch = FetchType.LAZY)
