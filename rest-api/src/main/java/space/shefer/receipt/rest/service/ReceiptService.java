@@ -1,10 +1,10 @@
 package space.shefer.receipt.rest.service;
 
-import jdk.internal.jline.internal.Nullable;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
+import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 import space.shefer.receipt.platform.core.dto.ReceiptStatus;
