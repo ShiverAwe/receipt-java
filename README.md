@@ -114,7 +114,12 @@ POST /login
     "password": "86548", // [required] string 
 }
 ```
-Если все хорошо, то вернется 200 OK и сообщение в виде json
+Returns accessToken of user
+```
+{
+ "accessToken":"dasdasd@#$%$asdas"
+}
+```
 Если указать некорректный номер телефона или пароль, 
 то вернется 403 Forbidden и сообщение «the user was not found or the specified password was not correct»
 ```

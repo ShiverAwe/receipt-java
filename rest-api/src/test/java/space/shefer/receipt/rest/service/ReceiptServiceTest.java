@@ -71,4 +71,19 @@ public class ReceiptServiceTest {
     assertNull(actual.getProvider());
   }
 
+  @Test
+  public void correctionAddressLine() {
+    String address01 = "----asdasdasdasd312314--";
+    String address02 = "фы---!вфыв__---__---__--____---";
+    String address03 = null;
+    String address04 = "-----7----";
+    String address05 = "asdad312312rfa";
+
+    assertEquals(ReceiptService.correctionAddressLine(address01), "asdasdasdasd312314");
+    assertEquals(ReceiptService.correctionAddressLine(address02), "фы---!вфыв");
+    assertNull(ReceiptService.correctionAddressLine(address03));
+    assertEquals(ReceiptService.correctionAddressLine(address04), "7");
+    assertEquals(ReceiptService.correctionAddressLine(address05), "asdad312312rfa");
+  }
+
 }

@@ -101,11 +101,11 @@ public class ReceiptService {
 
     }
     int lastPosition = 0;
-    for (int i = stringBuilder.length() - 1; i > 0; i--) {
+    for (int i = stringBuilder.length() - 1; i >= 0; i--) {
       char c = address.charAt(i);
       Matcher matcher = pattern.matcher(Character.toString(c));
       if (matcher.matches()) {
-        lastPosition = i;
+        lastPosition = i + 1;
         break;
       }
 
@@ -116,7 +116,6 @@ public class ReceiptService {
     else {
       return address.substring(firstPosition, lastPosition);
     }
-
   }
 
 }
