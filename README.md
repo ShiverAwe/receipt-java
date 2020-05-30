@@ -116,9 +116,7 @@ POST /login
 ```
 Returns accessToken of user
 ```
-{
- "accessToken":"dasdasd@#$%$asdas"
-}
+"accessToken": "asdasd@#$%$asdas", // [required] string
 ```
 Если указать некорректный номер телефона или пароль, 
 то вернется 403 Forbidden и сообщение «the user was not found or the specified password was not correct»

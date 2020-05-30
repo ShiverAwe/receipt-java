@@ -28,7 +28,7 @@ public class ReceiptService {
 
   private final ReceiptRepository receiptRepository;
   private final MerchantLogoService merchantLogoService;
-  private static Pattern pattern = Pattern.compile("[а-яА-ЯёЁa-zA-Z0-9]");
+  private static final Pattern pattern = Pattern.compile("[а-яА-ЯёЁa-zA-Z0-9]");
 
   @Autowired
   public ReceiptService(ReceiptRepository receiptRepository, MerchantLogoService merchantLogoService) {
@@ -41,7 +41,7 @@ public class ReceiptService {
     return receipts.stream().map(ReceiptMetaConverter::toDto)
       .peek(this::setDefaultPlaceIfNull)
       .peek(receipt -> receipt.setMerchantLogoUrl(merchantLogoService.getUrlForImagePlace(receipt.getPlace())))
-      .peek(receipt -> receipt.setMerchantPlaceAddress(correctionAddressLine(receipt.getMerchantPlaceAddress())))
+      .peek(receipt -> receipt.setMerchantPlaceAddress(trimAddressLine(receipt.getMerchantPlaceAddress())))
       .collect(Collectors.toList());
   }
 
@@ -84,7 +84,7 @@ public class ReceiptService {
     }
   }
 
-  public static String correctionAddressLine(String address) {
+  public static String trimAddressLine(String address) {
     if (address == null) {
       return null;
     }
@@ -108,6 +108,9 @@ public class ReceiptService {
         break;
       }
 
+    }
+    if (lastPosition == 0 && firstPosition == 0) {
+      return "";
     }
     if (lastPosition == firstPosition) {
       return address;
