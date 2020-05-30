@@ -14,8 +14,11 @@ import space.shefer.receipt.rest.converters.ReceiptMetaConverter;
 import space.shefer.receipt.rest.dto.ReceiptCreateDto;
 import space.shefer.receipt.rest.dto.ReceiptMetaDto;
 
+import javax.validation.constraints.NotNull;
 import java.util.List;
 import java.util.Optional;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 @Service
@@ -26,6 +29,7 @@ public class ReceiptService {
 
   private final ReceiptRepository receiptRepository;
   private final MerchantLogoService merchantLogoService;
+  private static Pattern pattern = Pattern.compile("[а-яА-ЯёЁa-zA-Z0-9]");
 
   @Autowired
   public ReceiptService(ReceiptRepository receiptRepository, MerchantLogoService merchantLogoService) {
@@ -38,6 +42,7 @@ public class ReceiptService {
     return receipts.stream().map(ReceiptMetaConverter::toDto)
       .peek(this::setDefaultPlaceIfNull)
       .peek(receipt -> receipt.setMerchantLogoUrl(merchantLogoService.getUrlForImagePlace(receipt.getPlace())))
+      .peek(receipt -> receipt.setMerchantPlaceAddress(correctionAddressLine(receipt.getMerchantPlaceAddress())))
       .collect(Collectors.toList());
   }
 
@@ -78,6 +83,40 @@ public class ReceiptService {
       }
       receiptRepository.deleteById(id);
     }
+  }
+
+  public static String correctionAddressLine(String address) {
+    if (address == null) {
+      return null;
+    }
+    StringBuilder stringBuilder = new StringBuilder(address);
+    int firstPosition = 0;
+    for (int i = 0; i < stringBuilder.length(); i++) {
+      char c = address.charAt(i);
+      Matcher matcher = pattern.matcher(Character.toString(c));
+      if (matcher.matches()) {
+        firstPosition = i;
+        break;
+      }
+
+    }
+    int lastPosition = 0;
+    for (int i = stringBuilder.length() - 1; i > 0; i--) {
+      char c = address.charAt(i);
+      Matcher matcher = pattern.matcher(Character.toString(c));
+      if (matcher.matches()) {
+        lastPosition = i;
+        break;
+      }
+
+    }
+    if (lastPosition == firstPosition) {
+      return address;
+    }
+    else {
+      return address.substring(firstPosition, lastPosition);
+    }
+
   }
 
 }
