@@ -1,5 +1,6 @@
 package space.shefer.receipt.rest.service;
 
+import jdk.internal.jline.internal.Nullable;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -84,7 +85,7 @@ public class ReceiptService {
     }
   }
 
-  public static String trimAddressLine(String address) {
+  public static @Nullable String trimAddressLine(@Nullable String address) {
     if (address == null) {
       return null;
     }
