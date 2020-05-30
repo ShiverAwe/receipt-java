@@ -71,4 +71,15 @@ public class ReceiptServiceTest {
     assertNull(actual.getProvider());
   }
 
+  @Test
+  public void trimAddressLine() {
+    assertEquals(ReceiptService.trimAddressLine("----asdasdasdasd312314--"), "asdasdasdasd312314");
+    assertEquals(ReceiptService.trimAddressLine("фы---!вфыв__---__---__--____---"), "фы---!вфыв");
+    assertNull(ReceiptService.trimAddressLine(null));
+    assertEquals(ReceiptService.trimAddressLine("-----7----"), "7");
+    assertEquals(ReceiptService.trimAddressLine("asdad312312rfa"), "asdad312312rfa");
+    assertEquals(ReceiptService.trimAddressLine(""), "");
+    assertEquals(ReceiptService.trimAddressLine("----!#@#$!____--"), "");
+  }
+
 }
