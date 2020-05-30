@@ -159,6 +159,11 @@ public class ReceiptRepositorySlowTest {
         dateOk, "11111", "22222", "33333", sumOk, "TAXCOM", IDLE, emptyList(),
         merchantName, merchantInn, merchantPlaceAddress, userProfile));
     }
+    {// WRONG MERCHANT NAME
+      repository.save(new Receipt(null,
+        dateOk, "11111", "22222", "33333", sumOk, "TAXCOM", LOADED, emptyList(),
+        "dummy", merchantInn, merchantPlaceAddress, userProfile));
+    }
 
     repository.flush();
     Long finalBannedId = bannedId;
@@ -177,6 +182,7 @@ public class ReceiptRepositorySlowTest {
           .sumMin(sumOk)
           .sumMax(sumOk)
           .statuses(EnumSet.of(LOADED))
+          .place(merchantName)
           .build()
       );
 
