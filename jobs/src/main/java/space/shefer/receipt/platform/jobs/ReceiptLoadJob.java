@@ -29,6 +29,8 @@ public class ReceiptLoadJob {
     DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss");
     List<Receipt> receipts = receiptService.getAllIdle();
 
+    System.out.println("Starting loading " + receipts.size() + " receipts");
+
     receipts.forEach(receipt -> {
         try {
           String rawReceipt = fnsService.getReceiptExists(
