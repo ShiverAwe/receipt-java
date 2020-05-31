@@ -10,12 +10,15 @@ import org.springframework.web.server.ResponseStatusException;
 import space.shefer.receipt.platform.core.dto.ReceiptStatus;
 import space.shefer.receipt.platform.core.dto.ReportMetaFilter;
 import space.shefer.receipt.platform.core.entity.Receipt;
+import space.shefer.receipt.platform.core.entity.UserProfile;
 import space.shefer.receipt.platform.core.repository.ReceiptRepository;
+import space.shefer.receipt.platform.core.service.UserProfileService;
 import space.shefer.receipt.rest.converters.ReceiptMetaConverter;
 import space.shefer.receipt.rest.dto.ReceiptCreateDto;
 import space.shefer.receipt.rest.dto.ReceiptMetaDto;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -29,12 +32,14 @@ public class ReceiptService {
 
   private final ReceiptRepository receiptRepository;
   private final MerchantLogoService merchantLogoService;
+  private final UserProfileService userProfileService;
   private static final Pattern pattern = Pattern.compile("[а-яА-ЯёЁa-zA-Z0-9]");
 
   @Autowired
-  public ReceiptService(ReceiptRepository receiptRepository, MerchantLogoService merchantLogoService) {
+  public ReceiptService(ReceiptRepository receiptRepository, MerchantLogoService merchantLogoService, UserProfileService userProfileService) {
     this.receiptRepository = receiptRepository;
     this.merchantLogoService = merchantLogoService;
+    this.userProfileService = userProfileService;
   }
 
   public List<ReceiptMetaDto> getReceipts(ReportMetaFilter metaFilter) {
@@ -46,7 +51,7 @@ public class ReceiptService {
       .collect(Collectors.toList());
   }
 
-  public Receipt create(ReceiptCreateDto receipt) {
+  public Receipt create(ReceiptCreateDto receipt, UserProfile userProfile) {
     List<Receipt> matchingReceipts = receiptRepository.getReceipts(
       ReportMetaFilter.builder()
         .fn(receipt.getFn())
@@ -58,14 +63,16 @@ public class ReceiptService {
         .sumMin(receipt.getSum())
         .build()
     );
-
-    if (!matchingReceipts.isEmpty()) {
-      return matchingReceipts.get(0);
+    if ((userProfile != null) && (matchingReceipts.get(0).getUserProfile()!= null)) {
+      if ((!matchingReceipts.isEmpty()) && (Objects.equals(matchingReceipts.get(0).getUserProfile().getId(), userProfile.getId()))) {
+        return matchingReceipts.get(0);
+      }
     }
 
     Receipt entity = new Receipt();
     ReceiptMetaConverter.map(receipt, entity);
     entity.setStatus(ReceiptStatus.IDLE);
+    entity.setUserProfile(userProfile);
     return receiptRepository.save(entity);
   }
 
@@ -85,7 +92,8 @@ public class ReceiptService {
     }
   }
 
-  public static @Nullable String trimAddressLine(@Nullable String address) {
+  public static @Nullable
+  String trimAddressLine(@Nullable String address) {
     if (address == null) {
       return null;
     }

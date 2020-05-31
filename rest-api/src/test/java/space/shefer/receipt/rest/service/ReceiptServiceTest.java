@@ -3,9 +3,13 @@ package space.shefer.receipt.rest.service;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
+import org.springframework.beans.factory.annotation.Autowired;
 import space.shefer.receipt.platform.core.dto.ReportMetaFilter;
 import space.shefer.receipt.platform.core.entity.Receipt;
+import space.shefer.receipt.platform.core.entity.UserProfile;
 import space.shefer.receipt.platform.core.repository.ReceiptRepository;
+import space.shefer.receipt.platform.core.repository.UserProfileRepository;
+import space.shefer.receipt.platform.core.service.UserProfileService;
 import space.shefer.receipt.platform.core.util.DateUtil;
 import space.shefer.receipt.rest.dto.ReceiptCreateDto;
 
@@ -23,12 +27,14 @@ public class ReceiptServiceTest {
 
   private ReceiptService service;
   private ReceiptRepository receiptRepository;
+  private UserProfileService userProfileService;
+  private UserProfileRepository userProfileRepository;
 
   @Before
   public void setUp() {
     receiptRepository = mock(ReceiptRepository.class);
     MerchantLogoService merchantLogoService = mock(MerchantLogoService.class);
-    service = spy(new ReceiptService(receiptRepository, merchantLogoService));
+    service = spy(new ReceiptService(receiptRepository, merchantLogoService, userProfileService));
   }
 
   @Test
@@ -52,6 +58,11 @@ public class ReceiptServiceTest {
 
   @Test
   public void create() {
+    UserProfile userProfile = new UserProfile();
+    userProfile.setId("bcce81c9-cbf3-4216-819d-70b9e37da6e3");
+    userProfile.setPassword("aaaaa");
+    userProfile.setPhone("+7999999999");
+    userProfile.setAccessToken("6b6c0abf-82cc-40fb-8379-30e9d0e72bc7");
     ReceiptCreateDto receipt = new ReceiptCreateDto();
     receipt.setDate(DateUtil.parseReceiptDate("20190725T2313"));
     receipt.setFn("1111");
@@ -59,7 +70,7 @@ public class ReceiptServiceTest {
     receipt.setFp("3333");
     receipt.setSum(100.0);
     when(receiptRepository.save(any())).thenReturn(Receipt.builder().id(400L).build());
-    service.create(receipt);
+    service.create(receipt, userProfile);
     ArgumentCaptor<Receipt> receiptCaptor = ArgumentCaptor.forClass(Receipt.class);
     verify(receiptRepository).save(receiptCaptor.capture());
     Receipt actual = receiptCaptor.getValue();
