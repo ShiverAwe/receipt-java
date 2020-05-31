@@ -32,7 +32,6 @@ public class ReceiptCreateController {
                                @Nullable @RequestHeader("Authorization") String headerQuery) {
     Receipt receipt = receiptService.create(query);
     UserProfile userProfile = userProfileService.getUserByToken(headerQuery);
-    System.out.println(userProfile.getAccessToken());
     return ReceiptMetaConverter.toDto(receipt);
   }
 
