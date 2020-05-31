@@ -1,6 +1,7 @@
 package space.shefer.receipt.platform.core.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import javax.annotation.Nullable;
 import org.springframework.stereotype.Service;
 import space.shefer.receipt.platform.core.entity.UserProfile;
 import space.shefer.receipt.platform.core.repository.UserProfileRepository;
@@ -33,6 +34,14 @@ public class UserProfileService {
       return userProfileRepository.save(userProfile);
     }
     return userProfile;
+  }
+
+  @Nullable
+  public UserProfile getUserByToken(@Nullable String token) {
+    if (token == null) {
+      return null;
+    }
+    return userProfileRepository.getByAccessToken(token);
   }
 
 }

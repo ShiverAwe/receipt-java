@@ -6,6 +6,7 @@ import lombok.Setter;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import java.util.Objects;
 
 @Entity
 @Getter
@@ -24,5 +25,20 @@ public class UserProfile extends BaseUuidIdEntity {
 
   @Column(name = "access_token")
   private String accessToken;
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (!(o instanceof UserProfile)) return false;
+
+    UserProfile that = (UserProfile) o;
+
+    return id != null && id.equals(that.id);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hashCode(id);
+  }
 
 }

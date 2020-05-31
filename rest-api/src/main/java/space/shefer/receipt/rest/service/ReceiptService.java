@@ -4,18 +4,20 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
-import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 import space.shefer.receipt.platform.core.dto.ReceiptStatus;
 import space.shefer.receipt.platform.core.dto.ReportMetaFilter;
 import space.shefer.receipt.platform.core.entity.Receipt;
+import space.shefer.receipt.platform.core.entity.UserProfile;
 import space.shefer.receipt.platform.core.repository.ReceiptRepository;
 import space.shefer.receipt.rest.converters.ReceiptMetaConverter;
 import space.shefer.receipt.rest.dto.ReceiptCreateDto;
 import space.shefer.receipt.rest.dto.ReceiptMetaDto;
 
+import javax.annotation.Nullable;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -46,7 +48,7 @@ public class ReceiptService {
       .collect(Collectors.toList());
   }
 
-  public Receipt create(ReceiptCreateDto receipt) {
+  public Receipt create(ReceiptCreateDto receipt, @Nullable UserProfile userProfile) {
     List<Receipt> matchingReceipts = receiptRepository.getReceipts(
       ReportMetaFilter.builder()
         .fn(receipt.getFn())
@@ -59,13 +61,18 @@ public class ReceiptService {
         .build()
     );
 
-    if (!matchingReceipts.isEmpty()) {
-      return matchingReceipts.get(0);
+    Optional<Receipt> matchingReceipt = matchingReceipts.stream()
+      .filter(r -> Objects.equals(userProfile, r.getUserProfile()))
+      .findAny();
+
+    if (matchingReceipt.isPresent()) {
+      return matchingReceipt.get();
     }
 
     Receipt entity = new Receipt();
     ReceiptMetaConverter.map(receipt, entity);
     entity.setStatus(ReceiptStatus.IDLE);
+    entity.setUserProfile(userProfile);
     return receiptRepository.save(entity);
   }
 
@@ -85,7 +92,8 @@ public class ReceiptService {
     }
   }
 
-  public static @Nullable String trimAddressLine(@Nullable String address) {
+  @Nullable
+  public static String trimAddressLine(@Nullable String address) {
     if (address == null) {
       return null;
     }

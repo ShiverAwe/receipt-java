@@ -76,4 +76,8 @@ public class Receipt {
   @Column(name = "merchant_place_address")
   private String merchantPlaceAddress;
 
+  @ManyToOne
+  @JoinColumn(name = "user_profile_id")
+  private UserProfile userProfile;
+
 }
