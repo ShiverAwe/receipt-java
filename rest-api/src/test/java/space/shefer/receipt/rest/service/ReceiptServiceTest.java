@@ -3,13 +3,10 @@ package space.shefer.receipt.rest.service;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
-import org.springframework.beans.factory.annotation.Autowired;
 import space.shefer.receipt.platform.core.dto.ReportMetaFilter;
 import space.shefer.receipt.platform.core.entity.Receipt;
 import space.shefer.receipt.platform.core.entity.UserProfile;
 import space.shefer.receipt.platform.core.repository.ReceiptRepository;
-import space.shefer.receipt.platform.core.repository.UserProfileRepository;
-import space.shefer.receipt.platform.core.service.UserProfileService;
 import space.shefer.receipt.platform.core.util.DateUtil;
 import space.shefer.receipt.rest.dto.ReceiptCreateDto;
 
@@ -27,14 +24,12 @@ public class ReceiptServiceTest {
 
   private ReceiptService service;
   private ReceiptRepository receiptRepository;
-  private UserProfileService userProfileService;
-  private UserProfileRepository userProfileRepository;
 
   @Before
   public void setUp() {
     receiptRepository = mock(ReceiptRepository.class);
     MerchantLogoService merchantLogoService = mock(MerchantLogoService.class);
-    service = spy(new ReceiptService(receiptRepository, merchantLogoService, userProfileService));
+    service = spy(new ReceiptService(receiptRepository, merchantLogoService));
   }
 
   @Test

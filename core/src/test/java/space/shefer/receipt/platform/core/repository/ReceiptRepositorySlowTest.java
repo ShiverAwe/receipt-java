@@ -1,6 +1,5 @@
 package space.shefer.receipt.platform.core.repository;
 
-import org.jetbrains.annotations.NotNull;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,8 +40,7 @@ public class ReceiptRepositorySlowTest {
     String merchantName = "ООО \"Лента\"";
     String merchantInn = "7814148471";
     String merchantPlaceAddress = "197374, СПб, ул. Савушкина, 112, лит. А";
-    UserProfile userProfile = createTestUser();
-    userProfile = userProfileRepository.save(userProfile);
+    UserProfile userProfile = userProfileRepository.save(createTestUser());
     List<Receipt> receiptsInitial = Arrays.asList(
       new Receipt(null, date, "83479", "96253", "76193", 123.45, "TAXCOM", LOADED,
         emptyList(), merchantName, merchantInn, merchantPlaceAddress, userProfile),
@@ -65,16 +63,6 @@ public class ReceiptRepositorySlowTest {
       assertSimilar(receiptsInitial.get(i), receiptsAll.get(i));
       assertSimilar(receiptsInitial.get(i), receiptsFound.get(i));
     }
-  }
-
-  @NotNull
-  private UserProfile createTestUser() {
-    UserProfile userProfile = new UserProfile();
-    userProfile.setId("bcce81c9-cbf3-4216-819d-70b9e37da6e3");
-    userProfile.setPassword("5851d");
-    userProfile.setPhone("+7999999999");
-    userProfile.setAccessToken("6b6c0abf-82cc-40fb-8379-30e9d0e72bc7");
-    return userProfile;
   }
 
   @Test
@@ -196,7 +184,16 @@ public class ReceiptRepositorySlowTest {
     }
   }
 
-  public void assertSimilar(Receipt r1, Receipt r2) {
+  private static UserProfile createTestUser() {
+    UserProfile userProfile = new UserProfile();
+    userProfile.setId("bcce81c9-cbf3-4216-819d-70b9e37da6e3");
+    userProfile.setPassword("5851d");
+    userProfile.setPhone("+7999999999");
+    userProfile.setAccessToken("6b6c0abf-82cc-40fb-8379-30e9d0e72bc7");
+    return userProfile;
+  }
+
+  public static void assertSimilar(Receipt r1, Receipt r2) {
     assertEquals(r1.getDate(), r2.getDate());
     assertEquals(r1.getFn(), r2.getFn());
     assertEquals(r1.getFd(), r2.getFd());

@@ -4,7 +4,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
-import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 import space.shefer.receipt.platform.core.dto.ReceiptStatus;
@@ -12,11 +11,11 @@ import space.shefer.receipt.platform.core.dto.ReportMetaFilter;
 import space.shefer.receipt.platform.core.entity.Receipt;
 import space.shefer.receipt.platform.core.entity.UserProfile;
 import space.shefer.receipt.platform.core.repository.ReceiptRepository;
-import space.shefer.receipt.platform.core.service.UserProfileService;
 import space.shefer.receipt.rest.converters.ReceiptMetaConverter;
 import space.shefer.receipt.rest.dto.ReceiptCreateDto;
 import space.shefer.receipt.rest.dto.ReceiptMetaDto;
 
+import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -32,14 +31,12 @@ public class ReceiptService {
 
   private final ReceiptRepository receiptRepository;
   private final MerchantLogoService merchantLogoService;
-  private final UserProfileService userProfileService;
   private static final Pattern pattern = Pattern.compile("[а-яА-ЯёЁa-zA-Z0-9]");
 
   @Autowired
-  public ReceiptService(ReceiptRepository receiptRepository, MerchantLogoService merchantLogoService, UserProfileService userProfileService) {
+  public ReceiptService(ReceiptRepository receiptRepository, MerchantLogoService merchantLogoService) {
     this.receiptRepository = receiptRepository;
     this.merchantLogoService = merchantLogoService;
-    this.userProfileService = userProfileService;
   }
 
   public List<ReceiptMetaDto> getReceipts(ReportMetaFilter metaFilter) {
@@ -51,7 +48,7 @@ public class ReceiptService {
       .collect(Collectors.toList());
   }
 
-  public Receipt create(ReceiptCreateDto receipt, UserProfile userProfile) {
+  public Receipt create(ReceiptCreateDto receipt, @Nullable UserProfile userProfile) {
     List<Receipt> matchingReceipts = receiptRepository.getReceipts(
       ReportMetaFilter.builder()
         .fn(receipt.getFn())
@@ -63,10 +60,13 @@ public class ReceiptService {
         .sumMin(receipt.getSum())
         .build()
     );
-    if ((userProfile != null) && (matchingReceipts.get(0).getUserProfile()!= null)) {
-      if ((!matchingReceipts.isEmpty()) && (Objects.equals(matchingReceipts.get(0).getUserProfile().getId(), userProfile.getId()))) {
-        return matchingReceipts.get(0);
-      }
+
+    Optional<Receipt> matchingReceipt = matchingReceipts.stream()
+      .filter(r -> Objects.equals(userProfile, r.getUserProfile()))
+      .findAny();
+
+    if (matchingReceipt.isPresent()) {
+      return matchingReceipt.get();
     }
 
     Receipt entity = new Receipt();
@@ -92,8 +92,8 @@ public class ReceiptService {
     }
   }
 
-  public static @Nullable
-  String trimAddressLine(@Nullable String address) {
+  @Nullable
+  public static String trimAddressLine(@Nullable String address) {
     if (address == null) {
       return null;
     }

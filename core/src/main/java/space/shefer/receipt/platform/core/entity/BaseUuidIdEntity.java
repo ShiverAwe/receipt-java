@@ -24,7 +24,7 @@ public class BaseUuidIdEntity {
   @GeneratedValue(generator = "uuid")
   @GenericGenerator(name = "uuid", strategy = "uuid2")
   @Column(name = "id", unique = true)
-  private String id;
+  protected String id;
 
   @CreatedDate
   @Column(name = "created_at", nullable = false)

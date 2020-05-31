@@ -30,7 +30,7 @@ public class ReceiptCreateController {
   @RequestMapping(value = "/create", method = RequestMethod.POST)
   public ReceiptMetaDto create(@RequestBody ReceiptCreateDto query,
                                @Nullable @RequestHeader("Authorization") String authHeader) {
-    UserProfile userProfile = new UserProfile();
+    UserProfile userProfile = null;
     if (authHeader != null) {
       userProfile = userProfileService.getUserByToken(authHeader.substring(authHeader.indexOf(" ") + 1));
     }
