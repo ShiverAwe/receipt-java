@@ -4,7 +4,6 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import org.springframework.lang.Nullable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -29,6 +28,11 @@ public class ReceiptController {
   private final ReceiptService receiptService;
   private final UserProfileService userProfileService;
 
+  @Operation(
+    description = "Submit receipt for loading. If receipt is submitted " +
+      "multiple times, then deduplication could be performed.",
+    responses = @ApiResponse(responseCode = "200", description = "Receipt has been successfully created")
+  )
   @RequestMapping(value = "/create", method = RequestMethod.POST)
   public ReceiptMetaDto create(@RequestBody ReceiptCreateDto query,
                                @Nullable @RequestHeader("Authorization") String authHeader) {
@@ -40,11 +44,13 @@ public class ReceiptController {
     return ReceiptMetaConverter.toDto(receipt);
   }
 
-  @ApiResponses({
-    @ApiResponse(responseCode = "200", description = "Receipt has been deleted or not found"),
-    @ApiResponse(responseCode = "400", description = "Receipt already loaded")
-  })
-  @Operation(description = "Allows remove receipt if it is stuck in loading")
+  @Operation(
+    description = "Allows remove receipt if it is stuck in loading",
+    responses = {
+      @ApiResponse(responseCode = "200", description = "Receipt has been deleted or not found"),
+      @ApiResponse(responseCode = "400", description = "Receipt already loaded")
+    }
+  )
   @RequestMapping(value = "/delete", method = RequestMethod.DELETE)
   public void delete(
     @Parameter(description = "Receipt identifier", required = true)
