@@ -7,6 +7,7 @@ dependencies {
 
     implementation "com.fasterxml.jackson.core:jackson-databind"
     implementation "com.google.code.findbugs:jsr305"
+    implementation "io.swagger.core.v3:swagger-annotations"
     implementation "org.projectlombok:lombok"
 
     testImplementation 'junit:junit'
