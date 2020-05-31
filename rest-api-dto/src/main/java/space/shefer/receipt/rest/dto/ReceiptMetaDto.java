@@ -7,6 +7,9 @@ import space.shefer.receipt.platform.core.dto.ReceiptStatus;
 import javax.annotation.Nullable;
 import java.time.LocalDateTime;
 
+@Schema(
+  title = "Receipt header information"
+)
 @Data
 public class ReceiptMetaDto {
   @Schema(
