@@ -1,6 +1,11 @@
 package space.shefer.receipt.rest.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -22,7 +27,18 @@ public class TgbotController {
     this.receiptService = receiptService;
   }
 
-  @RequestMapping(value = "/create", method = RequestMethod.POST)
+  @Operation(
+    description = "Submit receipt from telegram-bot",
+    responses = @ApiResponse(
+      responseCode = "200",
+      description = "Receipt successfully submitted",
+      content = @Content(schema = @Schema(
+        description = "The id of receipt which was created",
+        example = "135"
+      ))
+    )
+  )
+  @RequestMapping(value = "/create", method = RequestMethod.POST, produces = MediaType.TEXT_PLAIN_VALUE)
   public String create(@RequestBody TgbotCreateBody body) {
     FnsAppReceiptDto fnsAppReceiptDto = FnsAppReceiptDto.fromString(body.getReceiptJson());
     return receiptService
