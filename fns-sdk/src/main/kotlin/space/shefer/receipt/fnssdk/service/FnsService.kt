@@ -13,7 +13,7 @@ class FnsService {
     @Autowired
     lateinit var fnsReceiptWebClient: FnsReceiptWebClient
 
-    fun getReceiptExists(fn: String, fd: String, fp: String, time: String, money: Float, phone: String, password: String): String? {
+    fun getReceiptExists(fn: String, fd: String, fp: String, time: String, money: Float, phone: String?, password: String?): String? {
         if (fnsReceiptWebClient.getReceiptExists(fn, fd, fp, time, money)) {
             for (i in 1..MAX_ATTEMPTS) {
                 try {

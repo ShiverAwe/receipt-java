@@ -22,7 +22,7 @@ class FnsReceiptWebClient {
     @Value("\${fns.password}")
     lateinit var password: String
 
-    fun get(fn: String, fd: String, fp: String, phoneUser: String, passwordUser: String): String? {
+    fun get(fn: String, fd: String, fp: String, phoneUser: String?, passwordUser: String?): String? {
         login(login, password)
         val uri = urlGet(fn, fd, fp)
         val headers = HttpHeaders()
