@@ -32,13 +32,24 @@ public class ReceiptLoadJob {
     System.out.println("Starting loading " + receipts.size() + " receipts");
 
     receipts.forEach(receipt -> {
+
+        String receiptUserProfilePhone = null;
+        String receiptUserProfilePassword = null;
+
+        if (receipt.getUserProfile() != null) {
+          receiptUserProfilePhone = receipt.getUserProfile().getPhone();
+          receiptUserProfilePassword = receipt.getUserProfile().getPassword();
+        }
+
         try {
           String rawReceipt = fnsService.getReceiptExists(
             receipt.getFn(),
             receipt.getFd(),
             receipt.getFp(),
             receipt.getDate().format(dateTimeFormatter),
-            receipt.getSum().floatValue()
+            receipt.getSum().floatValue(),
+            receiptUserProfilePhone,
+            receiptUserProfilePassword
           );
 
           if (rawReceipt != null) {
@@ -52,7 +63,7 @@ public class ReceiptLoadJob {
             receiptService.setStatus(receipt, ReceiptStatus.FAILED);
           }
         }
-        catch (AuthorizationFailedException e){
+        catch (AuthorizationFailedException e) {
           e.printStackTrace();
         }
         catch (ReceiptNotFoundException e) {

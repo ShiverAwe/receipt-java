@@ -13,11 +13,15 @@ class FnsService {
     @Autowired
     lateinit var fnsReceiptWebClient: FnsReceiptWebClient
 
-    fun getReceiptExists(fn: String, fd: String, fp: String, time: String, money: Float): String? {
+    fun getReceiptExists(fn: String, fd: String, fp: String, time: String, money: Float, phone: String?, password: String?): String? {
         if (fnsReceiptWebClient.getReceiptExists(fn, fd, fp, time, money)) {
             for (i in 1..MAX_ATTEMPTS) {
                 try {
-                    val dataReceipt: String? = fnsReceiptWebClient.get(fn, fd, fp)
+                    val dataReceipt = if (phone == null || password == null) {
+                        fnsReceiptWebClient.get(fn, fd, fp)
+                    } else {
+                        fnsReceiptWebClient.get(fn, fd, fp, phone, password)
+                    }
 
                     if (dataReceipt != null) {
                         return dataReceipt
