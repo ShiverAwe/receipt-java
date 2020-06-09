@@ -22,7 +22,7 @@ class FnsReceiptWebClient {
     @Value("\${fns.password}")
     lateinit var password: String
 
-    fun getWithDefaultParam(fn: String, fd: String, fp: String): String? {
+    fun get(fn: String, fd: String, fp: String): String? {
         return get(fn, fd, fp, login, password)
     }
 
