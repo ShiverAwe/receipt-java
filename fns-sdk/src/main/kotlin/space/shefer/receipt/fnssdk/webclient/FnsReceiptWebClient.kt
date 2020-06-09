@@ -41,7 +41,9 @@ class FnsReceiptWebClient {
         }
         return null
     }
+
     fun getWithPhoneAndPassword(fn: String, fd: String, fp: String, phoneUser: String, passwordUser: String): String? {
+        login(phoneUser, passwordUser)
         val uri = urlGet(fn, fd, fp)
         val headers = HttpHeaders()
         headers.add("device-id", "")
