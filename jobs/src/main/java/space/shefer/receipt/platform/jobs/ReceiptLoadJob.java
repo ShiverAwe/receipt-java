@@ -40,10 +40,8 @@ public class ReceiptLoadJob {
           receiptUserProfilePhone = receipt.getUserProfile().getPhone();
           receiptUserProfilePassword = receipt.getUserProfile().getPassword();
         }
-        catch (NullPointerException e) {
-          e.printStackTrace();
+        catch (NullPointerException ignored) {
         }
-
 
         try {
           String rawReceipt = fnsService.getReceiptExists(
