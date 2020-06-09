@@ -23,26 +23,14 @@ class FnsReceiptWebClient {
     lateinit var password: String
 
     fun get(fn: String, fd: String, fp: String): String? {
-        login(login, password)
-        val uri = urlGet(fn, fd, fp)
-        val headers = HttpHeaders()
-        headers.add("device-id", "")
-        headers.add("device-os", "")
-        headers.add("Authorization", getAuthHeader(login, password))
-
-        val responseEntity = RestTemplate().exchange(
-                URI.create(uri),
-                HttpMethod.GET,
-                HttpEntity<String>(headers),
-                String::class.java
-        )
-        if (responseEntity.statusCode == HttpStatus.OK) {
-            return responseEntity.body
-        }
-        return null
+        return doRequestToFns(fn, fd, fp, login, password)
     }
 
     fun getWithPhoneAndPassword(fn: String, fd: String, fp: String, phoneUser: String, passwordUser: String): String? {
+        return doRequestToFns(fn, fd, fp, phoneUser, passwordUser)
+    }
+
+    fun doRequestToFns(fn: String, fd: String, fp: String, phoneUser: String, passwordUser: String): String? {
         login(phoneUser, passwordUser)
         val uri = urlGet(fn, fd, fp)
         val headers = HttpHeaders()
@@ -61,6 +49,7 @@ class FnsReceiptWebClient {
         }
         return null
     }
+
 
     fun getReceiptExists(fn: String, fd: String, fp: String, time: String, money: Float): Boolean {
         val moneyForUrl: Int = (money * 100).toInt()
