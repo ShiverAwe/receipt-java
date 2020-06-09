@@ -22,13 +22,17 @@ class FnsReceiptWebClient {
     @Value("\${fns.password}")
     lateinit var password: String
 
-    fun get(fn: String, fd: String, fp: String): String? {
+    fun get(fn: String, fd: String, fp: String, phoneUser: String, passwordUser: String): String? {
         login(login, password)
         val uri = urlGet(fn, fd, fp)
         val headers = HttpHeaders()
         headers.add("device-id", "")
         headers.add("device-os", "")
-        headers.add("Authorization", getAuthHeader(login, password))
+        if (phoneUser != "" && passwordUser != "") {
+            headers.add("Authorization", getAuthHeader(phoneUser, passwordUser))
+        } else {
+            headers.add("Authorization", getAuthHeader(login, password))
+        }
         val responseEntity = RestTemplate().exchange(
                 URI.create(uri),
                 HttpMethod.GET,
