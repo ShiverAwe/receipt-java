@@ -36,11 +36,9 @@ public class ReceiptLoadJob {
         String receiptUserProfilePhone = null;
         String receiptUserProfilePassword = null;
 
-        try {
+        if (receipt.getUserProfile() != null) {
           receiptUserProfilePhone = receipt.getUserProfile().getPhone();
           receiptUserProfilePassword = receipt.getUserProfile().getPassword();
-        }
-        catch (NullPointerException ignored) {
         }
 
         try {
