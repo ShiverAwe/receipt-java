@@ -28,7 +28,7 @@ class FnsReceiptWebClient {
         val headers = HttpHeaders()
         headers.add("device-id", "")
         headers.add("device-os", "")
-        if (phoneUser != "" && passwordUser != "") {
+        if (phoneUser != null && passwordUser != null) {
             headers.add("Authorization", getAuthHeader(phoneUser, passwordUser))
         } else {
             headers.add("Authorization", getAuthHeader(login, password))

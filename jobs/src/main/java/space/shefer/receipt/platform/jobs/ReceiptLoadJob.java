@@ -33,8 +33,8 @@ public class ReceiptLoadJob {
 
     receipts.forEach(receipt -> {
 
-        String receiptUserProfilePhone = "";
-        String receiptUserProfilePassword = "";
+        String receiptUserProfilePhone = null;
+        String receiptUserProfilePassword = null;
 
         try {
           receiptUserProfilePhone = receipt.getUserProfile().getPhone();
