@@ -22,17 +22,32 @@ class FnsReceiptWebClient {
     @Value("\${fns.password}")
     lateinit var password: String
 
-    fun get(fn: String, fd: String, fp: String, phoneUser: String?, passwordUser: String?): String? {
+    fun get(fn: String, fd: String, fp: String): String? {
         login(login, password)
         val uri = urlGet(fn, fd, fp)
         val headers = HttpHeaders()
         headers.add("device-id", "")
         headers.add("device-os", "")
-        if (phoneUser != null && passwordUser != null) {
-            headers.add("Authorization", getAuthHeader(phoneUser, passwordUser))
-        } else {
-            headers.add("Authorization", getAuthHeader(login, password))
+        headers.add("Authorization", getAuthHeader(login, password))
+
+        val responseEntity = RestTemplate().exchange(
+                URI.create(uri),
+                HttpMethod.GET,
+                HttpEntity<String>(headers),
+                String::class.java
+        )
+        if (responseEntity.statusCode == HttpStatus.OK) {
+            return responseEntity.body
         }
+        return null
+    }
+    fun getWithPhoneAndPassword(fn: String, fd: String, fp: String, phoneUser: String, passwordUser: String): String? {
+        val uri = urlGet(fn, fd, fp)
+        val headers = HttpHeaders()
+        headers.add("device-id", "")
+        headers.add("device-os", "")
+        headers.add("Authorization", getAuthHeader(phoneUser, passwordUser))
+
         val responseEntity = RestTemplate().exchange(
                 URI.create(uri),
                 HttpMethod.GET,

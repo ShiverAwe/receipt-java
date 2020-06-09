@@ -17,7 +17,11 @@ class FnsService {
         if (fnsReceiptWebClient.getReceiptExists(fn, fd, fp, time, money)) {
             for (i in 1..MAX_ATTEMPTS) {
                 try {
-                    val dataReceipt: String? = fnsReceiptWebClient.get(fn, fd, fp, phone, password)
+                    val dataReceipt = if (phone == null || password == null) {
+                        fnsReceiptWebClient.get(fn, fd, fp)
+                    } else {
+                        fnsReceiptWebClient.getWithPhoneAndPassword(fn, fd, fp, phone, password)
+                    }
 
                     if (dataReceipt != null) {
                         return dataReceipt
