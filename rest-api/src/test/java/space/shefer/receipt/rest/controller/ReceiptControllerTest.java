@@ -14,6 +14,9 @@ import space.shefer.receipt.rest.dto.ReceiptCreateDto;
 import space.shefer.receipt.rest.service.ReceiptService;
 import space.shefer.receipt.tests.util.ResourceUtil;
 
+import java.nio.file.Paths;
+import java.util.Scanner;
+
 import static org.junit.Assert.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.argThat;
@@ -54,7 +57,7 @@ public class ReceiptControllerTest {
     ReceiptCreateDto receiptCreateDto = createDtoCaptor.getValue();
     assertEquals(DateUtil.parseReceiptDate("20190801T1032"), receiptCreateDto.getDate());
     assertEquals(123629, receiptCreateDto.getSum(), 1e-5);
-    assertEquals("936933", receiptCreateDto.getFn());
+    assertEquals("9282000100338973", receiptCreateDto.getFn());
     assertEquals("832555", receiptCreateDto.getFd());
     assertEquals("535594", receiptCreateDto.getFp());
   }
@@ -75,9 +78,22 @@ public class ReceiptControllerTest {
     ReceiptCreateDto receiptCreateDto = createDtoCaptor.getValue();
     assertEquals(DateUtil.parseReceiptDate("20190801T1032"), receiptCreateDto.getDate());
     assertEquals(123629, receiptCreateDto.getSum(), 1e-5);
-    assertEquals("936933", receiptCreateDto.getFn());
+    assertEquals("9282000100338973", receiptCreateDto.getFn());
     assertEquals("832555", receiptCreateDto.getFd());
     assertEquals("535594", receiptCreateDto.getFp());
+  }
+
+  @Test
+  public void create_checkValidityInputData() throws Exception {
+    try(Scanner scan = new Scanner(ResourceUtil.getResourceAsFile("/controller/BadJSONRequests.txt",getClass()))){
+      scan.useDelimiter("---");
+      doAnswer(n -> new Receipt()).when(receiptService).create(any(), isNull());
+      while(scan.hasNext()) {
+        mockMvc.perform(post("/create").content(scan.next())
+          .contentType(MediaType.APPLICATION_JSON))
+          .andExpect(status().isBadRequest());
+      }
+    }
   }
 
 }
