@@ -38,7 +38,7 @@ public class ReceiptLoadJob {
     System.out.println("Starting loading " + receipts.size() + " receipts");
 
     receipts.forEach(receipt -> {
-        if (receipt.getLoadAttempts() > loadAttemptsLimit) {
+        if (receipt.getLoadAttempts() >= loadAttemptsLimit) {
           return;
         }
         String receiptUserProfilePhone = null;
