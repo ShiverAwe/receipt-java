@@ -68,27 +68,26 @@ public class ReceiptLoadJob {
             );
           }
           else {
-            receiptService.setStatus(receipt, ReceiptStatus.FAILED);
+            receipt.setStatus(ReceiptStatus.FAILED);
           }
         }
         catch (AuthorizationFailedException e) {
           e.printStackTrace();
         }
         catch (ReceiptNotFoundException e) {
-          receiptService.setStatus(receipt, ReceiptStatus.FAILED);
+          receipt.setStatus(ReceiptStatus.FAILED);
           e.printStackTrace();
         }
         catch (Exception e) {
-          receiptService.setStatus(receipt, ReceiptStatus.IDLE);
+          receipt.setStatus(ReceiptStatus.IDLE);
           e.printStackTrace();
         }
         finally {
           receipt.setLoadAttempts(receipt.getLoadAttempts() + 1);
+          receiptRepository.save(receipt);
         }
-
       }
     );
-    receiptRepository.saveAll(receipts);
   }
 
 }
