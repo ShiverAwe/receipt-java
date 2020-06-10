@@ -1,6 +1,7 @@
 package space.shefer.receipt.platform.jobs;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import space.shefer.receipt.fnssdk.dto.FnsResponseDto;
@@ -10,6 +11,7 @@ import space.shefer.receipt.fnssdk.service.FnsService;
 import space.shefer.receipt.platform.core.dto.ReceiptProvider;
 import space.shefer.receipt.platform.core.dto.ReceiptStatus;
 import space.shefer.receipt.platform.core.entity.Receipt;
+import space.shefer.receipt.platform.core.repository.ReceiptRepository;
 import space.shefer.receipt.platform.core.service.FnsReceiptService;
 import space.shefer.receipt.platform.jobs.service.ReceiptService;
 
@@ -20,9 +22,13 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ReceiptLoadJob {
 
+  private final ReceiptRepository receiptRepository;
   private final ReceiptService receiptService;
   private final FnsService fnsService;
   private final FnsReceiptService fnsReceiptService;
+
+  @Value("${attempt.load}")
+  long attempt;
 
   @Scheduled(fixedDelay = 10000)
   public void load() {
@@ -32,7 +38,9 @@ public class ReceiptLoadJob {
     System.out.println("Starting loading " + receipts.size() + " receipts");
 
     receipts.forEach(receipt -> {
-
+        if (receipt.getAttemptLoad() > attempt) {
+          return;
+        }
         String receiptUserProfilePhone = null;
         String receiptUserProfilePassword = null;
 
@@ -62,6 +70,7 @@ public class ReceiptLoadJob {
           else {
             receiptService.setStatus(receipt, ReceiptStatus.FAILED);
           }
+          receipt.setAttemptLoad(receipt.getAttemptLoad() + 1);
         }
         catch (AuthorizationFailedException e) {
           e.printStackTrace();
@@ -73,6 +82,9 @@ public class ReceiptLoadJob {
         catch (Exception e) {
           receiptService.setStatus(receipt, ReceiptStatus.IDLE);
           e.printStackTrace();
+        }
+        finally {
+          receiptRepository.saveAll(receipts);
         }
       }
     );
