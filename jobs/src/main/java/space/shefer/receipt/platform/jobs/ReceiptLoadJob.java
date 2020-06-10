@@ -1,6 +1,7 @@
 package space.shefer.receipt.platform.jobs;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import space.shefer.receipt.fnssdk.dto.FnsResponseDto;
@@ -10,6 +11,7 @@ import space.shefer.receipt.fnssdk.service.FnsService;
 import space.shefer.receipt.platform.core.dto.ReceiptProvider;
 import space.shefer.receipt.platform.core.dto.ReceiptStatus;
 import space.shefer.receipt.platform.core.entity.Receipt;
+import space.shefer.receipt.platform.core.repository.ReceiptRepository;
 import space.shefer.receipt.platform.core.service.FnsReceiptService;
 import space.shefer.receipt.platform.jobs.service.ReceiptService;
 
@@ -20,9 +22,13 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ReceiptLoadJob {
 
+  private final ReceiptRepository receiptRepository;
   private final ReceiptService receiptService;
   private final FnsService fnsService;
   private final FnsReceiptService fnsReceiptService;
+
+  @Value("${loader.attempts.limit}")
+  private long loadAttemptsLimit;
 
   @Scheduled(fixedDelay = 10000)
   public void load() {
@@ -32,7 +38,9 @@ public class ReceiptLoadJob {
     System.out.println("Starting loading " + receipts.size() + " receipts");
 
     receipts.forEach(receipt -> {
-
+        if (receipt.getLoadAttempts() >= loadAttemptsLimit) {
+          return;
+        }
         String receiptUserProfilePhone = null;
         String receiptUserProfilePassword = null;
 
@@ -60,19 +68,23 @@ public class ReceiptLoadJob {
             );
           }
           else {
-            receiptService.setStatus(receipt, ReceiptStatus.FAILED);
+            receipt.setStatus(ReceiptStatus.FAILED);
           }
         }
         catch (AuthorizationFailedException e) {
           e.printStackTrace();
         }
         catch (ReceiptNotFoundException e) {
-          receiptService.setStatus(receipt, ReceiptStatus.FAILED);
+          receipt.setStatus(ReceiptStatus.FAILED);
           e.printStackTrace();
         }
         catch (Exception e) {
-          receiptService.setStatus(receipt, ReceiptStatus.IDLE);
+          receipt.setStatus(ReceiptStatus.IDLE);
           e.printStackTrace();
+        }
+        finally {
+          receipt.setLoadAttempts(receipt.getLoadAttempts() + 1);
+          receiptRepository.save(receipt);
         }
       }
     );
