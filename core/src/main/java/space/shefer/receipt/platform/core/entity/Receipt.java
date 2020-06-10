@@ -79,8 +79,8 @@ public class Receipt {
   @ManyToOne
   @JoinColumn(name = "user_profile_id")
   private UserProfile userProfile;
-
-  @Column(name = "attempt_load", nullable = false)
-  private long attemptLoad;
+  
+  @Column(name = "load_attempts", nullable = false)
+  private long loadAttempts;
 
 }

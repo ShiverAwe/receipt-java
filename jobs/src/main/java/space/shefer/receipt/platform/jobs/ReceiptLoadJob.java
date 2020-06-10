@@ -27,8 +27,8 @@ public class ReceiptLoadJob {
   private final FnsService fnsService;
   private final FnsReceiptService fnsReceiptService;
 
-  @Value("${attempt.load}")
-  long attempt;
+  @Value("${loader.attempts.limit}")
+  private long loadAttemptsLimit;
 
   @Scheduled(fixedDelay = 10000)
   public void load() {
@@ -38,7 +38,7 @@ public class ReceiptLoadJob {
     System.out.println("Starting loading " + receipts.size() + " receipts");
 
     receipts.forEach(receipt -> {
-        if (receipt.getAttemptLoad() > attempt) {
+        if (receipt.getLoadAttempts() > loadAttemptsLimit) {
           return;
         }
         String receiptUserProfilePhone = null;
@@ -70,7 +70,6 @@ public class ReceiptLoadJob {
           else {
             receiptService.setStatus(receipt, ReceiptStatus.FAILED);
           }
-          receipt.setAttemptLoad(receipt.getAttemptLoad() + 1);
         }
         catch (AuthorizationFailedException e) {
           e.printStackTrace();
@@ -84,10 +83,12 @@ public class ReceiptLoadJob {
           e.printStackTrace();
         }
         finally {
-          receiptRepository.saveAll(receipts);
+          receipt.setLoadAttempts(receipt.getLoadAttempts() + 1);
         }
+
       }
     );
+    receiptRepository.saveAll(receipts);
   }
 
 }
