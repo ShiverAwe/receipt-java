@@ -39,17 +39,18 @@ public class ReceiptRepositorySlowTest {
     LocalDateTime date = DateUtil.parseReceiptDate("20190813T1355");
     String merchantName = "ООО \"Лента\"";
     String merchantInn = "7814148471";
+    long attemptLoad=0;
     String merchantPlaceAddress = "197374, СПб, ул. Савушкина, 112, лит. А";
     UserProfile userProfile = userProfileRepository.save(createTestUser());
     List<Receipt> receiptsInitial = Arrays.asList(
       new Receipt(null, date, "83479", "96253", "76193", 123.45, "TAXCOM", LOADED,
-        emptyList(), merchantName, merchantInn, merchantPlaceAddress, userProfile),
+        emptyList(), merchantName, merchantInn, merchantPlaceAddress, userProfile, attemptLoad),
       new Receipt(null, date, "34780", "89255", "82661", 121.44, "TAXCOM", LOADED,
-        emptyList(), merchantName, merchantInn, merchantPlaceAddress, userProfile),
+        emptyList(), merchantName, merchantInn, merchantPlaceAddress, userProfile, attemptLoad),
       new Receipt(null, date, "03845", "11111", "11547", 723.75, "TAXCOM", LOADED,
-        emptyList(), merchantName, merchantInn, merchantPlaceAddress, userProfile),
+        emptyList(), merchantName, merchantInn, merchantPlaceAddress, userProfile, attemptLoad),
       new Receipt(null, date, "82640", "34579", "99999", 103.55, "TAXCOM", LOADED,
-        emptyList(), merchantName, merchantInn, merchantPlaceAddress, userProfile)
+        emptyList(), merchantName, merchantInn, merchantPlaceAddress, userProfile, attemptLoad)
     );
     repository.saveAll(receiptsInitial);
     List<Receipt> receiptsAll = repository.findAll();
@@ -75,6 +76,7 @@ public class ReceiptRepositorySlowTest {
     LocalDateTime dateWrongMinute = DateUtil.parseReceiptDate("20190813T105627");
     LocalDateTime dateWrongSecond = DateUtil.parseReceiptDate("20190813T105529");
     UserProfile userProfile = userProfileRepository.save(createTestUser());
+    long attemptLoad=0;
 
     double sumOk = 44.4;
     String merchantName = "ООО \"Лента\"";
@@ -87,82 +89,82 @@ public class ReceiptRepositorySlowTest {
       Receipt receipt =
         repository.save(new Receipt(null,
           dateOk, "11111", "22222", "33333", sumOk, "TAXCOM", LOADED, emptyList(),
-          merchantName, merchantInn, merchantPlaceAddress, userProfile));
+          merchantName, merchantInn, merchantPlaceAddress, userProfile, attemptLoad));
       bannedId = receipt.getId();
     }
     {// OK
       Receipt receipt =
         repository.save(new Receipt(null,
           dateOk, "11111", "22222", "33333", sumOk, "TAXCOM", LOADED, emptyList(),
-          merchantName, merchantInn, merchantPlaceAddress, userProfile));
+          merchantName, merchantInn, merchantPlaceAddress, userProfile, attemptLoad));
       expectedReceipts.add(receipt);
     }
     {// OK
       Receipt receipt =
         repository.save(new Receipt(null,
           dateOk, "11111", "22222", "33333", sumOk, "TAXCOM", LOADED, emptyList(),
-          merchantName, merchantInn, merchantPlaceAddress, userProfile));
+          merchantName, merchantInn, merchantPlaceAddress, userProfile, attemptLoad));
       expectedReceipts.add(receipt);
     }
     {// WRONG DATE: WRONG YEAR
       repository.save(new Receipt(null,
         dateWrongYear, "11111", "22222", "33333", sumOk, "TAXCOM", LOADED, emptyList(),
-        merchantName, merchantInn, merchantPlaceAddress, userProfile));
+        merchantName, merchantInn, merchantPlaceAddress, userProfile, attemptLoad));
     }
     {// WRONG DATE: WRONG MONTH
       repository.save(new Receipt(null,
         dateWrongMonth, "11111", "22222", "33333", sumOk, "TAXCOM", LOADED, emptyList(),
-        merchantName, merchantInn, merchantPlaceAddress, userProfile));
+        merchantName, merchantInn, merchantPlaceAddress, userProfile, attemptLoad));
     }
     {// WRONG DATE: WRONG DATE
       repository.save(new Receipt(null,
         dateWrongDate, "11111", "22222", "33333", sumOk, "TAXCOM", LOADED, emptyList(),
-        merchantName, merchantInn, merchantPlaceAddress, userProfile));
+        merchantName, merchantInn, merchantPlaceAddress, userProfile, attemptLoad));
     }
     {// WRONG DATE: WRONG HOUR
       repository.save(new Receipt(null,
         dateWrongHour, "11111", "22222", "33333", sumOk, "TAXCOM", LOADED, emptyList(),
-        merchantName, merchantInn, merchantPlaceAddress, userProfile));
+        merchantName, merchantInn, merchantPlaceAddress, userProfile, attemptLoad));
     }
     {// WRONG DATE: WRONG MINUTE
       repository.save(new Receipt(null,
         dateWrongMinute, "11111", "22222", "33333", sumOk, "TAXCOM", LOADED, emptyList(),
-        merchantName, merchantInn, merchantPlaceAddress, userProfile));
+        merchantName, merchantInn, merchantPlaceAddress, userProfile, attemptLoad));
     }
     {// WRONG DATE: WRONG SECOND
       repository.save(new Receipt(null,
         dateWrongSecond, "11111", "22222", "33333", sumOk, "TAXCOM", LOADED, emptyList(),
-        merchantName, merchantInn, merchantPlaceAddress, userProfile));
+        merchantName, merchantInn, merchantPlaceAddress, userProfile, attemptLoad));
     }
     {// WRONG FN
       repository.save(new Receipt(null,
         dateOk, "83759", "22222", "33333", sumOk, "TAXCOM", LOADED, emptyList(),
-        merchantName, merchantInn, merchantPlaceAddress, userProfile));
+        merchantName, merchantInn, merchantPlaceAddress, userProfile, attemptLoad));
     }
     {// WRONG FD
       repository.save(new Receipt(null,
         dateOk, "11111", "02349", "33333", sumOk, "TAXCOM", LOADED, emptyList(),
-        merchantName, merchantInn, merchantPlaceAddress, userProfile));
+        merchantName, merchantInn, merchantPlaceAddress, userProfile, attemptLoad));
     }
     {// WRONG FP
       repository.save(new Receipt(null,
         dateOk, "11111", "22222", "73458", sumOk, "TAXCOM", LOADED, emptyList(),
-        merchantName, merchantInn, merchantPlaceAddress, userProfile));
+        merchantName, merchantInn, merchantPlaceAddress, userProfile, attemptLoad));
     }
     {// WRONG SUM
       repository.save(new Receipt(null,
         dateOk, "11111", "22222", "33333", 65.3, "TAXCOM", LOADED, emptyList(),
-        merchantName, merchantInn, merchantPlaceAddress, userProfile));
+        merchantName, merchantInn, merchantPlaceAddress, userProfile, attemptLoad));
     }
     {// WRONG STATUS
       repository.save(new Receipt(null,
         dateOk, "11111", "22222", "33333", sumOk, "TAXCOM", IDLE, emptyList(),
-        merchantName, merchantInn, merchantPlaceAddress, userProfile));
+        merchantName, merchantInn, merchantPlaceAddress, userProfile, attemptLoad));
     }
     {// WRONG MERCHANT NAME
       repository.save(new Receipt(null,
         dateOk, "11111", "22222", "33333", sumOk, "TAXCOM", LOADED, emptyList(),
-        "dummy", merchantInn, merchantPlaceAddress, userProfile));
+        "dummy", merchantInn, merchantPlaceAddress, userProfile, attemptLoad));
     }
 
     repository.flush();
