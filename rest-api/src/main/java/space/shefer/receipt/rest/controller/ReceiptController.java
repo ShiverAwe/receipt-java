@@ -5,13 +5,16 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.lang.Nullable;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ResponseStatusException;
 import space.shefer.receipt.platform.core.entity.Receipt;
 import space.shefer.receipt.platform.core.entity.UserProfile;
 import space.shefer.receipt.platform.core.service.UserProfileService;
@@ -19,6 +22,9 @@ import space.shefer.receipt.rest.converters.ReceiptMetaConverter;
 import space.shefer.receipt.rest.dto.ReceiptCreateDto;
 import space.shefer.receipt.rest.dto.ReceiptMetaDto;
 import space.shefer.receipt.rest.service.ReceiptService;
+
+import javax.validation.Valid;
+
 
 @Schema(description = "Managing receipts")
 @RestController
@@ -34,8 +40,14 @@ public class ReceiptController {
     responses = @ApiResponse(responseCode = "200", description = "Receipt has been successfully created")
   )
   @RequestMapping(value = "/create", method = RequestMethod.POST)
-  public ReceiptMetaDto create(@RequestBody ReceiptCreateDto query,
-                               @Nullable @RequestHeader("Authorization") String authHeader) {
+  public ReceiptMetaDto create(@Valid @RequestBody ReceiptCreateDto query,
+                               BindingResult bindingResult,
+                               @Nullable @RequestHeader("Authorization") String authHeader) throws ResponseStatusException {
+    if(bindingResult.hasErrors()){
+      StringBuffer str = new StringBuffer();
+      bindingResult.getAllErrors().forEach(e -> str.append(" ").append(e.getDefaultMessage()));
+      throw new ResponseStatusException(HttpStatus.BAD_REQUEST,str.toString());
+    }
     UserProfile userProfile = null;
     if (authHeader != null) {
       userProfile = userProfileService.getUserByToken(authHeader.substring(authHeader.indexOf(" ") + 1));
