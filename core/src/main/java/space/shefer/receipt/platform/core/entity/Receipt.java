@@ -80,7 +80,7 @@ public class Receipt {
   @JoinColumn(name = "user_profile_id")
   private UserProfile userProfile;
   
-  @Column(name = "load_attempts", nullable = false)
+  @Column(name = "load_attempts", nullable = false, columnDefinition = "INT DEFAULT 0")
   private long loadAttempts;
 
 }
