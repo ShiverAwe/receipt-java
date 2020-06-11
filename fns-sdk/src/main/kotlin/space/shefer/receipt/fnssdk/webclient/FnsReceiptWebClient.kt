@@ -103,12 +103,8 @@ class FnsReceiptWebClient {
                     HttpEntity<String>(headers),
                     String::class.java
             )
-        } catch (e: HttpClientErrorException) {
-            if (e.statusCode == HttpStatus.FORBIDDEN) {
-                throw AuthorizationFailedException(login, e)
-            } else {
-                throw e
-            }
+        } catch (e: HttpClientErrorException.Forbidden) {
+            throw AuthorizationFailedException(login, e)
         }
     }
 
