@@ -10,4 +10,4 @@ class ReceiptNotFoundException(val fn: String, val fd: String, val fp: String)
 
 @ResponseStatus(code = HttpStatus.FORBIDDEN)
 class AuthorizationFailedException(login: String, cause: Throwable? = null)
-    : FnsException("Login with phone $login was not found or the specified password was not correct».", cause)
+    : FnsException("Login with phone $login failed", cause)
