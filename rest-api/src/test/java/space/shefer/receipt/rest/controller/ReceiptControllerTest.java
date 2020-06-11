@@ -91,11 +91,11 @@ public class ReceiptControllerTest {
   public void create_checkValidityInputData() {
     String[] jsons = ResourceUtil.getResourceAsString("/controller/BadJSONRequests.txt", getClass()).split("---");
     doAnswer(n -> new Receipt()).when(receiptService).create(any(), isNull());
-      for(String json: jsons){
-        mockMvc.perform(post("/create").content(json)
+    for(String json: jsons){
+      mockMvc.perform(post("/create").content(json)
           .contentType(MediaType.APPLICATION_JSON))
           .andExpect(status().isBadRequest());
-      }
+    }
   }
 
 }

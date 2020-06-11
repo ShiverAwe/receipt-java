@@ -41,7 +41,7 @@ public class ReceiptController {
   )
   @RequestMapping(value = "/create", method = RequestMethod.POST)
   public ReceiptMetaDto create(@Valid @RequestBody ReceiptCreateDto query,
-                               @Nullable @RequestHeader("Authorization") String authHeader) throws ResponseStatusException {
+                               @Nullable @RequestHeader("Authorization") String authHeader) {
     UserProfile userProfile = null;
     if (authHeader != null) {
       userProfile = userProfileService.getUserByToken(authHeader.substring(authHeader.indexOf(" ") + 1));
