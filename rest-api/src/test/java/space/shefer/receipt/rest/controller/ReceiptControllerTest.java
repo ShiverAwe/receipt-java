@@ -1,5 +1,6 @@
 package space.shefer.receipt.rest.controller;
 
+import lombok.SneakyThrows;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
@@ -46,7 +47,8 @@ public class ReceiptControllerTest {
   }
 
   @Test
-  public void create_withoutToken() throws Exception {
+  @SneakyThrows
+  public void create_withoutToken()  {
     String body = ResourceUtil.getResourceAsString("/controller/ReceiptCreateControllerTest_create.json", getClass());
     doAnswer(n -> new Receipt()).when(receiptService).create(any(), isNull());
     mockMvc.perform(post("/create").content(body)
@@ -63,7 +65,8 @@ public class ReceiptControllerTest {
   }
 
   @Test
-  public void create_withToken() throws Exception {
+  @SneakyThrows
+  public void create_withToken()  {
     String testToken = "56hty46eyfh";
     UserProfile userProfile = new UserProfile();
     String body = ResourceUtil.getResourceAsString("/controller/ReceiptCreateControllerTest_create.json", getClass());
@@ -84,16 +87,15 @@ public class ReceiptControllerTest {
   }
 
   @Test
-  public void create_checkValidityInputData() throws Exception {
-    try(Scanner scan = new Scanner(ResourceUtil.getResourceAsFile("/controller/BadJSONRequests.txt",getClass()))){
-      scan.useDelimiter("---");
-      doAnswer(n -> new Receipt()).when(receiptService).create(any(), isNull());
-      while(scan.hasNext()) {
-        mockMvc.perform(post("/create").content(scan.next())
+  @SneakyThrows
+  public void create_checkValidityInputData() {
+    String[] jsons = ResourceUtil.getResourceAsString("/controller/BadJSONRequests.txt", getClass()).split("---");
+    doAnswer(n -> new Receipt()).when(receiptService).create(any(), isNull());
+      for(String json: jsons){
+        mockMvc.perform(post("/create").content(json)
           .contentType(MediaType.APPLICATION_JSON))
           .andExpect(status().isBadRequest());
       }
-    }
   }
 
 }

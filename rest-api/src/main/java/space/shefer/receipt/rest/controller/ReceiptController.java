@@ -41,13 +41,7 @@ public class ReceiptController {
   )
   @RequestMapping(value = "/create", method = RequestMethod.POST)
   public ReceiptMetaDto create(@Valid @RequestBody ReceiptCreateDto query,
-                               BindingResult bindingResult,
                                @Nullable @RequestHeader("Authorization") String authHeader) throws ResponseStatusException {
-    if(bindingResult.hasErrors()){
-      StringBuffer str = new StringBuffer();
-      bindingResult.getAllErrors().forEach(e -> str.append(" ").append(e.getDefaultMessage()));
-      throw new ResponseStatusException(HttpStatus.BAD_REQUEST,str.toString());
-    }
     UserProfile userProfile = null;
     if (authHeader != null) {
       userProfile = userProfileService.getUserByToken(authHeader.substring(authHeader.indexOf(" ") + 1));
