@@ -44,8 +44,8 @@ public class ReceiptLoadJob {
       .filter(it -> it.getLoadAttempts() < loadAttemptsLimit)
       .collect(Collectors.toList());
 
-    System.out.println("Starting loading " + receiptsFalseAttemptLoad.size() + " receipts");
-    System.out.println("Load attempts exceeded for " + receiptsTrueAttemptLoad.size() + " N receipts");
+    System.out.println("Starting loading " + receiptsTrueAttemptLoad.size() + " receipts");
+    System.out.println("Load attempts exceeded for " + receiptsFalseAttemptLoad.size() + " N receipts");
 
     receiptsTrueAttemptLoad.forEach(receipt -> {
         if (receipt.getLoadAttempts() >= loadAttemptsLimit) {
