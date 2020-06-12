@@ -17,6 +17,7 @@ import space.shefer.receipt.platform.jobs.service.ReceiptService;
 
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Component
 @RequiredArgsConstructor
@@ -35,9 +36,18 @@ public class ReceiptLoadJob {
     DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss");
     List<Receipt> receipts = receiptService.getAllIdle();
 
-    System.out.println("Starting loading " + receipts.size() + " receipts");
+    List<Receipt> receiptsFalseAttemptLoad = receipts.stream()
+      .filter(it -> it.getLoadAttempts() >= loadAttemptsLimit)
+      .collect(Collectors.toList());
 
-    receipts.forEach(receipt -> {
+    List<Receipt> receiptsTrueAttemptLoad = receipts.stream()
+      .filter(it -> it.getLoadAttempts() < loadAttemptsLimit)
+      .collect(Collectors.toList());
+
+    System.out.println("Starting loading " + receiptsFalseAttemptLoad.size() + " receipts");
+    System.out.println("Load attempts exceeded for " + receiptsTrueAttemptLoad.size() + " N receipts");
+
+    receiptsTrueAttemptLoad.forEach(receipt -> {
         if (receipt.getLoadAttempts() >= loadAttemptsLimit) {
           return;
         }
