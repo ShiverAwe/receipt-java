@@ -34,14 +34,14 @@ public class ReceiptLoadJob {
   @Scheduled(fixedDelay = 10000)
   public void load() {
     DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss");
-    List<Receipt> receipts = receiptService.getAllIdle();
+    List<Receipt> allIdleReceipts = receiptService.getAllIdle();
 
-    List<Receipt> receiptsToBeLoaded = receipts.stream()
+    List<Receipt> receiptsToBeLoaded = allIdleReceipts.stream()
       .filter(it -> it.getLoadAttempts() < loadAttemptsLimit)
       .collect(Collectors.toList());
 
     System.out.println("Starting loading " + receiptsToBeLoaded.size() + " receipts");
-    System.out.println("Load attempts exceeded for " + (receipts.size() - receiptsToBeLoaded.size()) + " receipts");
+    System.out.println("Load attempts exceeded for " + (allIdleReceipts.size() - receiptsToBeLoaded.size()) + " receipts");
 
     receiptsToBeLoaded.forEach(receipt -> {
         String receiptUserProfilePhone = null;
