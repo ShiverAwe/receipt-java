@@ -36,18 +36,14 @@ public class ReceiptLoadJob {
     DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss");
     List<Receipt> receipts = receiptService.getAllIdle();
 
-    long receiptsFalseAttemptLoad = receipts.stream()
-      .filter(it -> it.getLoadAttempts() >= loadAttemptsLimit)
-      .count();
-
-    List<Receipt> receiptsTrueAttemptLoad = receipts.stream()
+    List<Receipt> receiptsToBeLoaded = receipts.stream()
       .filter(it -> it.getLoadAttempts() < loadAttemptsLimit)
       .collect(Collectors.toList());
 
-    System.out.println("Starting loading " + receiptsTrueAttemptLoad.size() + " receipts");
-    System.out.println("Load attempts exceeded for " + receiptsFalseAttemptLoad + " receipts");
+    System.out.println("Starting loading " + receiptsToBeLoaded.size() + " receipts");
+    System.out.println("Load attempts exceeded for " + (receipts.size() - receiptsToBeLoaded.size()) + " receipts");
 
-    receiptsTrueAttemptLoad.forEach(receipt -> {
+    receiptsToBeLoaded.forEach(receipt -> {
         String receiptUserProfilePhone = null;
         String receiptUserProfilePassword = null;
 
