@@ -17,6 +17,7 @@ import space.shefer.receipt.platform.jobs.service.ReceiptService;
 
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Component
 @RequiredArgsConstructor
@@ -33,14 +34,16 @@ public class ReceiptLoadJob {
   @Scheduled(fixedDelay = 10000)
   public void load() {
     DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss");
-    List<Receipt> receipts = receiptService.getAllIdle();
+    List<Receipt> allIdleReceipts = receiptService.getAllIdle();
 
-    System.out.println("Starting loading " + receipts.size() + " receipts");
+    List<Receipt> receiptsToBeLoaded = allIdleReceipts.stream()
+      .filter(it -> it.getLoadAttempts() < loadAttemptsLimit)
+      .collect(Collectors.toList());
 
-    receipts.forEach(receipt -> {
-        if (receipt.getLoadAttempts() >= loadAttemptsLimit) {
-          return;
-        }
+    System.out.println("Starting loading " + receiptsToBeLoaded.size() + " receipts");
+    System.out.println("Load attempts exceeded for " + (allIdleReceipts.size() - receiptsToBeLoaded.size()) + " receipts");
+
+    receiptsToBeLoaded.forEach(receipt -> {
         String receiptUserProfilePhone = null;
         String receiptUserProfilePassword = null;
 
