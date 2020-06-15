@@ -10,6 +10,9 @@ import org.springframework.web.client.HttpClientErrorException
 import org.springframework.web.client.HttpServerErrorException
 import org.springframework.web.client.RestTemplate
 import space.shefer.receipt.fnssdk.excepion.AuthorizationFailedException
+import space.shefer.receipt.fnssdk.excepion.IncorrectEmailException
+import space.shefer.receipt.fnssdk.excepion.IncorrectPhoneException
+import space.shefer.receipt.fnssdk.excepion.UserWasExistException
 import java.net.URI
 import java.util.*
 
@@ -84,12 +87,20 @@ class FnsReceiptWebClient {
     fun signUp(email: String, name: String, phone: String) {
         val headers = HttpHeaders()
         headers.add("Content-Type", "application/json; charset=UTF-8")
-        RestTemplate().exchange(
-                URI("$HOST/v1/mobile/users/signup"),
-                HttpMethod.POST,
-                HttpEntity("""{"email":"$email","name":"$name","phone":"$phone"}""", headers),
-                String::class.java
-        )
+        try {
+            RestTemplate().exchange(
+                    URI("$HOST/v1/mobile/users/signup"),
+                    HttpMethod.POST,
+                    HttpEntity("""{"email":"$email","name":"$name","phone":"$phone"}""", headers),
+                    String::class.java
+            )
+        } catch (e: HttpClientErrorException.Conflict) {
+            throw UserWasExistException(name, e)
+        } catch (c: HttpClientErrorException.BadRequest) {
+            throw IncorrectEmailException(email, c)
+        } catch (d: HttpServerErrorException.InternalServerError) {
+            throw IncorrectPhoneException(phone, d)
+        }
     }
 
     fun login(login: String, password: String) {
