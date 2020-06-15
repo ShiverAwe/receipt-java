@@ -5,10 +5,12 @@ import org.springframework.http.HttpEntity
 import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpMethod
 import org.springframework.http.HttpStatus
+import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Component
 import org.springframework.web.client.HttpClientErrorException
 import org.springframework.web.client.HttpServerErrorException
 import org.springframework.web.client.RestTemplate
+import space.shefer.receipt.fnssdk.dto.UserResponseLoginFnsDto
 import space.shefer.receipt.fnssdk.excepion.AuthorizationFailedException
 import space.shefer.receipt.fnssdk.excepion.IncorrectEmailException
 import space.shefer.receipt.fnssdk.excepion.IncorrectPhoneException
@@ -103,16 +105,16 @@ class FnsReceiptWebClient {
         }
     }
 
-    fun login(login: String, password: String) {
+    fun login(phone: String, password: String): ResponseEntity<UserResponseLoginFnsDto>? {
         val headers = HttpHeaders()
         headers.add("Content-Type", "application/json; charset=UTF-8")
         headers.add("Authorization", getAuthHeader(login, password))
         try {
-            RestTemplate().exchange(
+            return RestTemplate().exchange(
                     URI("$HOST/v1/mobile/users/login"),
                     HttpMethod.GET,
                     HttpEntity<String>(headers),
-                    String::class.java
+                    UserResponseLoginFnsDto::class.java
             )
         } catch (e: HttpClientErrorException.Forbidden) {
             throw AuthorizationFailedException(login, e)

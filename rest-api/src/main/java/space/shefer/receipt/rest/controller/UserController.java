@@ -33,7 +33,7 @@ public class UserController {
 
   @RequestMapping(value = "/login", method = RequestMethod.POST, produces = MediaType.TEXT_PLAIN_VALUE)
   public String login(@RequestBody UserLoginDto userLoginDto) {
-    fnsReceiptWebClient.login(userLoginDto.getPhone(), userLoginDto.getPassword());
+    operationUserService.login(userLoginDto);
     UserProfile userProfile = userProfileService.createOrUpdate(userLoginDto.getPhone(), userLoginDto.getPassword());
     return userProfile.getAccessToken();
   }
