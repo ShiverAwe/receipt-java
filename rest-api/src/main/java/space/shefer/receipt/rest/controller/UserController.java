@@ -44,7 +44,7 @@ public class UserController {
   }
 
   @RequestMapping(value = "/users/me", method = RequestMethod.GET)
-  public UserSignUpDto getInfoFromToken(@Nullable @RequestHeader("Authorization") String authHeader) {
+  public UserSignUpDto getInfoByToken(@Nullable @RequestHeader("Authorization") String authHeader) {
     if (authHeader != null) {
       return operationUserService.getUserByToken(authHeader.substring(authHeader.indexOf(" ") + 1));
     }
