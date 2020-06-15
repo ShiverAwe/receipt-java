@@ -20,14 +20,11 @@ public class UserProfile extends BaseUuidIdEntity {
   @Column(name = "password", nullable = false)
   private String password;
 
-  @Column(name = "fns_request_count")
+  @Column(name = "fns_request_count", columnDefinition = "INT DEFAULT 0")
   private int fnsRequestCount = 0;
 
   @Column(name = "access_token")
   private String accessToken;
-
-  @Column(name = "load_count", nullable = false, columnDefinition = "INT DEFAULT 0")
-  private long loadCount;
 
   @Override
   public boolean equals(Object o) {
