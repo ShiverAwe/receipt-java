@@ -49,7 +49,6 @@ class FnsReceiptWebClient {
         return null
     }
 
-
     fun getReceiptExists(fn: String, fd: String, fp: String, time: String, money: Float): Boolean {
         val moneyForUrl: Int = (money * 100).toInt()
         val uri = "$HOST/v1/ofds/*/inns/*/fss/$fn/operations/1/tickets/$fd?fiscalSign=$fp&date=$time&sum=$moneyForUrl"
@@ -84,7 +83,7 @@ class FnsReceiptWebClient {
         )
     }
 
-    fun signUp(email: String, name: String, phone: String) {
+    fun signUp(email: String, name: String, phone: String): Boolean {
         val headers = HttpHeaders()
         headers.add("Content-Type", "application/json; charset=UTF-8")
         try {
@@ -94,6 +93,7 @@ class FnsReceiptWebClient {
                     HttpEntity("""{"email":"$email","name":"$name","phone":"$phone"}""", headers),
                     String::class.java
             )
+            return true
         } catch (e: HttpClientErrorException.Conflict) {
             throw UserWasExistException(name, e)
         } catch (c: HttpClientErrorException.BadRequest) {
