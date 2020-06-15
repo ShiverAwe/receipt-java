@@ -26,6 +26,9 @@ public class UserProfile extends BaseUuidIdEntity {
   @Column(name = "access_token")
   private String accessToken;
 
+  @Column(name = "load_count", nullable = false, columnDefinition = "INT DEFAULT 0")
+  private long loadCount;
+
   @Override
   public boolean equals(Object o) {
     if (this == o) return true;

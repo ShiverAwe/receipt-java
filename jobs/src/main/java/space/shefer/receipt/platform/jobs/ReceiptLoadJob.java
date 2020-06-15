@@ -69,6 +69,9 @@ public class ReceiptLoadJob {
               receipt,
               ReceiptProvider.NALOG.name()
             );
+            if (receiptUserProfilePassword != null && receiptUserProfilePhone != null) {
+              receipt.getUserProfile().setLoadCount(receipt.getUserProfile().getLoadCount() + 1);
+            }
           }
           else {
             receipt.setStatus(ReceiptStatus.FAILED);
