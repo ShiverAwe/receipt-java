@@ -23,16 +23,18 @@ public class ReportMetaFilter {
   List<Long> ids;
 
   @Schema(
-    example = "20170131T2359",
-    format = DateUtil.RECEIPT_DATETIME_PATTERN
+    description = DateUtil.RECEIPT_DATETIME_DESCRIPTION,
+    pattern = DateUtil.RECEIPT_DATETIME_REGEX,
+    example = "20170131T2359"
   )
   @Nullable
   @JsonFormat(pattern = DateUtil.RECEIPT_DATETIME_PATTERN)
   private LocalDateTime dateFrom;
 
   @Schema(
-    example = "20250531T0017",
-    format = DateUtil.RECEIPT_DATETIME_PATTERN
+    description = DateUtil.RECEIPT_DATETIME_DESCRIPTION,
+    pattern = DateUtil.RECEIPT_DATETIME_REGEX,
+    example = "20170131T2359"
   )
   @Nullable
   @JsonFormat(pattern = DateUtil.RECEIPT_DATETIME_PATTERN)

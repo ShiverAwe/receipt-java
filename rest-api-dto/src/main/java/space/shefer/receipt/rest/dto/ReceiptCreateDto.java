@@ -1,6 +1,7 @@
 package space.shefer.receipt.rest.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import space.shefer.receipt.platform.core.dto.util.DateUtil;
 
@@ -12,7 +13,13 @@ public class ReceiptCreateDto {
   public static final String POSITIVE_16_DIGIT_NUMBER = "^(?!0*$)[0-9]{16}$";
   public static final String POSITIVE_NUMBER_REGEX = "^(?!0*$)[0-9]+$";
 
-  @JsonFormat(pattern = DateUtil.RECEIPT_DATETIME_PATTERN)
+  @Schema(
+    description = DateUtil.RECEIPT_DATETIME_DESCRIPTION,
+    pattern = DateUtil.RECEIPT_DATETIME_REGEX,
+    example = "20170131T2359"
+  )
+  @JsonFormat(
+    pattern = DateUtil.RECEIPT_DATETIME_PATTERN)
   private LocalDateTime date;
   @Pattern(regexp = POSITIVE_16_DIGIT_NUMBER,
             message = "The fiscal number (fn) must a positive number and have a length of 16 characters.")
