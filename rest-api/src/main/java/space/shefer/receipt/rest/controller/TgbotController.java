@@ -4,6 +4,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -16,6 +17,7 @@ import space.shefer.receipt.platform.core.entity.Receipt;
 import space.shefer.receipt.platform.core.service.FnsReceiptService;
 import space.shefer.receipt.rest.dto.TgbotCreateBody;
 
+@Tag(name = "Telegram bot")
 @RestController
 @RequestMapping("tgbot")
 public class TgbotController {

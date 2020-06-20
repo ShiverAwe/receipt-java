@@ -1,5 +1,6 @@
 package space.shefer.receipt.rest.controller;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -14,6 +15,7 @@ import space.shefer.receipt.rest.dto.UserPasswordRestoreDto;
 import space.shefer.receipt.rest.dto.UserSignUpDto;
 
 
+@Tag(name = "Users")
 @RestController
 public class UserController {
 

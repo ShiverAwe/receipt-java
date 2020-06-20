@@ -1,5 +1,6 @@
 package space.shefer.receipt.rest.controller;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -14,6 +15,7 @@ import space.shefer.receipt.rest.service.ReceiptService;
 
 import java.util.List;
 
+@Tag(name = "Data requests")
 @RestController
 @RequiredArgsConstructor
 public class ReportController {
