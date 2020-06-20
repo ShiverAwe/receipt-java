@@ -69,7 +69,7 @@ public class ReceiptLoadJob {
               receipt,
               ReceiptProvider.NALOG.name()
             );
-            if (receiptUserProfilePassword != null && receiptUserProfilePhone != null) {
+            if (receipt.getUserProfile() != null) {
               receipt.getUserProfile().setFnsRequestCount(receipt.getUserProfile().getFnsRequestCount() + 1);
             }
           }
