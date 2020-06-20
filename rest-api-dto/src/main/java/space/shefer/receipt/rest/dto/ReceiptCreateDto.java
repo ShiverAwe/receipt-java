@@ -9,20 +9,24 @@ import javax.validation.constraints.Pattern;
 
 @Data
 public class ReceiptCreateDto {
-  public static final String POSITIVE_16_DIGIT_NUMBER = "^(?!0*$)[0-9]{16}$";
-  public static final String POSITIVE_NUMBER_REGEX = "^(?!0*$)[0-9]+$";
+  public static final String POSITIVE_EXACTLY_16_DIGIT_NUMBER_REGEX = "^(?!0{0,16}$)[0-9]{16}$";
+  public static final String POSITIVE_UPTO_16_DIGIT_NUMBER_REGEX = "^(?!0{0,16}$)[0-9]{0,16}$";
 
   @JsonFormat(pattern = DateUtil.RECEIPT_DATETIME_PATTERN)
   private LocalDateTime date;
-  @Pattern(regexp = POSITIVE_16_DIGIT_NUMBER,
-            message = "The fiscal number (fn) must a positive number and have a length of 16 characters.")
+
+  @Pattern(regexp = POSITIVE_EXACTLY_16_DIGIT_NUMBER_REGEX,
+    message = "The fiscal number (fn) must a positive number and have a length of 16 characters.")
   private String fn;
-  @Pattern(regexp = POSITIVE_NUMBER_REGEX,
-            message = "The fiscal document (fd) must be a positive number.")
+
+  @Pattern(regexp = POSITIVE_UPTO_16_DIGIT_NUMBER_REGEX,
+    message = "The fiscal document (fd) must be a positive number.")
   private String fd;
-  @Pattern(regexp = POSITIVE_NUMBER_REGEX,
-          message = "The fiscal indication (fp) must be a positive number.")
+
+  @Pattern(regexp = POSITIVE_UPTO_16_DIGIT_NUMBER_REGEX,
+    message = "The fiscal indication (fp) must be a positive number.")
   private String fp;
+
   private Double sum;
 
 }
