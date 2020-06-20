@@ -14,7 +14,8 @@ import space.shefer.receipt.fnssdk.dto.UserResponseLoginFnsDto
 import space.shefer.receipt.fnssdk.excepion.AuthorizationFailedException
 import space.shefer.receipt.fnssdk.excepion.IncorrectEmailException
 import space.shefer.receipt.fnssdk.excepion.IncorrectPhoneException
-import space.shefer.receipt.fnssdk.excepion.UserWasExistException
+import space.shefer.receipt.fnssdk.excepion.UserAlreadyExistsException
+import space.shefer.receipt.fnssdk.service.ResponseErrorHandleFNS
 import java.net.URI
 import java.util.*
 
@@ -70,7 +71,6 @@ class FnsReceiptWebClient {
 
             throw e
         }
-
         return responseEntity.statusCode == HttpStatus.NO_CONTENT
     }
 
@@ -85,23 +85,26 @@ class FnsReceiptWebClient {
         )
     }
 
-    fun signUp(email: String, name: String, phone: String): Boolean {
+    fun signUp(email: String, name: String, phone: String) {
         val headers = HttpHeaders()
         headers.add("Content-Type", "application/json; charset=UTF-8")
-        try {
-            RestTemplate().exchange(
-                    URI("$HOST/v1/mobile/users/signup"),
-                    HttpMethod.POST,
-                    HttpEntity("""{"email":"$email","name":"$name","phone":"$phone"}""", headers),
-                    String::class.java
-            )
-            return true
-        } catch (e: HttpClientErrorException.Conflict) {
-            throw UserWasExistException(name, e)
-        } catch (c: HttpClientErrorException.BadRequest) {
-            throw IncorrectEmailException(email, c)
-        } catch (d: HttpServerErrorException.InternalServerError) {
-            throw IncorrectPhoneException(phone, d)
+        val restTemplate = RestTemplate()
+        restTemplate.errorHandler = ResponseErrorHandleFNS()
+
+        val responseEntity = restTemplate.exchange(
+                URI("$HOST/v1/mobile/users/signup"),
+                HttpMethod.POST,
+                HttpEntity("""{"email":"$email","name":"$name","phone":"$phone"}""", headers),
+                String::class.java
+        )
+        if (responseEntity.statusCode == HttpStatus.CONFLICT && responseEntity.body == "user exists") {
+            throw UserAlreadyExistsException(name);
+        } else if (responseEntity.statusCode == HttpStatus.BAD_REQUEST
+                && responseEntity.body.toString().contains("Object didn't pass validation for format email: $email")) {
+            throw IncorrectEmailException(email);
+        } else if (responseEntity.statusCode == HttpStatus.INTERNAL_SERVER_ERROR
+                && responseEntity.body == "failed with code 20101") {
+            throw IncorrectPhoneException(phone)
         }
     }
 

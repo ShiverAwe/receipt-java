@@ -14,7 +14,7 @@ import space.shefer.receipt.platform.core.service.UserProfileService;
 import space.shefer.receipt.rest.dto.UserLoginDto;
 import space.shefer.receipt.rest.dto.UserPasswordRestoreDto;
 import space.shefer.receipt.rest.dto.UserSignUpDto;
-import space.shefer.receipt.rest.service.OperationUserService;
+import space.shefer.receipt.rest.service.FnsUserService;
 
 
 @RestController
@@ -22,31 +22,31 @@ public class UserController {
 
   private final FnsReceiptWebClient fnsReceiptWebClient;
   private final UserProfileService userProfileService;
-  private final OperationUserService operationUserService;
+  private final FnsUserService fnsUserService;
 
   @Autowired
-  public UserController(FnsReceiptWebClient fnsReceiptWebClient, UserProfileService userProfileService, OperationUserService operationUserService) {
+  public UserController(FnsReceiptWebClient fnsReceiptWebClient, UserProfileService userProfileService, FnsUserService fnsUserService) {
     this.fnsReceiptWebClient = fnsReceiptWebClient;
     this.userProfileService = userProfileService;
-    this.operationUserService = operationUserService;
+    this.fnsUserService = fnsUserService;
   }
 
   @RequestMapping(value = "/login", method = RequestMethod.POST, produces = MediaType.TEXT_PLAIN_VALUE)
   public String login(@RequestBody UserLoginDto userLoginDto) {
-    operationUserService.login(userLoginDto);
+    fnsUserService.login(userLoginDto);
     UserProfile userProfile = userProfileService.createOrUpdate(userLoginDto.getPhone(), userLoginDto.getPassword());
     return userProfile.getAccessToken();
   }
 
   @RequestMapping(value = "/signUp", method = RequestMethod.POST)
   public void signUp(@RequestBody UserSignUpDto userSignUpDto) {
-    operationUserService.signUp(userSignUpDto);
+    fnsUserService.signUp(userSignUpDto);
   }
 
   @RequestMapping(value = "/users/me", method = RequestMethod.GET)
   public UserSignUpDto getInfoByToken(@Nullable @RequestHeader("Authorization") String authHeader) {
     if (authHeader != null) {
-      return operationUserService.getUserByToken(authHeader.substring(authHeader.indexOf(" ") + 1));
+      return fnsUserService.getUserByToken(authHeader.substring(authHeader.indexOf(" ") + 1));
     }
     return null;
   }

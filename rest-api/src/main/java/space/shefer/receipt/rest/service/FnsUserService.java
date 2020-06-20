@@ -13,26 +13,19 @@ import space.shefer.receipt.rest.dto.UserSignUpDto;
 import java.util.Objects;
 
 @Service
-public class OperationUserService {
+public class FnsUserService {
 
   private final UserProfileRepository userProfileRepository;
   private final FnsReceiptWebClient fnsReceiptWebClient;
 
   @Autowired
-  public OperationUserService(UserProfileRepository userProfileRepository, FnsReceiptWebClient fnsReceiptWebClient) {
+  public FnsUserService(UserProfileRepository userProfileRepository, FnsReceiptWebClient fnsReceiptWebClient) {
     this.userProfileRepository = userProfileRepository;
     this.fnsReceiptWebClient = fnsReceiptWebClient;
   }
 
   public void signUp(UserSignUpDto userSignUpDto) {
-    UserProfile userProfile = userProfileRepository.getByPhone(userSignUpDto.getPhone());
-    if (fnsReceiptWebClient.signUp(userSignUpDto.getName(), userSignUpDto.getName(), userSignUpDto.getPhone())) {
-      userProfile.setPhone(userSignUpDto.getPhone());
-      userProfile.setEmail(userSignUpDto.getEmail());
-      userProfile.setName(userSignUpDto.getName());
-      userProfileRepository.save(userProfile);
-    }
-
+    fnsReceiptWebClient.signUp(userSignUpDto.getEmail(), userSignUpDto.getName(), userSignUpDto.getPhone());
   }
 
   public UserSignUpDto getUserByToken(String authHeader) {
