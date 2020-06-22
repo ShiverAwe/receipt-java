@@ -20,7 +20,7 @@ public class UserProfile extends BaseUuidIdEntity {
   @Column(name = "password", nullable = false)
   private String password;
 
-  @Column(name = "fns_request_count")
+  @Column(name = "fns_request_count", columnDefinition = "INT DEFAULT 0")
   private int fnsRequestCount = 0;
 
   @Column(name = "access_token")

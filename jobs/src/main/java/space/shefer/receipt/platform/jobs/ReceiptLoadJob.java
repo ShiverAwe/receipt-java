@@ -86,6 +86,9 @@ public class ReceiptLoadJob {
           e.printStackTrace();
         }
         finally {
+          if (receipt.getUserProfile() != null) {
+            receipt.getUserProfile().setFnsRequestCount(receipt.getUserProfile().getFnsRequestCount() + 1);
+          }
           receipt.setLoadAttempts(receipt.getLoadAttempts() + 1);
           receiptRepository.save(receipt);
         }
