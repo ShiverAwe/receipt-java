@@ -97,18 +97,16 @@ class FnsReceiptWebClient {
                 HttpEntity("""{"email":"$email","name":"$name","phone":"$phone"}""", headers),
                 String::class.java
         )
-        if (responseEntity.statusCode == HttpStatus.CONFLICT && responseEntity.body == "user exists") {
+        if (responseEntity.statusCode == HttpStatus.CONFLICT) {
             throw UserAlreadyExistsException(name);
-        } else if (responseEntity.statusCode == HttpStatus.BAD_REQUEST
-                && responseEntity.body.toString().contains("Object didn't pass validation for format email: $email")) {
+        } else if (responseEntity.statusCode == HttpStatus.BAD_REQUEST) {
             throw IncorrectEmailException(email);
-        } else if (responseEntity.statusCode == HttpStatus.INTERNAL_SERVER_ERROR
-                && responseEntity.body == "failed with code 20101") {
+        } else if (responseEntity.statusCode == HttpStatus.INTERNAL_SERVER_ERROR) {
             throw IncorrectPhoneException(phone)
         }
     }
 
-    fun login(phone: String, password: String): ResponseEntity<UserResponseLoginFnsDto>? {
+    fun login(phone: String, password: String): UserResponseLoginFnsDto? {
         val headers = HttpHeaders()
         headers.add("Content-Type", "application/json; charset=UTF-8")
         headers.add("Authorization", getAuthHeader(login, password))
@@ -118,7 +116,7 @@ class FnsReceiptWebClient {
                     HttpMethod.GET,
                     HttpEntity<String>(headers),
                     UserResponseLoginFnsDto::class.java
-            )
+            ).body
         } catch (e: HttpClientErrorException.Forbidden) {
             throw AuthorizationFailedException(login, e)
         }
