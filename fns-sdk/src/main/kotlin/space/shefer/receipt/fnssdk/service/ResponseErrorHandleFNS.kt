@@ -10,6 +10,9 @@ class ResponseErrorHandleFNS : ResponseErrorHandler {
 
     @Throws(IOException::class)
     override fun handleError(httpResponse: ClientHttpResponse) {
+        if (httpResponse.statusCode == HttpStatus.NO_CONTENT) {
+            return;
+        }
 
         if ((httpResponse.statusCode != HttpStatus.CONFLICT)
                 && (httpResponse.statusCode != HttpStatus.BAD_REQUEST)
