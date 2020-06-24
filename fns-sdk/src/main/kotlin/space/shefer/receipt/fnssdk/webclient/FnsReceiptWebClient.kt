@@ -5,17 +5,14 @@ import org.springframework.http.HttpEntity
 import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpMethod
 import org.springframework.http.HttpStatus
-import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Component
 import org.springframework.web.client.HttpClientErrorException
 import org.springframework.web.client.HttpServerErrorException
 import org.springframework.web.client.RestTemplate
-import space.shefer.receipt.fnssdk.dto.UserResponseLoginFnsDto
-import space.shefer.receipt.fnssdk.excepion.AuthorizationFailedException
-import space.shefer.receipt.fnssdk.excepion.IncorrectEmailException
-import space.shefer.receipt.fnssdk.excepion.IncorrectPhoneException
-import space.shefer.receipt.fnssdk.excepion.UserAlreadyExistsException
+import space.shefer.receipt.fnssdk.dto.FnsLoginResponse
+import space.shefer.receipt.fnssdk.excepion.*
 import space.shefer.receipt.fnssdk.service.ResponseErrorHandleFNS
+import java.lang.Exception
 import java.net.URI
 import java.util.*
 
@@ -90,23 +87,26 @@ class FnsReceiptWebClient {
         headers.add("Content-Type", "application/json; charset=UTF-8")
         val restTemplate = RestTemplate()
         restTemplate.errorHandler = ResponseErrorHandleFNS()
-
-        val responseEntity = restTemplate.exchange(
-                URI("$HOST/v1/mobile/users/signup"),
-                HttpMethod.POST,
-                HttpEntity("""{"email":"$email","name":"$name","phone":"$phone"}""", headers),
-                String::class.java
-        )
-        if (responseEntity.statusCode == HttpStatus.CONFLICT) {
-            throw UserAlreadyExistsException(name);
-        } else if (responseEntity.statusCode == HttpStatus.BAD_REQUEST) {
-            throw IncorrectEmailException(email);
-        } else if (responseEntity.statusCode == HttpStatus.INTERNAL_SERVER_ERROR) {
-            throw IncorrectPhoneException(phone)
+        try {
+            val responseEntity = restTemplate.exchange(
+                    URI("$HOST/v1/mobile/users/signup"),
+                    HttpMethod.POST,
+                    HttpEntity("""{"email":"$email","name":"$name","phone":"$phone"}""", headers),
+                    String::class.java
+            )
+            if (responseEntity.statusCode == HttpStatus.CONFLICT) {
+                throw UserAlreadyExistsException(name);
+            } else if (responseEntity.statusCode == HttpStatus.BAD_REQUEST) {
+                throw IncorrectEmailException(email);
+            } else if (responseEntity.statusCode == HttpStatus.INTERNAL_SERVER_ERROR) {
+                throw IncorrectPhoneException(phone)
+            }
+        } catch (e: Exception) {
+            throw UnexpectedHttpException();
         }
     }
 
-    fun login(phone: String, password: String): UserResponseLoginFnsDto? {
+    fun login(phone: String, password: String): FnsLoginResponse? {
         val headers = HttpHeaders()
         headers.add("Content-Type", "application/json; charset=UTF-8")
         headers.add("Authorization", getAuthHeader(login, password))
@@ -115,7 +115,7 @@ class FnsReceiptWebClient {
                     URI("$HOST/v1/mobile/users/login"),
                     HttpMethod.GET,
                     HttpEntity<String>(headers),
-                    UserResponseLoginFnsDto::class.java
+                    FnsLoginResponse::class.java
             ).body
         } catch (e: HttpClientErrorException.Forbidden) {
             throw AuthorizationFailedException(login, e)

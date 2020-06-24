@@ -23,3 +23,7 @@ class IncorrectEmailException(email: String)
 @ResponseStatus(code = HttpStatus.BAD_REQUEST)
 class IncorrectPhoneException(phone: String)
     : FnsException("Phone $phone is incorrect")
+
+@ResponseStatus(code = HttpStatus.FORBIDDEN)
+class UnexpectedHttpException()
+    : FnsException("Unexpected error")

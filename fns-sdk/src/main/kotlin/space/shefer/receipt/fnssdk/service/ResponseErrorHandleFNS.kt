@@ -33,7 +33,8 @@ class ResponseErrorHandleFNS : ResponseErrorHandler {
     }
 
     override fun hasError(response: ClientHttpResponse): Boolean {
-        return false
+        return (
+                response.statusCode.series() == HttpStatus.Series.CLIENT_ERROR
+                        || response.statusCode.series() == HttpStatus.Series.SERVER_ERROR);
     }
-
 }
