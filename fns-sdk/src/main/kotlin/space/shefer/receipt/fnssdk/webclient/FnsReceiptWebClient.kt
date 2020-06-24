@@ -88,23 +88,20 @@ class FnsReceiptWebClient {
         headers.add("Content-Type", "application/json; charset=UTF-8")
         val restTemplate = RestTemplate()
         restTemplate.errorHandler = ResponseErrorHandleFNS()
-        try {
-            val responseEntity = restTemplate.exchange(
-                    URI("$HOST/v1/mobile/users/signup"),
-                    HttpMethod.POST,
-                    HttpEntity("""{"email":"$email","name":"$name","phone":"$phone"}""", headers),
-                    String::class.java
-            )
-            if (responseEntity.statusCode == HttpStatus.CONFLICT) {
-                throw UserAlreadyExistsException(name);
-            } else if (responseEntity.statusCode == HttpStatus.BAD_REQUEST) {
-                throw IncorrectEmailException(email);
-            } else if (responseEntity.statusCode == HttpStatus.INTERNAL_SERVER_ERROR) {
-                throw IncorrectPhoneException(phone)
-            }
-        } catch (e: UnsupportedOperationException) {
-            throw UnexpectedHttpException();
+        val responseEntity = restTemplate.exchange(
+                URI("$HOST/v1/mobile/users/signup"),
+                HttpMethod.POST,
+                HttpEntity("""{"email":"$email","name":"$name","phone":"$phone"}""", headers),
+                String::class.java
+        )
+        if (responseEntity.statusCode == HttpStatus.CONFLICT) {
+            throw UserAlreadyExistsException(name);
+        } else if (responseEntity.statusCode == HttpStatus.BAD_REQUEST) {
+            throw IncorrectEmailException(email);
+        } else if (responseEntity.statusCode == HttpStatus.INTERNAL_SERVER_ERROR) {
+            throw IncorrectPhoneException(phone)
         }
+
     }
 
     fun login(phone: String, password: String): FnsLoginResponse? {
