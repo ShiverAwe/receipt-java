@@ -24,6 +24,6 @@ class IncorrectEmailException(email: String)
 class IncorrectPhoneException(phone: String)
     : FnsException("Phone $phone is incorrect")
 
-@ResponseStatus(code = HttpStatus.FORBIDDEN)
+@ResponseStatus(code = HttpStatus.INTERNAL_SERVER_ERROR)
 class UnexpectedHttpException()
     : FnsException("Unexpected error")

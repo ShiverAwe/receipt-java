@@ -13,6 +13,7 @@ import space.shefer.receipt.fnssdk.dto.FnsLoginResponse
 import space.shefer.receipt.fnssdk.excepion.*
 import space.shefer.receipt.fnssdk.service.ResponseErrorHandleFNS
 import java.lang.Exception
+import java.lang.UnsupportedOperationException
 import java.net.URI
 import java.util.*
 
@@ -101,7 +102,7 @@ class FnsReceiptWebClient {
             } else if (responseEntity.statusCode == HttpStatus.INTERNAL_SERVER_ERROR) {
                 throw IncorrectPhoneException(phone)
             }
-        } catch (e: Exception) {
+        } catch (e: UnsupportedOperationException) {
             throw UnexpectedHttpException();
         }
     }
