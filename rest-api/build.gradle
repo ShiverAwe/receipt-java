@@ -15,7 +15,7 @@ dependencies {
     implementation 'org.springframework:spring-context-support'
     implementation 'org.projectlombok:lombok'
     implementation 'org.springdoc:springdoc-openapi-ui'
-
+    implementation "org.liquibase:liquibase-gradle-plugin:2.0.4"
     testImplementation project(':test-util')
 
     testImplementation "com.h2database:h2"
