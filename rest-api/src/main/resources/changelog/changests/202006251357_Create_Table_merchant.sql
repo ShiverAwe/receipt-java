@@ -1,9 +1,13 @@
-CREATE TABLE quiz_entity
+create table merchant
 (
-    ID                    INT     NOT NULL,
-    address               varchar NOT NULL,
-    inn                varchar    NOT NULL,
-    last_update_time timestamp    NOT NULL,
-    name                  varchar NOT NULL,
-    PRIMARY KEY (ID)
+    id               bigserial    not null
+        constraint merchant_pkey
+            primary key,
+    address          varchar(255) not null,
+    inn              varchar(255) not null,
+    last_update_time timestamp    not null,
+    name             varchar(255) not null
 );
+
+alter table merchant
+    owner to receipt_dev;

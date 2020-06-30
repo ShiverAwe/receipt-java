@@ -1,6 +1,10 @@
-CREATE TABLE quiz_entity
+create table place
 (
-    ID                    INT     NOT NULL,
-    text                  varchar NOT NULL,
-    PRIMARY KEY (ID)
+    id   bigserial    not null
+        constraint place_pkey
+            primary key,
+    text varchar(255) not null
 );
+
+alter table place
+    owner to receipt_dev;

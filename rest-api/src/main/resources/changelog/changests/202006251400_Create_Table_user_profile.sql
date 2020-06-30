@@ -1,19 +1,20 @@
-CREATE TABLE quiz_entity
+create table  user_profile
 (
-
-    address               varchar NOT NULL,
-    inn                   varchar NOT NULL,
-    last_update_time    timestamp NOT NULL,
-    name                  varchar NOT NULL,
-    ID                    varchar NOT NULL,
-    created_at          timestamp NOT NULL,
-    updated_at                   timestamp,
-    access_token                   varchar,
-    fns_request_count                  int,
-    password              varchar NOT NULL,
-    phone                 varchar NOT NULL,
-    load_count                int NOT NULL,
-    email                          varchar,
-    name                           varchar,
-    PRIMARY KEY (ID)
+    id                varchar(255)      not null
+        constraint user_profile_pkey
+            primary key,
+    created_at        timestamp         not null,
+    updated_at        timestamp,
+    access_token      varchar(255),
+    fns_request_count integer,
+    password          varchar(255)      not null,
+    phone             varchar(255)      not null
+        constraint uk_1un6sdkbtaspkwmsiferm1dhm
+            unique,
+    load_count        integer default 0 not null,
+    email             varchar(255),
+    name              varchar(255)
 );
+
+alter table user_profile
+    owner to receipt_dev;
