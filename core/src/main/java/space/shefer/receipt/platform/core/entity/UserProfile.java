@@ -26,6 +26,12 @@ public class UserProfile extends BaseUuidIdEntity {
   @Column(name = "access_token")
   private String accessToken;
 
+  @Column(name = "name")
+  private String name;
+
+  @Column(name = "email")
+  private String email;
+
   @Override
   public boolean equals(Object o) {
     if (this == o) return true;

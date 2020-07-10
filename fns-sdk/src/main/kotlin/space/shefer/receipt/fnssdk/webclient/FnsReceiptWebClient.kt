@@ -9,7 +9,9 @@ import org.springframework.stereotype.Component
 import org.springframework.web.client.HttpClientErrorException
 import org.springframework.web.client.HttpServerErrorException
 import org.springframework.web.client.RestTemplate
-import space.shefer.receipt.fnssdk.excepion.AuthorizationFailedException
+import space.shefer.receipt.fnssdk.dto.FnsLoginResponse
+import space.shefer.receipt.fnssdk.excepion.*
+import space.shefer.receipt.fnssdk.service.ResponseErrorHandleFNS
 import java.net.URI
 import java.util.*
 
@@ -46,7 +48,6 @@ class FnsReceiptWebClient {
         return null
     }
 
-
     fun getReceiptExists(fn: String, fd: String, fp: String, time: String, money: Float): Boolean {
         val moneyForUrl: Int = (money * 100).toInt()
         val uri = "$HOST/v1/ofds/*/inns/*/fss/$fn/operations/1/tickets/$fd?fiscalSign=$fp&date=$time&sum=$moneyForUrl"
@@ -66,7 +67,6 @@ class FnsReceiptWebClient {
 
             throw e
         }
-
         return responseEntity.statusCode == HttpStatus.NO_CONTENT
     }
 
@@ -84,25 +84,42 @@ class FnsReceiptWebClient {
     fun signUp(email: String, name: String, phone: String) {
         val headers = HttpHeaders()
         headers.add("Content-Type", "application/json; charset=UTF-8")
-        RestTemplate().exchange(
+        val restTemplate = RestTemplate()
+        restTemplate.errorHandler = ResponseErrorHandleFNS()
+        val responseEntity = restTemplate.exchange(
                 URI("$HOST/v1/mobile/users/signup"),
                 HttpMethod.POST,
                 HttpEntity("""{"email":"$email","name":"$name","phone":"$phone"}""", headers),
                 String::class.java
         )
+        if (responseEntity.statusCode == HttpStatus.NO_CONTENT) {
+            return
+        }
+        if (responseEntity.statusCode == HttpStatus.CONFLICT && responseEntity.body.toString() == "user exists") {
+            throw UserAlreadyExistsException(name);
+        } else if (responseEntity.statusCode == HttpStatus.BAD_REQUEST
+                && responseEntity.body.toString().contains("Object didn't pass validation for format email")) {
+            throw IncorrectEmailException(email);
+        } else if (responseEntity.statusCode == HttpStatus.INTERNAL_SERVER_ERROR
+                && responseEntity.body.toString() == "failed with code 20101") {
+            throw IncorrectPhoneException(phone)
+        } else {
+            throw UnexpectedHttpException()
+        }
+
     }
 
-    fun login(login: String, password: String) {
+    fun login(phone: String, password: String): FnsLoginResponse? {
         val headers = HttpHeaders()
         headers.add("Content-Type", "application/json; charset=UTF-8")
         headers.add("Authorization", getAuthHeader(login, password))
         try {
-            RestTemplate().exchange(
+            return RestTemplate().exchange(
                     URI("$HOST/v1/mobile/users/login"),
                     HttpMethod.GET,
                     HttpEntity<String>(headers),
-                    String::class.java
-            )
+                    FnsLoginResponse::class.java
+            ).body
         } catch (e: HttpClientErrorException.Forbidden) {
             throw AuthorizationFailedException(login, e)
         }
