@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.HttpClientErrorException;
+import space.shefer.receipt.fnssdk.excepion.ErrorToken;
 import space.shefer.receipt.fnssdk.webclient.FnsReceiptWebClient;
 import space.shefer.receipt.platform.core.entity.UserProfile;
 import space.shefer.receipt.platform.core.service.UserProfileService;
@@ -53,7 +54,7 @@ public class UserController {
     if (authHeader != null) {
       return fnsUserService.getUserByToken(getTokenFromAuthHeader(authHeader));
     }
-    return null;
+    throw new ErrorToken();
   }
 
   @RequestMapping(value = "/passwordRestore", method = RequestMethod.POST)

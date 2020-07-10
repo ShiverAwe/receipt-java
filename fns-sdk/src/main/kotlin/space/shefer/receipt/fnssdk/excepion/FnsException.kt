@@ -27,3 +27,7 @@ class IncorrectPhoneException(phone: String)
 @ResponseStatus(code = HttpStatus.INTERNAL_SERVER_ERROR)
 class UnexpectedHttpException()
     : FnsException("Unexpected error")
+
+@ResponseStatus(code = HttpStatus.NOT_FOUND)
+class ErrorToken()
+    : FnsException("Token not found")
