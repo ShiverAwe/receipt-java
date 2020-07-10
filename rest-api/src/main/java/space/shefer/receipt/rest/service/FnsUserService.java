@@ -41,10 +41,20 @@ public class FnsUserService {
     FnsLoginResponse responseEntity = fnsReceiptWebClient.login(userLoginDto.getPhone(), userLoginDto.getPassword());
     if (responseEntity != null) {
       UserProfile userProfile = userProfileRepository.getByPhone(userLoginDto.getPhone());
-      if (userProfile != null && userProfile.getUpdatedAt() == null) {
-        userProfile.setName(responseEntity.getName());
-        userProfile.setEmail(responseEntity.getEmail());
-        userProfileRepository.save(userProfile);
+      if (userProfile != null) {
+        if (!userProfile.getEmail().equals(responseEntity.email) || (!userProfile.getName().equals(responseEntity.name))) {
+          userProfile.setName(responseEntity.getName());
+          userProfile.setEmail(responseEntity.getEmail());
+          userProfileRepository.save(userProfile);
+        }
+      }
+      else {
+        UserProfile newUserProfile = new UserProfile();
+        newUserProfile.setPhone(userLoginDto.getPhone());
+        newUserProfile.setEmail(responseEntity.email);
+        newUserProfile.setName(responseEntity.name);
+        newUserProfile.setPassword(userLoginDto.getPassword());
+        userProfileRepository.save(newUserProfile);
       }
     }
   }
