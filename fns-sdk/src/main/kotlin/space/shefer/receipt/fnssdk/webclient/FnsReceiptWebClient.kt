@@ -12,8 +12,6 @@ import org.springframework.web.client.RestTemplate
 import space.shefer.receipt.fnssdk.dto.FnsLoginResponse
 import space.shefer.receipt.fnssdk.excepion.*
 import space.shefer.receipt.fnssdk.service.ResponseErrorHandleFNS
-import java.lang.Exception
-import java.lang.UnsupportedOperationException
 import java.net.URI
 import java.util.*
 
@@ -94,12 +92,19 @@ class FnsReceiptWebClient {
                 HttpEntity("""{"email":"$email","name":"$name","phone":"$phone"}""", headers),
                 String::class.java
         )
-        if (responseEntity.statusCode == HttpStatus.CONFLICT) {
+        if (responseEntity.statusCode == HttpStatus.NO_CONTENT) {
+            return
+        }
+        if (responseEntity.statusCode == HttpStatus.CONFLICT && responseEntity.body.toString() == "user exists") {
             throw UserAlreadyExistsException(name);
-        } else if (responseEntity.statusCode == HttpStatus.BAD_REQUEST) {
+        } else if (responseEntity.statusCode == HttpStatus.BAD_REQUEST
+                && responseEntity.body.toString().contains("Object didn't pass validation for format email")) {
             throw IncorrectEmailException(email);
-        } else if (responseEntity.statusCode == HttpStatus.INTERNAL_SERVER_ERROR) {
+        } else if (responseEntity.statusCode == HttpStatus.INTERNAL_SERVER_ERROR
+                && responseEntity.body.toString() == "failed with code 20101") {
             throw IncorrectPhoneException(phone)
+        } else {
+            throw UnexpectedHttpException()
         }
 
     }
