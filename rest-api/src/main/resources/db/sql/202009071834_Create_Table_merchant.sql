@@ -1,4 +1,4 @@
-create table merchant
+create table IF NOT EXISTS merchant
 (
     id               bigserial    not null
         constraint merchant_pkey

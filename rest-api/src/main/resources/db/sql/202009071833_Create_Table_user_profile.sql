@@ -1,4 +1,4 @@
-create table user_profile
+create table IF NOT EXISTS user_profile
 (
     id                varchar(255)      not null
         constraint user_profile_pkey

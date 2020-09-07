@@ -1,4 +1,4 @@
-create table place
+create table IF NOT EXISTS place
 (
     id   bigserial    not null
         constraint place_pkey

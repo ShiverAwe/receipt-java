@@ -1,4 +1,4 @@
-create table item
+create table IF NOT EXISTS item
 (
     id         bigserial        not null
         constraint item_pkey

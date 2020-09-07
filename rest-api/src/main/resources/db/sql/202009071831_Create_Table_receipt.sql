@@ -1,4 +1,4 @@
-create table receipt
+create table IF NOT EXISTS receipt
 (
     id                     bigserial        not null
         constraint receipt_pkey
