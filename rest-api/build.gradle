@@ -1,12 +1,15 @@
 plugins {
     id "io.freefair.lombok"
     id 'org.springframework.boot'
+    id "org.liquibase.gradle" version "2.0.4"
 }
 
 dependencies {
     implementation project(':core')
     implementation project(':fns-sdk')
     implementation project(':rest-api-dto')
+
+    compile group: 'org.liquibase', name: 'liquibase-core', version: '4.0.0'
 
     implementation 'com.google.code.findbugs:jsr305'
     implementation 'commons-codec:commons-codec'
@@ -16,6 +19,7 @@ dependencies {
     implementation 'org.projectlombok:lombok'
     implementation 'org.springdoc:springdoc-openapi-ui'
 
+    implementation "org.liquibase:liquibase-gradle-plugin:2.0.4"
     testImplementation project(':test-util')
 
     testImplementation "com.h2database:h2"
