@@ -12,13 +12,9 @@ import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -30,14 +26,7 @@ import java.util.List;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class Receipt {
-
-  @Id
-  @SequenceGenerator(name = "receipt_id_seq", sequenceName = "receipt_id_seq", allocationSize = 1)
-  @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "receipt_id_seq")
-  @Column(name = "id", nullable = false)
-  @Nullable
-  private Long id;
+public class Receipt extends BaseUuidIdEntity {
 
   @Column(name = "date", nullable = false)
   private LocalDateTime date;
@@ -67,15 +56,19 @@ public class Receipt {
   @JoinColumn(name = "receipt_id")
   private List<Item> items = new ArrayList<>();
 
+  @Nullable
   @Column(name = "merchant_name")
   private String merchantName;
 
+  @Nullable
   @Column(name = "merchant_inn")
   private String merchantInn;
 
+  @Nullable
   @Column(name = "merchant_place_address")
   private String merchantPlaceAddress;
 
+  @Nullable
   @ManyToOne
   @JoinColumn(name = "user_profile_id")
   private UserProfile userProfile;
