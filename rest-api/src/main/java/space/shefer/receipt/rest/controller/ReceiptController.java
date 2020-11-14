@@ -40,7 +40,8 @@ public class ReceiptController {
                                @Nullable @RequestHeader("Authorization") String authHeader) {
     UserProfile userProfile = null;
     if (authHeader != null) {
-      userProfile = userProfileService.getUserByToken(authHeader.substring(authHeader.indexOf(" ") + 1));
+      String token = authHeader.substring("Bearer ".length());
+      userProfile = userProfileService.getUserByToken(token);
     }
     Receipt receipt = receiptService.create(query, userProfile);
     return ReceiptMetaConverter.toDto(receipt);
