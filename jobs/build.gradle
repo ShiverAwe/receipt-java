@@ -6,7 +6,6 @@ plugins {
 dependencies {
     implementation project(':core')
     implementation project(':core-dto')
-    implementation project(':fns-sdk')
 
     implementation 'com.google.code.findbugs:jsr305'
     implementation 'org.apache.commons:commons-lang3'
