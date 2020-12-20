@@ -3,6 +3,7 @@ rootProject.name = 'receipt-java'
 // Keep modules ordered by name
 include 'core'
 include 'core-dto'
+include 'importer-email'
 include 'jobs'
 include 'fns-sdk'
 include 'rest-api'

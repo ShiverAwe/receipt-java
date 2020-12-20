@@ -1,0 +1,12 @@
+spring:
+  mail:
+    host: smtp.yandex.ru
+    port: 465
+    username: tmp1@shefer.space
+    protocol: smtps
+    pop3:
+      host: "pop.yandex.ru:995"
+      url: "pop3s://tmp1%40shefer.space:${spring.mail.password}@${spring.mail.pop3.host}/INBOX"
+    imap:
+      host: "imap.yandex.ru:993"
+      url: "imaps://tmp1%40shefer.space:${spring.mail.password}@${spring.mail.imap.host}/INBOX"
