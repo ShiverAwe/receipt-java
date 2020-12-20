@@ -5,6 +5,7 @@ plugins {
 
 dependencies {
     implementation project(':core')
+    implementation project(':fns-sdk')
     implementation project(':rest-api-dto')
 
     implementation 'com.google.code.findbugs:jsr305'
