@@ -5,7 +5,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,14 +20,10 @@ import space.shefer.receipt.rest.dto.TgbotCreateBody;
 @Tag(name = "Telegram bot")
 @RestController
 @RequestMapping("tgbot")
+@RequiredArgsConstructor
 public class TgbotController {
 
   private final FnsReceiptService receiptService;
-
-  @Autowired
-  public TgbotController(FnsReceiptService receiptService) {
-    this.receiptService = receiptService;
-  }
 
   @Operation(
     description = "Submit receipt from telegram-bot",
@@ -45,8 +41,7 @@ public class TgbotController {
     FnsAppReceiptDto fnsAppReceiptDto = FnsAppReceiptDto.fromString(body.getReceiptJson());
     return receiptService
       .update(fnsAppReceiptDto, new Receipt(), ReceiptProvider.TGBOT_NALOG.name())
-      .getId()
-      .toString();
+      .getId();
   }
 
 }
