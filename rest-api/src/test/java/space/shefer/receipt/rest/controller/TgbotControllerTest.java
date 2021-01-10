@@ -49,7 +49,11 @@ public class TgbotControllerTest {
     body.setReceiptJson(receiptJson);
     String bodyString = new ObjectMapper().writeValueAsString(body);
 
-    doAnswer(__ -> Receipt.builder().id(807L).build()).when(service).update(any(), any(), anyString());
+    doAnswer(__ -> {
+      Receipt receipt = new Receipt();
+      receipt.setId("807");
+      return receipt;
+    }).when(service).update(any(), any(), anyString());
 
     mockMvc
       .perform(post("/tgbot/create")

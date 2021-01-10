@@ -2,12 +2,13 @@ package space.shefer.receipt.platform.core.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 import space.shefer.receipt.platform.core.dto.ReceiptStatus;
 
 import javax.annotation.Nullable;
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -20,12 +21,14 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-@Entity
-@Table(name = "receipt")
-@Data
-@Builder
 @AllArgsConstructor
+@Builder
+@Entity
+@Getter
 @NoArgsConstructor
+@Setter
+@Table(name = "receipt")
+@ToString
 public class Receipt extends BaseUuidIdEntity {
 
   private LocalDateTime date;

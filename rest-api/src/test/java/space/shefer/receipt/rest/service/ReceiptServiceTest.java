@@ -44,8 +44,8 @@ public class ReceiptServiceTest {
     metaFilter.setSumMax(800.0);
     when(receiptRepository.getReceipts(any()))
       .thenReturn(Arrays.asList(
-        Receipt.builder().id(1L).build(),
-        Receipt.builder().id(2L).build()
+        createReceiptWithId("1"),
+        createReceiptWithId("2")
       ));
     service.getReceipts(metaFilter);
     verify(receiptRepository).getReceipts(metaFilter);
@@ -64,7 +64,7 @@ public class ReceiptServiceTest {
     receipt.setFd("2222");
     receipt.setFp("3333");
     receipt.setSum(100.0);
-    when(receiptRepository.save(any())).thenReturn(Receipt.builder().id(400L).build());
+    when(receiptRepository.save(any())).thenReturn(createReceiptWithId("400"));
     service.create(receipt, userProfile);
     ArgumentCaptor<Receipt> receiptCaptor = ArgumentCaptor.forClass(Receipt.class);
     verify(receiptRepository).save(receiptCaptor.capture());
@@ -86,6 +86,12 @@ public class ReceiptServiceTest {
     assertEquals(ReceiptService.trimAddressLine("asdad312312rfa"), "asdad312312rfa");
     assertEquals(ReceiptService.trimAddressLine(""), "");
     assertEquals(ReceiptService.trimAddressLine("----!#@#$!____--"), "");
+  }
+
+  private Receipt createReceiptWithId(String id){
+    Receipt receipt = new Receipt();
+    receipt.setId(id);
+    return receipt;
   }
 
 }
