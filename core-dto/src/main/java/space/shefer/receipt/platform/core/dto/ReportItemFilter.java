@@ -14,7 +14,7 @@ import java.util.List;
 @Builder(toBuilder = true)
 public class ReportItemFilter {
   @Nullable
-  private List<Long> receiptIds;
+  private List<String> receiptIds;
   @Nullable
   private Double minPrice;
   @Nullable

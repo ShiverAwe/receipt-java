@@ -14,11 +14,10 @@ import java.time.LocalDateTime;
 public class ReceiptMetaDto {
   @Schema(
     title = "Receipt identifier",
-    minimum = "0",
     required = true,
-    example = "135"
+    example = "saf-asdfb-43c54-sad"
   )
-  private Long id;
+  private String id;
 
   @Schema(
     required = true,
