@@ -7,7 +7,6 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-import javax.persistence.Column;
 import javax.persistence.EntityListeners;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -23,15 +22,12 @@ public class BaseUuidIdEntity {
   @Id
   @GeneratedValue(generator = "uuid")
   @GenericGenerator(name = "uuid", strategy = "uuid2")
-  @Column(name = "id", unique = true)
   protected String id;
 
   @CreatedDate
-  @Column(name = "created_at", nullable = false)
   protected LocalDateTime createdAt;
 
   @LastModifiedDate
-  @Column(name = "updated_at", nullable = true)
   protected LocalDateTime updatedAt;
 
 }
