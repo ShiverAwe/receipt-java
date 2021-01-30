@@ -11,6 +11,7 @@ import space.shefer.receipt.dto.ReceiptItemDto;
 import space.shefer.receipt.dto.ReceiptMetaDto;
 
 import javax.validation.constraints.NotNull;
+import java.io.File;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
@@ -30,8 +31,8 @@ public class NalogReceiptsParser implements ReceiptsParser {
 
   @SneakyThrows
   @Override
-  public List<ReceiptDto> parse(String filePath) {
-    ArrayNode receipts = readReceiptsJson(filePath);
+  public List<ReceiptDto> parse(File file) {
+    ArrayNode receipts = readReceiptsJson(file);
 
     return StreamSupport.stream(receipts.spliterator(), false)
       .map(receipt -> (ObjectNode) receipt.get("ticket").get("document").get("receipt"))
@@ -76,7 +77,7 @@ public class NalogReceiptsParser implements ReceiptsParser {
   }
 
   @SneakyThrows
-  private static ArrayNode readReceiptsJson(String filePath) {
-    return (ArrayNode) MAPPER.readTree(ResourceUtils.getFile(filePath));
+  private static ArrayNode readReceiptsJson(File file) {
+    return (ArrayNode) MAPPER.readTree(file);
   }
 }

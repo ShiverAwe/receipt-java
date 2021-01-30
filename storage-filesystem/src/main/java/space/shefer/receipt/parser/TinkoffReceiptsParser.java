@@ -10,6 +10,7 @@ import space.shefer.receipt.dto.ReceiptDto;
 import space.shefer.receipt.dto.ReceiptMetaDto;
 
 import javax.annotation.Nullable;
+import java.io.File;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
@@ -31,10 +32,10 @@ public class TinkoffReceiptsParser implements ReceiptsParser {
 
   @SneakyThrows
   @Override
-  public List<ReceiptDto> parse(String filePath) {
+  public List<ReceiptDto> parse(File file) {
     List<Object> orderLines = MAPPER.readerFor(JsonNode.class)
       .with(orderLineSchema)
-      .readValues(ResourceUtils.getFile(filePath))
+      .readValues(file)
       .readAll();
 
     return orderLines.stream()
