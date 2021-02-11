@@ -5,7 +5,6 @@ import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import lombok.SneakyThrows;
-import org.springframework.util.ResourceUtils;
 import space.shefer.receipt.dto.ReceiptDto;
 import space.shefer.receipt.dto.ReceiptItemDto;
 import space.shefer.receipt.dto.ReceiptMetaDto;
@@ -15,6 +14,8 @@ import java.io.File;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
@@ -43,6 +44,7 @@ public class NalogReceiptsParser implements ReceiptsParser {
         return ReceiptDto.builder()
           .meta(receiptMetaDto)
           .items(items)
+          .tags(new HashSet<>(Arrays.asList("nalog")))
           .build();
       })
       .collect(Collectors.toList());

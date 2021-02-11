@@ -15,6 +15,8 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -45,6 +47,7 @@ public class TinkoffReceiptsParser implements ReceiptsParser {
       .map(it -> ReceiptDto.builder()
         .meta(it)
         .items(new ArrayList<>())
+        .tags(new HashSet<>(Arrays.asList("tinkoff")))
         .build()
       )
       .collect(Collectors.toList());
