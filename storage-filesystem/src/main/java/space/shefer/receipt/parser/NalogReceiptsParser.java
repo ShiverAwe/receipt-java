@@ -32,7 +32,7 @@ public class NalogReceiptsParser implements ReceiptsParser {
 
   @SneakyThrows
   @Override
-  public List<ReceiptDto> parse(File file) {
+  public List<ReceiptDto> parseFile(File file) {
     ArrayNode receipts = readReceiptsJson(file);
 
     return StreamSupport.stream(receipts.spliterator(), false)
@@ -52,12 +52,12 @@ public class NalogReceiptsParser implements ReceiptsParser {
 
   @NotNull
   private static ReceiptMetaDto getReceiptMetaDto(ObjectNode receipt) {
-    ReceiptMetaDto receiptMetaDto = new ReceiptMetaDto();
-    receiptMetaDto.setCurrency(810);
-    receiptMetaDto.setSum(receipt.get("totalSum").asDouble() / 100.0);
-    receiptMetaDto.setDateTime(LocalDateTime.parse(receipt.get("dateTime").asText(), DateTimeFormatter.ISO_DATE_TIME).atZone(ZoneId.of("Europe/Moscow")));
-    receiptMetaDto.setMerchantName(receipt.get("userInn").asText());
-    return receiptMetaDto;
+    return ReceiptMetaDto.builder()
+      .currency(810)
+      .sum(receipt.get("totalSum").asDouble() / 100.0)
+      .dateTime(LocalDateTime.parse(receipt.get("dateTime").asText(), DateTimeFormatter.ISO_DATE_TIME).atZone(ZoneId.of("Europe/Moscow")))
+      .merchantName(receipt.get("userInn").asText())
+      .build();
   }
 
   @SneakyThrows

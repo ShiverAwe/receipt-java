@@ -8,6 +8,7 @@ import lombok.SneakyThrows;
 import org.springframework.util.ResourceUtils;
 import space.shefer.receipt.dto.ReceiptDto;
 import space.shefer.receipt.dto.ReceiptMetaDto;
+import space.shefer.receipt.dto.ReceiptMetaDto.ReceiptMetaDtoBuilder;
 
 import javax.annotation.Nullable;
 import java.io.File;
@@ -34,7 +35,7 @@ public class TinkoffReceiptsParser implements ReceiptsParser {
 
   @SneakyThrows
   @Override
-  public List<ReceiptDto> parse(File file) {
+  public List<ReceiptDto> parseFile(File file) {
     List<Object> orderLines = MAPPER.readerFor(JsonNode.class)
       .with(orderLineSchema)
       .readValues(file)
@@ -60,22 +61,22 @@ public class TinkoffReceiptsParser implements ReceiptsParser {
       return null;
     }
 
-    ReceiptMetaDto receiptMetaDto = new ReceiptMetaDto();
+    ReceiptMetaDtoBuilder receiptMetaDto = ReceiptMetaDto.builder();
 
     double sum = -Double.parseDouble(it.get("Сумма операции").asText().replace(",", "."));
     if (sum >= 0) {
-      receiptMetaDto.setSum(sum);
+      receiptMetaDto.sum(sum);
     }
     else {
       return null;
     }
 
-    receiptMetaDto.setDateTime(LocalDateTime.parse(it.get("Дата операции").asText(), DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm:ss")).atZone(ZoneId.of("Europe/Moscow")));
-    receiptMetaDto.setMerchantName(it.get("Описание").asText());
+    receiptMetaDto.dateTime(LocalDateTime.parse(it.get("Дата операции").asText(), DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm:ss")).atZone(ZoneId.of("Europe/Moscow")));
+    receiptMetaDto.merchantName(it.get("Описание").asText());
 
-    receiptMetaDto.setCurrency(resolveCurrencyCode(it.get("Валюта операции").asText()));
+    receiptMetaDto.currency(resolveCurrencyCode(it.get("Валюта операции").asText()));
 
-    return receiptMetaDto;
+    return receiptMetaDto.build();
   }
 
   private int resolveCurrencyCode(String currencyName) {
