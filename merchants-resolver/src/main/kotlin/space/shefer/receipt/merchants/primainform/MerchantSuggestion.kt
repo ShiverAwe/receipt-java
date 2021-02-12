@@ -1,4 +1,4 @@
-package space.shefer.receipt.fnssdk.primainform
+package space.shefer.receipt.merchants.primainform
 
 
 class MerchantSuggestion {

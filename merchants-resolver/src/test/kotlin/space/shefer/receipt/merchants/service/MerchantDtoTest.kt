@@ -1,9 +1,9 @@
-package space.shefer.receipt.fnssdk.service
+package space.shefer.receipt.merchants.service
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import junit.framework.TestCase.assertEquals
 import org.junit.Test
-import space.shefer.receipt.fnssdk.primainform.MerchantSuggestions
+import space.shefer.receipt.merchants.primainform.MerchantSuggestions
 
 internal class MerchantDtoTest {
 

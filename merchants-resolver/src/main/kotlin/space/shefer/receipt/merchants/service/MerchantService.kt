@@ -1,9 +1,9 @@
-package space.shefer.receipt.fnssdk.service
+package space.shefer.receipt.merchants.service
 
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
-import space.shefer.receipt.fnssdk.primainform.MerchantSuggestion
-import space.shefer.receipt.fnssdk.webclient.PrimaInformWebClient
+import space.shefer.receipt.merchants.primainform.MerchantSuggestion
+import space.shefer.receipt.merchants.webclient.PrimaInformWebClient
 
 @Service
 class MerchantService {

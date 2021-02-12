@@ -1,10 +1,10 @@
-package space.shefer.receipt.fnssdk.webclient
+package space.shefer.receipt.merchants.webclient
 
 import org.springframework.http.HttpEntity
 import org.springframework.http.HttpMethod
 import org.springframework.stereotype.Component
 import org.springframework.web.client.RestTemplate
-import space.shefer.receipt.fnssdk.primainform.MerchantSuggestions
+import space.shefer.receipt.merchants.primainform.MerchantSuggestions
 import java.net.URI
 
 @Component
