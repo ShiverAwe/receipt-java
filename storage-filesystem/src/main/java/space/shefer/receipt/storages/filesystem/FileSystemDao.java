@@ -51,6 +51,18 @@ public class FileSystemDao<T> implements Dao<T> {
     deleteFileIfExists(getFilePath(id));
   }
 
+  @Override
+  public void deleteAll() {
+    File directory = new File(getDirectoryPath());
+    if (directory.exists()) {
+      for (File file : directory.listFiles()) {
+        if (!file.isDirectory()) {
+          file.delete();
+        }
+      }
+    }
+  }
+
   @SneakyThrows
   @Override
   public T getById(String id) {
