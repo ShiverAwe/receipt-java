@@ -8,6 +8,7 @@ include 'jobs'
 include 'fns-sdk'
 include 'rest-api'
 include 'rest-api-dto'
+include 'storage-filesystem'
 include 'telegram-bot'
 include 'test-util'
 
