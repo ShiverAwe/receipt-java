@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <changeSet author="vlad" id="202009071830_Create_Table_item">
+        <sqlFile path="/sql/202009071830_Create_Table_item.sql"
+                 relativeToChangelogFile="true"
+                 splitStatements="true"
+                 stripComments="true"/>
+    </changeSet>
+
+    <changeSet author="vlad" id="202009071831_Create_Table_receipt">
+        <sqlFile path="/sql/202009071831_Create_Table_receipt.sql"
+                 relativeToChangelogFile="true"
+                 splitStatements="true"
+                 stripComments="true"/>
+    </changeSet>
+
+    <changeSet author="vlad" id="202009071832_Create_Table_place">
+        <sqlFile path="/sql/202009071832_Create_Table_place.sql"
+                 relativeToChangelogFile="true"
+                 splitStatements="true"
+                 stripComments="true"/>
+    </changeSet>
+
+    <changeSet author="vlad" id="202009071833_Create_Table_user_profile">
+        <sqlFile path="/sql/202009071833_Create_Table_user_profile.sql"
+                 relativeToChangelogFile="true"
+                 splitStatements="true"
+                 stripComments="true"/>
+    </changeSet>
+
+    <changeSet author="vlad" id="202009071834_Create_Table_merchant">
+        <sqlFile path="/sql/202009071834_Create_Table_merchant.sql"
+                 relativeToChangelogFile="true"
+                 splitStatements="true"
+                 stripComments="true"/>
+    </changeSet>
+
+</databaseChangeLog>
