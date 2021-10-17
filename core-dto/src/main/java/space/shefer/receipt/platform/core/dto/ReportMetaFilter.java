@@ -20,7 +20,7 @@ import java.util.List;
 public class ReportMetaFilter {
 
   @Nullable
-  List<Long> ids;
+  List<String> ids;
 
   @Schema(
     description = DateUtil.RECEIPT_DATETIME_DESCRIPTION,

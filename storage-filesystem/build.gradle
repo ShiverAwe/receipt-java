@@ -1,0 +1,23 @@
+plugins {
+    id "io.freefair.lombok"
+    id 'org.springframework.boot'
+}
+
+dependencies {
+    implementation 'com.fasterxml.jackson.dataformat:jackson-dataformat-csv'
+    implementation 'com.fasterxml.jackson.dataformat:jackson-dataformat-yaml'
+    implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310'
+    implementation 'com.google.code.findbugs:jsr305'
+    implementation 'commons-codec:commons-codec'
+    implementation 'org.apache.commons:commons-lang3'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-actuator'
+    implementation 'org.springframework:spring-context-support'
+    implementation 'org.projectlombok:lombok'
+    implementation 'org.springdoc:springdoc-openapi-ui'
+
+    testImplementation project(':test-util')
+
+    testImplementation "com.h2database:h2"
+    testImplementation "org.springframework.boot:spring-boot-starter-test"
+}

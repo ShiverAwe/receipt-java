@@ -43,13 +43,13 @@ public class ReceiptRepositorySlowTest {
     String merchantPlaceAddress = "197374, СПб, ул. Савушкина, 112, лит. А";
     UserProfile userProfile = userProfileRepository.save(createTestUser());
     List<Receipt> receiptsInitial = Arrays.asList(
-      new Receipt(null, date, "83479", "96253", "76193", 123.45, "TAXCOM", LOADED,
+      new Receipt(date, "83479", "96253", "76193", 123.45, "TAXCOM", LOADED,
         emptyList(), merchantName, merchantInn, merchantPlaceAddress, userProfile, loadAttempts),
-      new Receipt(null, date, "34780", "89255", "82661", 121.44, "TAXCOM", LOADED,
+      new Receipt(date, "34780", "89255", "82661", 121.44, "TAXCOM", LOADED,
         emptyList(), merchantName, merchantInn, merchantPlaceAddress, userProfile, loadAttempts),
-      new Receipt(null, date, "03845", "11111", "11547", 723.75, "TAXCOM", LOADED,
+      new Receipt(date, "03845", "11111", "11547", 723.75, "TAXCOM", LOADED,
         emptyList(), merchantName, merchantInn, merchantPlaceAddress, userProfile, loadAttempts),
-      new Receipt(null, date, "82640", "34579", "99999", 103.55, "TAXCOM", LOADED,
+      new Receipt(date, "82640", "34579", "99999", 103.55, "TAXCOM", LOADED,
         emptyList(), merchantName, merchantInn, merchantPlaceAddress, userProfile, loadAttempts)
     );
     repository.saveAll(receiptsInitial);
@@ -82,94 +82,94 @@ public class ReceiptRepositorySlowTest {
     String merchantName = "ООО \"Лента\"";
     String merchantInn = "7814148471";
     String merchantPlaceAddress = "197374, СПб, ул. Савушкина, 112, лит. А";
-    Long bannedId;
+    String bannedId;
     List<Receipt> expectedReceipts = new ArrayList<>();
 
     {// WRONG ID
       Receipt receipt =
-        repository.save(new Receipt(null,
+        repository.save(new Receipt(
           dateOk, "11111", "22222", "33333", sumOk, "TAXCOM", LOADED, emptyList(),
           merchantName, merchantInn, merchantPlaceAddress, userProfile, loadAttempts));
       bannedId = receipt.getId();
     }
     {// OK
       Receipt receipt =
-        repository.save(new Receipt(null,
+        repository.save(new Receipt(
           dateOk, "11111", "22222", "33333", sumOk, "TAXCOM", LOADED, emptyList(),
           merchantName, merchantInn, merchantPlaceAddress, userProfile, loadAttempts));
       expectedReceipts.add(receipt);
     }
     {// OK
       Receipt receipt =
-        repository.save(new Receipt(null,
+        repository.save(new Receipt(
           dateOk, "11111", "22222", "33333", sumOk, "TAXCOM", LOADED, emptyList(),
           merchantName, merchantInn, merchantPlaceAddress, userProfile, loadAttempts));
       expectedReceipts.add(receipt);
     }
     {// WRONG DATE: WRONG YEAR
-      repository.save(new Receipt(null,
+      repository.save(new Receipt(
         dateWrongYear, "11111", "22222", "33333", sumOk, "TAXCOM", LOADED, emptyList(),
         merchantName, merchantInn, merchantPlaceAddress, userProfile, loadAttempts));
     }
     {// WRONG DATE: WRONG MONTH
-      repository.save(new Receipt(null,
+      repository.save(new Receipt(
         dateWrongMonth, "11111", "22222", "33333", sumOk, "TAXCOM", LOADED, emptyList(),
         merchantName, merchantInn, merchantPlaceAddress, userProfile, loadAttempts));
     }
     {// WRONG DATE: WRONG DATE
-      repository.save(new Receipt(null,
+      repository.save(new Receipt(
         dateWrongDate, "11111", "22222", "33333", sumOk, "TAXCOM", LOADED, emptyList(),
         merchantName, merchantInn, merchantPlaceAddress, userProfile, loadAttempts));
     }
     {// WRONG DATE: WRONG HOUR
-      repository.save(new Receipt(null,
+      repository.save(new Receipt(
         dateWrongHour, "11111", "22222", "33333", sumOk, "TAXCOM", LOADED, emptyList(),
         merchantName, merchantInn, merchantPlaceAddress, userProfile, loadAttempts));
     }
     {// WRONG DATE: WRONG MINUTE
-      repository.save(new Receipt(null,
+      repository.save(new Receipt(
         dateWrongMinute, "11111", "22222", "33333", sumOk, "TAXCOM", LOADED, emptyList(),
         merchantName, merchantInn, merchantPlaceAddress, userProfile, loadAttempts));
     }
     {// WRONG DATE: WRONG SECOND
-      repository.save(new Receipt(null,
+      repository.save(new Receipt(
         dateWrongSecond, "11111", "22222", "33333", sumOk, "TAXCOM", LOADED, emptyList(),
         merchantName, merchantInn, merchantPlaceAddress, userProfile, loadAttempts));
     }
     {// WRONG FN
-      repository.save(new Receipt(null,
+      repository.save(new Receipt(
         dateOk, "83759", "22222", "33333", sumOk, "TAXCOM", LOADED, emptyList(),
         merchantName, merchantInn, merchantPlaceAddress, userProfile, loadAttempts));
     }
     {// WRONG FD
-      repository.save(new Receipt(null,
+      repository.save(new Receipt(
         dateOk, "11111", "02349", "33333", sumOk, "TAXCOM", LOADED, emptyList(),
         merchantName, merchantInn, merchantPlaceAddress, userProfile, loadAttempts));
     }
     {// WRONG FP
-      repository.save(new Receipt(null,
+      repository.save(new Receipt(
         dateOk, "11111", "22222", "73458", sumOk, "TAXCOM", LOADED, emptyList(),
         merchantName, merchantInn, merchantPlaceAddress, userProfile, loadAttempts));
     }
     {// WRONG SUM
-      repository.save(new Receipt(null,
+      repository.save(new Receipt(
         dateOk, "11111", "22222", "33333", 65.3, "TAXCOM", LOADED, emptyList(),
         merchantName, merchantInn, merchantPlaceAddress, userProfile, loadAttempts));
     }
     {// WRONG STATUS
-      repository.save(new Receipt(null,
+      repository.save(new Receipt(
         dateOk, "11111", "22222", "33333", sumOk, "TAXCOM", IDLE, emptyList(),
         merchantName, merchantInn, merchantPlaceAddress, userProfile, loadAttempts));
     }
     {// WRONG MERCHANT NAME
-      repository.save(new Receipt(null,
+      repository.save(new Receipt(
         dateOk, "11111", "22222", "33333", sumOk, "TAXCOM", LOADED, emptyList(),
         "dummy", merchantInn, merchantPlaceAddress, userProfile, loadAttempts));
     }
 
     repository.flush();
-    Long finalBannedId = bannedId;
-    List<Long> allowedIds = repository.findAll().stream().map(Receipt::getId)
+    String finalBannedId = bannedId;
+    List<String> allowedIds = repository.findAll().stream().map(Receipt::getId)
       .filter(it -> !Objects.equals(it, finalBannedId)).collect(Collectors.toList());
 
     {

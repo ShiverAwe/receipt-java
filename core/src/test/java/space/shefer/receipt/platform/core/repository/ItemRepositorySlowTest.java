@@ -29,10 +29,10 @@ public class ItemRepositorySlowTest {
   @Test
   public void getItems_defaultFilter() {
     List<Item> itemsInitial = asList(
-      new Item(null, "text1", 1001.0, 101.0, null),
-      new Item(null, "text2", 1002.0, 102.0, null),
-      new Item(null, "text3", 1003.0, 103.0, null),
-      new Item(null, "text4", 1004.0, 104.0, null)
+      new Item("text1", 1001.0, 101.0, null),
+      new Item("text2", 1002.0, 102.0, null),
+      new Item("text3", 1003.0, 103.0, null),
+      new Item("text4", 1004.0, 104.0, null)
     );
     repository.saveAll(itemsInitial);
     List<Item> itemsAll = repository.findAll();
@@ -56,19 +56,19 @@ public class ItemRepositorySlowTest {
     double priceMax = priceOk + 5;
     double priceMin = priceOk - 5;
     // OK
-    repository.save(new Item(null, "text1", priceOk, 101.0, receiptOk));
+    repository.save(new Item("text1", priceOk, 101.0, receiptOk));
     // OK
-    repository.save(new Item(null, "text1", priceMin, 101.0, receiptOk));
+    repository.save(new Item("text1", priceMin, 101.0, receiptOk));
     // OK
-    repository.save(new Item(null, "text1", priceMax, 101.0, receiptOk));
+    repository.save(new Item("text1", priceMax, 101.0, receiptOk));
     // Wrong text
-    repository.save(new Item(null, "text2", priceOk, 101.0, receiptOk));
+    repository.save(new Item("text2", priceOk, 101.0, receiptOk));
     // Wrong receipt
-    repository.save(new Item(null, "text1", priceOk, 101.0, null));
+    repository.save(new Item("text1", priceOk, 101.0, null));
     // Price less than minimal
-    repository.save(new Item(null, "text1", priceMin - 1, 101.0, receiptOk));
+    repository.save(new Item("text1", priceMin - 1, 101.0, receiptOk));
     // Price greater than maximal
-    repository.save(new Item(null, "text1", priceMax + 1, 101.0, receiptOk));
+    repository.save(new Item("text1", priceMax + 1, 101.0, receiptOk));
     {
       ReportItemFilter filter = new ReportItemFilter();
       filter.setReceiptIds(asList(receiptOk.getId()));
@@ -77,9 +77,9 @@ public class ItemRepositorySlowTest {
       filter.setTextEquals("text1");
       List<Item> actual = repository.getItems(filter);
       assertEquals(3, actual.size());
-      assertSimilar(new Item(null, "text1", priceOk, 101.0, receiptOk), actual.get(0));
-      assertSimilar(new Item(null, "text1", priceMin, 101.0, receiptOk), actual.get(1));
-      assertSimilar(new Item(null, "text1", priceMax, 101.0, receiptOk), actual.get(2));
+      assertSimilar(new Item("text1", priceOk, 101.0, receiptOk), actual.get(0));
+      assertSimilar(new Item("text1", priceMin, 101.0, receiptOk), actual.get(1));
+      assertSimilar(new Item("text1", priceMax, 101.0, receiptOk), actual.get(2));
     }
   }
 

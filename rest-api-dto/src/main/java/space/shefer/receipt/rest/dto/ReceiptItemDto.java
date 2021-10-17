@@ -4,7 +4,7 @@ import lombok.Data;
 
 @Data
 public class ReceiptItemDto {
-  private Long receiptId;
+  private String receiptId;
   private String text;
   private Double price;
   private Double amount;
