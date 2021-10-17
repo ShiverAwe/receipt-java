@@ -52,3 +52,5 @@ gradlew.bat
 
 ## Lombok plugin
 lombok.config
+
+workdir
